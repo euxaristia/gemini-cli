@@ -70,11 +70,11 @@ export const ToolResultDisplay: React.FC<ToolResultDisplayProps> = ({
 
   const renderVirtualizedAnsiLine = React.useCallback(
     ({ item }: { item: AnsiLine }) => (
-      <Box height={1} overflow="hidden">
+      <Box height={1} width={childWidth} overflow="hidden">
         <AnsiLineText line={item} />
       </Box>
     ),
-    [],
+    [childWidth],
   );
 
   if (!resultDisplay) return null;

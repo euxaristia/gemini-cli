@@ -39,7 +39,7 @@ export const AnsiOutputText: React.FC<AnsiOutputProps> = ({
   return (
     <Box flexDirection="column" width={width} flexShrink={0} overflow="hidden">
       {lastLines.map((line: AnsiLine, lineIndex: number) => (
-        <Box key={lineIndex} height={1} overflow="hidden">
+        <Box key={lineIndex} height={1} width={width} overflow="hidden">
           <AnsiLineText line={line} />
         </Box>
       ))}
