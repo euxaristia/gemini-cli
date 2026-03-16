@@ -13,6 +13,7 @@ import type {
 import {
   PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL,
   PREVIEW_GEMINI_3_1_MODEL,
+  PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
   PREVIEW_GEMINI_FLASH_MODEL,
   PREVIEW_GEMINI_MODEL,
 } from '../config/models.js';
@@ -32,10 +33,10 @@ export interface ModelPolicyOptions {
 }
 
 const DEFAULT_ACTIONS: ModelPolicyActionMap = {
-  terminal: 'prompt',
-  transient: 'prompt',
-  not_found: 'prompt',
-  unknown: 'prompt',
+  terminal: 'silent',
+  transient: 'silent',
+  not_found: 'silent',
+  unknown: 'silent',
 };
 
 const SILENT_ACTIONS: ModelPolicyActionMap = {
@@ -71,8 +72,12 @@ export function getModelPolicyChain(
   }
 
   chain.push(definePolicy({ model: PREVIEW_GEMINI_MODEL }));
+  chain.push(definePolicy({ model: PREVIEW_GEMINI_FLASH_MODEL }));
   chain.push(
-    definePolicy({ model: PREVIEW_GEMINI_FLASH_MODEL, isLastResort: true }),
+    definePolicy({
+      model: PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
+      isLastResort: true,
+    }),
   );
 
   return chain;
@@ -83,12 +88,12 @@ export function createSingleModelChain(model: string): ModelPolicyChain {
 }
 
 /**
- * Flash-lite no longer exists in Gemini 3. Return a Gemini 3 flash chain.
+ * Flash-lite policy chain with flash as fallback.
  */
 export function getFlashLitePolicyChain(): ModelPolicyChain {
   return [
     definePolicy({
-      model: PREVIEW_GEMINI_FLASH_MODEL,
+      model: PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
       isLastResort: true,
       actions: SILENT_ACTIONS,
     }),

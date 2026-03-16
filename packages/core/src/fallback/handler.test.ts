@@ -23,6 +23,7 @@ import {
   DEFAULT_GEMINI_FLASH_MODEL,
   DEFAULT_GEMINI_MODEL,
   DEFAULT_GEMINI_MODEL_AUTO,
+  PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
   PREVIEW_GEMINI_FLASH_MODEL,
   PREVIEW_GEMINI_MODEL,
   PREVIEW_GEMINI_MODEL_AUTO,
@@ -244,6 +245,7 @@ describe('handleFallback', () => {
       expect(result).toBe(true);
       expect(availability.selectFirstAvailable).toHaveBeenCalledWith([
         PREVIEW_GEMINI_FLASH_MODEL,
+        PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
       ]);
     });
 

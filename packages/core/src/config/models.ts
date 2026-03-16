@@ -36,6 +36,8 @@ export const PREVIEW_GEMINI_3_1_MODEL = 'gemini-3.1-pro-preview';
 export const PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL =
   'gemini-3.1-pro-preview-customtools';
 export const PREVIEW_GEMINI_FLASH_MODEL = 'gemini-3-flash-preview';
+export const PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1 =
+  'gemini-3.1-flash-lite-preview';
 
 // Kept for backward compatibility with internal tools (classifier, summarizer, etc.)
 export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-pro';
@@ -48,6 +50,7 @@ const MODEL_TIER_LIST = [
   PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL,
   PREVIEW_GEMINI_MODEL,
   PREVIEW_GEMINI_FLASH_MODEL,
+  PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
 ];
 
 export const VALID_GEMINI_MODELS = new Set([
@@ -55,6 +58,7 @@ export const VALID_GEMINI_MODELS = new Set([
   PREVIEW_GEMINI_3_1_MODEL,
   PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL,
   PREVIEW_GEMINI_FLASH_MODEL,
+  PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
   // Keep Gemini 2 models valid for internal tool configs
   DEFAULT_GEMINI_MODEL,
   DEFAULT_GEMINI_FLASH_MODEL,
@@ -117,8 +121,7 @@ export function resolveModel(
       return PREVIEW_GEMINI_FLASH_MODEL;
 
     case GEMINI_MODEL_ALIAS_FLASH_LITE:
-      // No more flash-lite in Gemini 3; redirect to flash
-      return PREVIEW_GEMINI_FLASH_MODEL;
+      return PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1;
 
     default:
       // Concrete model name — if it's a Gemini 2 model, redirect to auto
@@ -223,6 +226,7 @@ export function isPreviewModel(
     model === PREVIEW_GEMINI_3_1_MODEL ||
     model === PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL ||
     model === PREVIEW_GEMINI_FLASH_MODEL ||
+    model === PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1 ||
     model === PREVIEW_GEMINI_MODEL_AUTO
   );
 }

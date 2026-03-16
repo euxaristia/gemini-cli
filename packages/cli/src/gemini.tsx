@@ -32,6 +32,7 @@ import {
   type AdminControlsSettings,
   isAbortError,
   isTimeoutError,
+  getErrorMessage,
   debugLogger,
 } from '@google/gemini-cli-core';
 

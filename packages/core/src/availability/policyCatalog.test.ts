@@ -11,7 +11,6 @@ import {
   validateModelPolicyChain,
 } from './policyCatalog.js';
 import {
-  DEFAULT_GEMINI_MODEL,
   PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL,
   PREVIEW_GEMINI_3_1_MODEL,
   PREVIEW_GEMINI_MODEL,
@@ -21,7 +20,7 @@ describe('policyCatalog', () => {
   it('returns preview chain when preview enabled', () => {
     const chain = getModelPolicyChain({ previewEnabled: true });
     expect(chain[0]?.model).toBe(PREVIEW_GEMINI_MODEL);
-    expect(chain).toHaveLength(2);
+    expect(chain).toHaveLength(3);
   });
 
   it('returns Gemini 3.1 chain when useGemini31 is true', () => {
@@ -30,9 +29,10 @@ describe('policyCatalog', () => {
       useGemini31: true,
     });
     expect(chain[0]?.model).toBe(PREVIEW_GEMINI_3_1_MODEL);
-    expect(chain).toHaveLength(3);
+    expect(chain).toHaveLength(4);
     expect(chain[1]?.model).toBe(PREVIEW_GEMINI_MODEL);
     expect(chain[2]?.model).toBe('gemini-3-flash-preview');
+    expect(chain[3]?.model).toBe('gemini-3.1-flash-lite-preview');
   });
 
   it('returns Gemini 3.1 Custom Tools chain when useGemini31 and useCustomToolModel are true', () => {
@@ -42,16 +42,17 @@ describe('policyCatalog', () => {
       useCustomToolModel: true,
     });
     expect(chain[0]?.model).toBe(PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL);
-    expect(chain).toHaveLength(4);
+    expect(chain).toHaveLength(5);
     expect(chain[1]?.model).toBe(PREVIEW_GEMINI_3_1_MODEL);
     expect(chain[2]?.model).toBe(PREVIEW_GEMINI_MODEL);
     expect(chain[3]?.model).toBe('gemini-3-flash-preview');
+    expect(chain[4]?.model).toBe('gemini-3.1-flash-lite-preview');
   });
 
   it('returns default chain when preview disabled', () => {
     const chain = getModelPolicyChain({ previewEnabled: false });
-    expect(chain[0]?.model).toBe(DEFAULT_GEMINI_MODEL);
-    expect(chain).toHaveLength(2);
+    expect(chain[0]?.model).toBe(PREVIEW_GEMINI_MODEL);
+    expect(chain).toHaveLength(3);
   });
 
   it('marks preview transients as sticky retries', () => {
@@ -64,14 +65,14 @@ describe('policyCatalog', () => {
     const [previewPolicy] = getModelPolicyChain({ previewEnabled: true });
     expect(previewPolicy.stateTransitions.not_found).toBe('terminal');
     expect(previewPolicy.stateTransitions.unknown).toBe('terminal');
-    expect(previewPolicy.actions.unknown).toBe('prompt');
+    expect(previewPolicy.actions.unknown).toBe('silent');
   });
 
   it('clones policy maps so edits do not leak between calls', () => {
     const firstCall = getModelPolicyChain({ previewEnabled: false });
-    firstCall[0].actions.terminal = 'silent';
+    firstCall[0].actions.terminal = 'prompt';
     const secondCall = getModelPolicyChain({ previewEnabled: false });
-    expect(secondCall[0].actions.terminal).toBe('prompt');
+    expect(secondCall[0].actions.terminal).toBe('silent');
   });
 
   it('passes when there is exactly one last-resort policy', () => {
@@ -111,8 +112,8 @@ describe('policyCatalog', () => {
 
   it('createDefaultPolicy seeds default actions and states', () => {
     const policy = createDefaultPolicy('custom');
-    expect(policy.actions.terminal).toBe('prompt');
-    expect(policy.actions.unknown).toBe('prompt');
+    expect(policy.actions.terminal).toBe('silent');
+    expect(policy.actions.unknown).toBe('silent');
     expect(policy.stateTransitions.terminal).toBe('terminal');
     expect(policy.stateTransitions.unknown).toBe('terminal');
   });

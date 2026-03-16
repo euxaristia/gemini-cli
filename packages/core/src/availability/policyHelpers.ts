@@ -15,7 +15,7 @@ import type {
 } from './modelPolicy.js';
 import {
   DEFAULT_GEMINI_FLASH_LITE_MODEL,
-  PREVIEW_GEMINI_FLASH_MODEL,
+  PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
   PREVIEW_GEMINI_MODEL_AUTO,
   isAutoModel,
   isGemini3Model,
@@ -63,7 +63,10 @@ export function resolvePolicyChain(
   const shouldWrap = wrapsAround ?? (isAutoPreferred || isAutoConfigured);
 
   let chain;
-  if (resolvedModel === DEFAULT_GEMINI_FLASH_LITE_MODEL) {
+  if (
+    resolvedModel === DEFAULT_GEMINI_FLASH_LITE_MODEL ||
+    resolvedModel === PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1
+  ) {
     chain = getFlashLitePolicyChain();
   } else if (
     isGemini3Model(resolvedModel, config) ||
@@ -183,7 +186,8 @@ export function selectModelForAvailability(
   if (selection.selectedModel) return selection;
 
   const backupModel =
-    chain.find((p) => p.isLastResort)?.model ?? PREVIEW_GEMINI_FLASH_MODEL;
+    chain.find((p) => p.isLastResort)?.model ??
+    PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1;
 
   return { selectedModel: backupModel, skipped: [] };
 }
