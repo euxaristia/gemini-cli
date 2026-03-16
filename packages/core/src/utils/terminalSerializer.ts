@@ -215,6 +215,21 @@ export function serializeTerminalToObject(
       currentLine.push(token);
     }
 
+    // Right-trim trailing whitespace tokens to prevent colored trailing
+    // spaces from corrupting Ink's layout when TUI apps paint backgrounds.
+    while (currentLine.length > 0) {
+      const lastToken = currentLine[currentLine.length - 1];
+      const trimmed = lastToken.text.trimEnd();
+      if (trimmed.length === 0) {
+        currentLine.pop();
+      } else {
+        if (trimmed.length < lastToken.text.length) {
+          lastToken.text = trimmed;
+        }
+        break;
+      }
+    }
+
     result.push(currentLine);
   }
 

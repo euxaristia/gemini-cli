@@ -428,8 +428,8 @@ export const BackgroundShellDisplay = ({
                 ? line.map((token: AnsiToken, tokenIndex: number) => (
                     <Text
                       key={tokenIndex}
-                      color={token.fg}
-                      backgroundColor={token.bg}
+                      color={token.fg || undefined}
+                      backgroundColor={token.bg || undefined}
                       inverse={token.inverse}
                       dimColor={token.dim}
                       bold={token.bold}

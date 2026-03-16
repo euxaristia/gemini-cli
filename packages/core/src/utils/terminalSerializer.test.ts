@@ -58,7 +58,7 @@ describe('terminalSerializer', () => {
       });
       await writeToTerminal(terminal, 'Line 1\r\nLine 2');
       const result = serializeTerminalToObject(terminal);
-      expect(result[0][0].text).toBe('Line 1 ');
+      expect(result[0][0].text).toBe('Line 1');
       expect(result[1][0].text).toBe('Line 2');
     });
 
