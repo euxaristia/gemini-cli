@@ -151,7 +151,9 @@ export const FooterRow: React.FC<{
             </Text>
           </Box>
         )}
-        <Box height={1}>{item.element}</Box>
+        <Box height={1} overflow="hidden">
+          {item.element}
+        </Box>
       </Box>,
     );
   });
@@ -312,7 +314,11 @@ export const Footer: React.FC = () => {
         addCol(
           id,
           header,
-          () => <Text color={itemColor}>{str}</Text>,
+          () => (
+            <Text color={itemColor} wrap="truncate">
+              {str}
+            </Text>
+          ),
           str.length,
         );
         break;
@@ -470,7 +476,7 @@ export const Footer: React.FC = () => {
       header: col.header,
       element: col.element(estimatedWidth),
       flexGrow: 0,
-      flexShrink: isWorkspace ? 1 : 0,
+      flexShrink: 1,
       alignItems:
         isLast && !droppedAny && index > 0 ? 'flex-end' : 'flex-start',
     };
