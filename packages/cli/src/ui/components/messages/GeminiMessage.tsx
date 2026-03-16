@@ -35,7 +35,12 @@ const GeminiMessageInner = ({
           {prefix}
         </Text>
       </Box>
-      <Box flexGrow={1} flexDirection="column">
+      <Box
+        flexGrow={1}
+        flexDirection="column"
+        width={Math.max(terminalWidth - prefixWidth, 0)}
+        overflow="hidden"
+      >
         <MarkdownDisplay
           text={text}
           isPending={isPending}
