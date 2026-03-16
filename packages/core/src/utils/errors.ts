@@ -39,35 +39,23 @@ export function isAbortError(error: unknown): error is Error {
 export function isTimeoutError(
   error: unknown,
 ): error is Error | Record<string, unknown> {
-  if (error instanceof Error) {
-    if (error.name === 'TimeoutError') {
-      return true;
-    }
-    if ('code' in error && typeof error.code === 'string') {
-      return (
-        error.code === 'UND_ERR_HEADERS_TIMEOUT' ||
-        error.code === 'UND_ERR_BODY_TIMEOUT'
-      );
-    }
+  if (typeof error !== 'object' || error === null) {
     return false;
   }
-  if (typeof error === 'object' && error !== null) {
-    const name =
-      'name' in error && typeof (error as { name: unknown }).name === 'string'
-        ? // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-          (error as { name: string }).name
-        : undefined;
-    const code =
-      'code' in error && typeof (error as { code: unknown }).code === 'string'
-        ? // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-          (error as { code: string }).code
-        : undefined;
+
+  const err = error as { name?: unknown; code?: unknown };
+
+  if (typeof err.name === 'string' && err.name === 'TimeoutError') {
+    return true;
+  }
+
+  if (typeof err.code === 'string') {
     return (
-      name === 'TimeoutError' ||
-      code === 'UND_ERR_HEADERS_TIMEOUT' ||
-      code === 'UND_ERR_BODY_TIMEOUT'
+      err.code === 'UND_ERR_HEADERS_TIMEOUT' ||
+      err.code === 'UND_ERR_BODY_TIMEOUT'
     );
   }
+
   return false;
 }
 
