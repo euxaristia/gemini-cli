@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { Box, Text } from 'ink';
+import stripAnsi from 'strip-ansi';
 import { DiffRenderer } from './DiffRenderer.js';
 import { MarkdownDisplay } from '../../utils/MarkdownDisplay.js';
 import { AnsiOutputText, AnsiLineText } from '../AnsiOutput.js';
@@ -104,18 +105,22 @@ export const ToolResultDisplay: React.FC<ToolResultDisplayProps> = ({
     } else if (isSubagentProgress(contentData)) {
       content = <SubagentProgressDisplay progress={contentData} />;
     } else if (typeof contentData === 'string' && renderOutputAsMarkdown) {
+      // Strip raw ANSI codes that may be present in child_process output;
+      // they cannot be rendered through the markdown path.
+      const cleanText = stripAnsi(contentData);
       content = (
         <MarkdownDisplay
-          text={contentData}
+          text={cleanText}
           terminalWidth={childWidth}
           renderMarkdown={renderMarkdown}
           isPending={false}
         />
       );
     } else if (typeof contentData === 'string' && !renderOutputAsMarkdown) {
+      const cleanText = stripAnsi(contentData);
       content = (
         <Text wrap="wrap" color={theme.text.primary}>
-          {contentData}
+          {cleanText}
         </Text>
       );
     } else if (typeof contentData === 'object' && 'fileDiff' in contentData) {

@@ -215,6 +215,10 @@ const regex = ansiRegex();
  * @returns A new value with all nested string fields escaped, or the
  * original `obj` reference if no changes were necessary.
  */
+// Keys whose values are rendered through their own ANSI-aware pipeline
+// (AnsiOutput or MarkdownDisplay) and must not be escaped to literal text.
+const ESCAPE_SKIP_KEYS = new Set(['resultDisplay']);
+
 export function escapeAnsiCtrlCodes<T>(obj: T): T {
   if (typeof obj === 'string') {
     if (obj.search(regex) === -1) {
@@ -255,6 +259,10 @@ export function escapeAnsiCtrlCodes<T>(obj: T): T {
   const keys = Object.keys(obj);
 
   for (const key of keys) {
+    // Skip keys whose values are rendered through ANSI-aware pipelines
+    if (ESCAPE_SKIP_KEYS.has(key)) {
+      continue;
+    }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const value = (obj as Record<string, unknown>)[key];
     const escapedValue = escapeAnsiCtrlCodes(value);
