@@ -64,8 +64,8 @@ export class RefreshMemoryCommand implements Command {
     context: CommandContext,
     _: string[],
   ): Promise<CommandExecutionResponse> {
-    await refreshMemory(context.config);
-    return { name: this.name, data: 'Memory refreshed.' };
+    const result = await refreshMemory(context.config);
+    return { name: this.name, data: result.content };
   }
 }
 
@@ -104,7 +104,7 @@ export class AddMemoryCommand implements Command {
       const signal = abortController.signal;
       await tool.buildAndExecute(result.toolArgs, signal, undefined, {
         sanitizationConfig: DEFAULT_SANITIZATION_CONFIG,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+         
         sandboxManager: loopContext.sandboxManager,
       });
       await refreshMemory(context.config);
