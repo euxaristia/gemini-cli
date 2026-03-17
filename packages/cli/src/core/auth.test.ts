@@ -11,11 +11,11 @@ import {
   ValidationRequiredError,
   ProjectIdRequiredError,
   AuthType,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
   };

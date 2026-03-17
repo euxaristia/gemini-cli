@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { debugLogger, isGitRepository } from '@google/gemini-cli-core';
+import { debugLogger, isGitRepository } from '@euxaristia/gemini-cli-core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as childProcess from 'node:child_process';
@@ -128,7 +128,7 @@ export function getInstallationInfo(
       realPath.includes('/.pnpm/global') ||
       realPath.includes('/.local/share/pnpm')
     ) {
-      let updateCommand = 'pnpm add -g @google/gemini-cli@latest';
+      let updateCommand = 'pnpm add -g @euxaristia/gemini-cli@latest';
       const needsSudo =
         process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
       if (needsSudo) {
@@ -149,7 +149,7 @@ export function getInstallationInfo(
 
     // Check for yarn
     if (realPath.includes('/.yarn/global')) {
-      let updateCommand = 'yarn global add @google/gemini-cli@latest';
+      let updateCommand = 'yarn global add @euxaristia/gemini-cli@latest';
       const needsSudo =
         process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
       if (needsSudo) {
@@ -177,7 +177,7 @@ export function getInstallationInfo(
       };
     }
     if (realPath.includes('/.bun/install/global')) {
-      let updateCommand = 'bun add -g @google/gemini-cli@latest';
+      let updateCommand = 'bun add -g @euxaristia/gemini-cli@latest';
       const needsSudo =
         process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
       if (needsSudo) {
@@ -218,7 +218,7 @@ export function getInstallationInfo(
     }
 
     // Assume global npm
-    let updateCommand = 'npm install -g @google/gemini-cli@latest';
+    let updateCommand = 'npm install -g @euxaristia/gemini-cli@latest';
     const needsSudo =
       process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
     if (needsSudo) {
@@ -240,4 +240,3 @@ export function getInstallationInfo(
     return { packageManager: PackageManager.UNKNOWN, isGlobal: false };
   }
 }
-

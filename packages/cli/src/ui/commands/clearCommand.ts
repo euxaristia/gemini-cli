@@ -9,7 +9,7 @@ import {
   SessionEndReason,
   SessionStartSource,
   flushTelemetry,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { CommandKind, type SlashCommand } from './types.js';
 import { MessageType } from '../types.js';
 import { randomUUID } from 'node:crypto';

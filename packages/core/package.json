@@ -1,6 +1,6 @@
 {
-  "name": "@google/gemini-cli-core",
-  "version": "0.0.0-20260317.fe44fef10.euxaristia",
+  "name": "@euxaristia/gemini-cli-core",
+  "version": "0.0.0-20260317.96913af7d.euxaristia",
   "description": "Gemini CLI Core",
   "license": "Apache-2.0",
   "repository": {
@@ -99,7 +99,7 @@
     "node-pty": "^1.0.0"
   },
   "devDependencies": {
-    "@google/gemini-cli-test-utils": "file:../test-utils",
+    "@euxaristia/gemini-cli-test-utils": "file:../test-utils",
     "@types/fast-levenshtein": "^0.0.4",
     "@types/js-yaml": "^4.0.9",
     "@types/picomatch": "^4.0.1",

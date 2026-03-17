@@ -18,7 +18,7 @@ import {
   loadTrustedFolders,
   isWorkspaceTrusted,
 } from './trustedFolders.js';
-import { getRealPath, type CustomTheme } from '@google/gemini-cli-core';
+import { getRealPath, type CustomTheme } from '@euxaristia/gemini-cli-core';
 
 const mockHomedir = vi.hoisted(() => vi.fn(() => '/tmp/mock-home'));
 
@@ -30,9 +30,9 @@ vi.mock('os', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     homedir: mockHomedir,

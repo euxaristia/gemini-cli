@@ -15,7 +15,7 @@ import {
   debugLogger,
   getErrorMessage,
   type GeminiCLIExtension,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import * as fs from 'node:fs';
 import { copyExtension, type ExtensionManager } from '../extension-manager.js';
 import { ExtensionStorage } from './storage.js';

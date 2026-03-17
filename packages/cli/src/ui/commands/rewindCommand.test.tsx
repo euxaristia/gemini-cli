@@ -14,7 +14,7 @@ import {
   type CommandContext,
 } from './types.js';
 import type { ReactElement } from 'react';
-import { coreEvents } from '@google/gemini-cli-core';
+import { coreEvents } from '@euxaristia/gemini-cli-core';
 
 // Mock dependencies
 const mockRewindTo = vi.fn();
@@ -32,9 +32,9 @@ const mockSetInput = vi.fn();
 const mockRevertFileChanges = vi.fn();
 const mockGetProjectRoot = vi.fn().mockReturnValue('/mock/root');
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     coreEvents: {

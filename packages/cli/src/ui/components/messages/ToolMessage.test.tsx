@@ -13,7 +13,7 @@ import {
   type AnsiOutput,
   CoreToolCallStatus,
   Kind,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { renderWithProviders } from '../../../test-utils/render.js';
 import { tryParseJSON } from '../../../utils/jsonoutput.js';
 

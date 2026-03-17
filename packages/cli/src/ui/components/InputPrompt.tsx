@@ -44,7 +44,7 @@ import {
   coreEvents,
   debugLogger,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import {
   parseInputForHighlighting,
   parseSegmentsFromTokens,
@@ -611,7 +611,7 @@ export const InputPrompt: React.FC<InputPromptProps> = ({
     (event: MouseEvent) => {
       if (event.name === 'right-release') {
         setSuppressCompletion(false);
-         
+
         handleClipboardPaste().catch((error) => {
           debugLogger.error('Failed to handle clipboard paste:', error);
         });
@@ -1221,7 +1221,6 @@ export const InputPrompt: React.FC<InputPromptProps> = ({
 
       // Ctrl+V for clipboard paste
       if (keyMatchers[Command.PASTE_CLIPBOARD](key)) {
-         
         handleClipboardPaste().catch((error) => {
           debugLogger.error('Failed to handle clipboard paste:', error);
         });

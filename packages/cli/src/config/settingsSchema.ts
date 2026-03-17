@@ -19,7 +19,7 @@ import {
   type AgentOverride,
   type CustomTheme,
   type SandboxConfig,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import type { SessionRetentionSettings } from './settings.js';
 import { DEFAULT_MIN_RETENTION } from '../utils/sessionCleanup.js';
 

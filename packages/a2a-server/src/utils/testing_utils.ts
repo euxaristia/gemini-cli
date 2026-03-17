@@ -22,9 +22,9 @@ import {
   type Config,
   type Storage,
   type ToolRegistry,
-} from '@google/gemini-cli-core';
-import { NoopSandboxManager } from '@google/gemini-cli-core/src/services/sandboxManager.js';
-import { createMockMessageBus } from '@google/gemini-cli-core/src/test-utils/mock-message-bus.js';
+} from '@euxaristia/gemini-cli-core';
+import { NoopSandboxManager } from '@euxaristia/gemini-cli-core/src/services/sandboxManager.js';
+import { createMockMessageBus } from '@euxaristia/gemini-cli-core/src/test-utils/mock-message-bus.js';
 import { expect, vi } from 'vitest';
 
 export function createMockConfig(

@@ -7,7 +7,7 @@
 import { renderWithProviders } from '../../../test-utils/render.js';
 import { ToolResultDisplay } from './ToolResultDisplay.js';
 import { describe, it, expect } from 'vitest';
-import { type AnsiOutput } from '@google/gemini-cli-core';
+import { type AnsiOutput } from '@euxaristia/gemini-cli-core';
 
 describe('ToolResultDisplay Overflow', () => {
   it('shows the head of the content when overflowDirection is bottom (string)', async () => {

@@ -6,11 +6,11 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { main } from './gemini.js';
-import { debugLogger, type Config } from '@google/gemini-cli-core';
+import { debugLogger, type Config } from '@euxaristia/gemini-cli-core';
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     writeToStdout: vi.fn(),

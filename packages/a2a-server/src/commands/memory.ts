@@ -9,13 +9,13 @@ import {
   listMemoryFiles,
   refreshMemory,
   showMemory,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import type {
   Command,
   CommandContext,
   CommandExecutionResponse,
 } from './types.js';
-import type { AgentLoopContext } from '@google/gemini-cli-core';
+import type { AgentLoopContext } from '@euxaristia/gemini-cli-core';
 
 const DEFAULT_SANITIZATION_CONFIG = {
   allowedEnvironmentVariables: [],
@@ -104,7 +104,7 @@ export class AddMemoryCommand implements Command {
       const signal = abortController.signal;
       await tool.buildAndExecute(result.toolArgs, signal, undefined, {
         sanitizationConfig: DEFAULT_SANITIZATION_CONFIG,
-         
+
         sandboxManager: loopContext.sandboxManager,
       });
       await refreshMemory(context.config);

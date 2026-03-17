@@ -7,7 +7,7 @@
 import { renderWithProviders } from '../../../test-utils/render.js';
 import { ToolResultDisplay } from './ToolResultDisplay.js';
 import { describe, it, expect, vi } from 'vitest';
-import type { AnsiOutput } from '@google/gemini-cli-core';
+import type { AnsiOutput } from '@euxaristia/gemini-cli-core';
 
 describe('ToolResultDisplay', () => {
   beforeEach(() => {

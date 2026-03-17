@@ -11,7 +11,7 @@ import { updateEventEmitter } from './updateEventEmitter.js';
 import { MessageType, type HistoryItem } from '../ui/types.js';
 import { spawnWrapper } from './spawnWrapper.js';
 import type { spawn } from 'node:child_process';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@euxaristia/gemini-cli-core';
 
 let _updateInProgress = false;
 
@@ -248,4 +248,3 @@ export function setUpdateHandler(
     updateEventEmitter.off('update-info', handleUpdateInfo);
   };
 }
-

@@ -29,9 +29,9 @@ vi.mock('../../utils/installationInfo.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...original,
     shortenPath: (p: string, len: number) => {

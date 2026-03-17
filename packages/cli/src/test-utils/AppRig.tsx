@@ -30,7 +30,7 @@ import {
   IdeClient,
   debugLogger,
   CoreToolCallStatus,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import {
   type MockShellCommand,
   MockShellExecutionService,
@@ -83,9 +83,9 @@ vi.mock('../ui/contexts/StreamingContext.js', async (importOriginal) => {
 });
 
 // Mock core functions globally for tests using AppRig.
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   const { MockShellExecutionService: MockService } = await import(
     './MockShellExecutionService.js'
   );
@@ -293,7 +293,7 @@ export class AppRig {
       gcConfig.contentGeneratorConfig = newContentGeneratorConfig;
 
       // Initialize BaseLlmClient now that the ContentGenerator is available
-      const { BaseLlmClient } = await import('@google/gemini-cli-core');
+      const { BaseLlmClient } = await import('@euxaristia/gemini-cli-core');
       gcConfig.baseLlmClient = new BaseLlmClient(
         gcConfig.contentGenerator,
         this.config!,

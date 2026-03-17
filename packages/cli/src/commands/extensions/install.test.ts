@@ -16,7 +16,7 @@ import {
 } from 'vitest';
 import { handleInstall, installCommand } from './install.js';
 import yargs from 'yargs';
-import * as core from '@google/gemini-cli-core';
+import * as core from '@euxaristia/gemini-cli-core';
 import {
   ExtensionManager,
   type inferInstallMetadata,
@@ -69,9 +69,9 @@ vi.mock('../../config/trustedFolders.js', () => ({
   },
 }));
 
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     FolderTrustDiscoveryService: {

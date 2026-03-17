@@ -50,13 +50,13 @@ install the CLI globally via `bun add -g`.
 ### Install upstream from npm
 
 ```bash
-npm install -g @google/gemini-cli
+npm install -g @euxaristia/gemini-cli
 ```
 
 ### Run instantly without installing
 
 ```bash
-npx @google/gemini-cli
+npx @euxaristia/gemini-cli
 ```
 
 ## Building from source
@@ -338,8 +338,8 @@ for planned features and priorities.
 
 - **[Official Roadmap](./ROADMAP.md)** - See what's coming next.
 - **[Changelog](./docs/changelogs/index.md)** - See recent notable updates.
-- **[NPM Package](https://www.npmjs.com/package/@google/gemini-cli)** - Package
-  registry.
+- **[NPM Package](https://www.npmjs.com/package/@euxaristia/gemini-cli)** -
+  Package registry.
 - **[GitHub Issues](https://github.com/google-gemini/gemini-cli/issues)** -
   Report bugs or request features.
 - **[Security Advisories](https://github.com/google-gemini/gemini-cli/security/advisories)** -

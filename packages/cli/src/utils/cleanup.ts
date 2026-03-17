@@ -11,8 +11,8 @@ import {
   shutdownTelemetry,
   isTelemetrySdkInitialized,
   ExitCodes,
-} from '@google/gemini-cli-core';
-import type { Config } from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
+import type { Config } from '@euxaristia/gemini-cli-core';
 
 const cleanupFunctions: Array<(() => void) | (() => Promise<void>)> = [];
 const syncCleanupFunctions: Array<() => void> = [];

@@ -9,12 +9,12 @@ import { render } from '../test-utils/render.js';
 import { act } from 'react';
 import { IdeIntegrationNudge } from './IdeIntegrationNudge.js';
 import { KeypressProvider } from './contexts/KeypressContext.js';
-import { debugLogger } from '@google/gemini-cli-core';
+import { debugLogger } from '@euxaristia/gemini-cli-core';
 
 // Mock debugLogger
-vi.mock('@google/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@google/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     debugLogger: {

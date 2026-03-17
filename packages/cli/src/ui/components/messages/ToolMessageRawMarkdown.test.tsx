@@ -9,7 +9,7 @@ import { ToolMessage, type ToolMessageProps } from './ToolMessage.js';
 import { StreamingState } from '../../types.js';
 import { StreamingContext } from '../../contexts/StreamingContext.js';
 import { renderWithProviders } from '../../../test-utils/render.js';
-import { CoreToolCallStatus } from '@google/gemini-cli-core';
+import { CoreToolCallStatus } from '@euxaristia/gemini-cli-core';
 
 describe('<ToolMessage /> - Raw Markdown Display Snapshots', () => {
   const baseProps: ToolMessageProps = {

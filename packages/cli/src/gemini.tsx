@@ -34,7 +34,7 @@ import {
   isTimeoutError,
   getErrorMessage,
   debugLogger,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 import { loadCliConfig, parseArguments } from './config/config.js';
 import * as cliConfig from './config/config.js';

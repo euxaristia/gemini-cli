@@ -4,7 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { MCPServerStatus, type MCPServerConfig } from '@google/gemini-cli-core';
+import {
+  MCPServerStatus,
+  type MCPServerConfig,
+} from '@euxaristia/gemini-cli-core';
 import { Box, Text } from 'ink';
 import type React from 'react';
 import { MAX_MCP_RESOURCES_TO_SHOW } from '../../constants.js';

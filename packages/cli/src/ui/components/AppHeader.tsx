@@ -17,7 +17,7 @@ import { theme } from '../semantic-colors.js';
 import { ThemedGradient } from './ThemedGradient.js';
 import { CliSpinner } from './CliSpinner.js';
 
-import { isAppleTerminal } from '@google/gemini-cli-core';
+import { isAppleTerminal } from '@euxaristia/gemini-cli-core';
 
 interface AppHeaderProps {
   version: string;

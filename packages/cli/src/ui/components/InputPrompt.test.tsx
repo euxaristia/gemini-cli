@@ -22,7 +22,7 @@ import {
   ApprovalMode,
   debugLogger,
   type Config,
-} from '@google/gemini-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import * as path from 'node:path';
 import {
   CommandKind,
