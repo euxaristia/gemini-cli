@@ -31,7 +31,7 @@ export default defineConfig({
     setupFiles: ['./test-setup.ts'],
     testTimeout: 60000,
     hookTimeout: 60000,
-    pool: 'forks',
+    pool: 'threads',
     coverage: {
       enabled: true,
       provider: 'v8',
