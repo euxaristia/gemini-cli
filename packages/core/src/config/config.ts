@@ -6,6 +6,7 @@
 
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { inspect } from 'node:util';
 import process from 'node:process';
 import * as z from 'zod';
@@ -2989,7 +2990,11 @@ export class Config implements McpContext, AgentLoopContext {
       }
 
       if (isEnabled) {
-        const resolved = new URL(importPath, import.meta.url).href;
+        // use import.meta.url to resolve dynamic import paths so bun
+        // can find tool modules (fixes activate-skill.js ResolveMessage error)
+        // using fileURLToPath instead of .href to avoid ResolveMessage: Cannot find module './tools.js'
+        // which can happen in Bun when importing from a file:// URL string.
+        const resolved = fileURLToPath(new URL(importPath, import.meta.url));
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const module = await import(resolved);
         registerFn(module);
