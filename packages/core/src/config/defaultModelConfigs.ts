@@ -59,6 +59,18 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     // ensure these model configs can be used interactively.
     // TODO(joshualitt): Introduce internal base configs for the various models,
     // note: we will have to think carefully about names.
+    'gemini-3.1-pro-preview': {
+      extends: 'chat-base-3',
+      modelConfig: {
+        model: 'gemini-3.1-pro-preview',
+      },
+    },
+    'gemini-3.1-flash-lite-preview': {
+      extends: 'chat-base-3',
+      modelConfig: {
+        model: 'gemini-3.1-flash-lite-preview',
+      },
+    },
     'gemini-3-pro-preview': {
       extends: 'chat-base-3',
       modelConfig: {
@@ -90,22 +102,16 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       },
     },
     // Bases for the internal model configs.
-    'gemini-2.5-flash-base': {
+    'gemini-3.1-flash-lite-base': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash',
-      },
-    },
-    'gemini-3-flash-base': {
-      extends: 'base',
-      modelConfig: {
-        model: 'gemini-3-flash-preview',
+        model: 'gemini-3.1-flash-lite-preview',
       },
     },
     classifier: {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         generateContentConfig: {
           maxOutputTokens: 1024,
           thinkingConfig: {
@@ -117,7 +123,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'prompt-completion': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         generateContentConfig: {
           temperature: 0.3,
           maxOutputTokens: 16000,
@@ -130,7 +136,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'fast-ack-helper': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         generateContentConfig: {
           temperature: 0.2,
           maxOutputTokens: 120,
@@ -143,7 +149,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'edit-corrector': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         generateContentConfig: {
           thinkingConfig: {
             thinkingBudget: 0,
@@ -154,7 +160,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'summarizer-default': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         generateContentConfig: {
           maxOutputTokens: 2000,
         },
@@ -163,14 +169,14 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     'summarizer-shell': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
         generateContentConfig: {
           maxOutputTokens: 2000,
         },
       },
     },
     'web-search': {
-      extends: 'gemini-3-flash-base',
+      extends: 'gemini-3.1-flash-lite-base',
       modelConfig: {
         generateContentConfig: {
           tools: [{ googleSearch: {} }],
@@ -178,7 +184,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       },
     },
     'web-fetch': {
-      extends: 'gemini-3-flash-base',
+      extends: 'gemini-3.1-flash-lite-base',
       modelConfig: {
         generateContentConfig: {
           tools: [{ urlContext: {} }],
@@ -187,55 +193,40 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     },
     // TODO(joshualitt): During cleanup, make modelConfig optional.
     'web-fetch-fallback': {
-      extends: 'gemini-3-flash-base',
+      extends: 'gemini-3.1-flash-lite-base',
       modelConfig: {},
     },
     'loop-detection': {
-      extends: 'gemini-3-flash-base',
+      extends: 'gemini-3.1-flash-lite-base',
       modelConfig: {},
     },
     'loop-detection-double-check': {
       extends: 'base',
       modelConfig: {
-        model: 'gemini-3-pro-preview',
+        model: 'gemini-3.1-pro-preview',
       },
     },
     'llm-edit-fixer': {
-      extends: 'gemini-3-flash-base',
+      extends: 'gemini-3.1-flash-lite-base',
       modelConfig: {},
     },
     'next-speaker-checker': {
-      extends: 'gemini-3-flash-base',
+      extends: 'gemini-3.1-flash-lite-base',
       modelConfig: {},
     },
-    'chat-compression-3-pro': {
+    'chat-compression-3.1-pro': {
       modelConfig: {
-        model: 'gemini-3-pro-preview',
+        model: 'gemini-3.1-pro-preview',
       },
     },
-    'chat-compression-3-flash': {
+    'chat-compression-3.1-flash-lite': {
       modelConfig: {
-        model: 'gemini-3-flash-preview',
-      },
-    },
-    'chat-compression-2.5-pro': {
-      modelConfig: {
-        model: 'gemini-2.5-pro',
-      },
-    },
-    'chat-compression-2.5-flash': {
-      modelConfig: {
-        model: 'gemini-2.5-flash',
-      },
-    },
-    'chat-compression-2.5-flash-lite': {
-      modelConfig: {
-        model: 'gemini-2.5-flash-lite',
+        model: 'gemini-3.1-flash-lite-preview',
       },
     },
     'chat-compression-default': {
       modelConfig: {
-        model: 'gemini-3-pro-preview',
+        model: 'gemini-3.1-pro-preview',
       },
     },
   },
@@ -263,6 +254,13 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       family: 'gemini-3',
       isPreview: true,
       features: { thinking: true, multimodalToolUse: true },
+    },
+    'gemini-3.1-flash-lite-preview': {
+      tier: 'flash-lite',
+      family: 'gemini-3',
+      isPreview: true,
+      dialogLocation: 'manual',
+      features: { thinking: false, multimodalToolUse: true },
     },
     'gemini-3-pro-preview': {
       tier: 'pro',
@@ -303,22 +301,22 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
     auto: {
       tier: 'auto',
       isPreview: true,
-      features: { thinking: true, multimodalToolUse: false },
+      features: { thinking: true, multimodalToolUse: true },
     },
     pro: {
       tier: 'pro',
       isPreview: false,
-      features: { thinking: true, multimodalToolUse: false },
+      features: { thinking: true, multimodalToolUse: true },
     },
     flash: {
       tier: 'flash',
       isPreview: false,
-      features: { thinking: false, multimodalToolUse: false },
+      features: { thinking: false, multimodalToolUse: true },
     },
     'flash-lite': {
       tier: 'flash-lite',
       isPreview: false,
-      features: { thinking: false, multimodalToolUse: false },
+      features: { thinking: false, multimodalToolUse: true },
     },
     'auto-gemini-3': {
       displayName: 'Auto (Gemini 3)',
@@ -327,7 +325,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       dialogLocation: 'main',
       dialogDescription:
         'Let Gemini CLI decide the best model for the task: gemini-3.1-pro, gemini-3-flash',
-      features: { thinking: true, multimodalToolUse: false },
+      features: { thinking: true, multimodalToolUse: true },
     },
     'auto-gemini-2.5': {
       displayName: 'Auto (Gemini 2.5)',
@@ -336,7 +334,7 @@ export const DEFAULT_MODEL_CONFIGS: ModelConfigServiceConfig = {
       dialogLocation: 'main',
       dialogDescription:
         'Let Gemini CLI decide the best model for the task: gemini-2.5-pro, gemini-2.5-flash',
-      features: { thinking: false, multimodalToolUse: false },
+      features: { thinking: false, multimodalToolUse: true },
     },
   },
 };

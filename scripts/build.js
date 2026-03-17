@@ -37,7 +37,7 @@ if (!existsSync(join(root, 'node_modules'))) {
 execSync(`${pm} run generate`, { stdio: 'inherit', cwd: root });
 // bun uses --filter '*' for workspaces; npm uses --workspaces
 const buildWorkspaces = isBun
-  ? `${pm} run --filter '*' build`
+  ? `${pm} --filter '*' run build`
   : `${pm} run build --workspaces`;
 execSync(buildWorkspaces, { stdio: 'inherit', cwd: root });
 

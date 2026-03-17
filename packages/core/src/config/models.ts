@@ -44,25 +44,17 @@ export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-pro';
 export const DEFAULT_GEMINI_FLASH_MODEL = 'gemini-2.5-flash';
 export const DEFAULT_GEMINI_FLASH_LITE_MODEL = 'gemini-2.5-flash-lite';
 
-// Progressive fallback tier list — Gemini 3 only, smartest to cheapest.
+// Progressive fallback tier list — Gemini 3.1 and above only, smartest to cheapest.
 const MODEL_TIER_LIST = [
   PREVIEW_GEMINI_3_1_MODEL,
   PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL,
-  PREVIEW_GEMINI_MODEL,
-  PREVIEW_GEMINI_FLASH_MODEL,
   PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
 ];
 
 export const VALID_GEMINI_MODELS = new Set([
-  PREVIEW_GEMINI_MODEL,
   PREVIEW_GEMINI_3_1_MODEL,
   PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL,
-  PREVIEW_GEMINI_FLASH_MODEL,
   PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
-  // Keep Gemini 2 models valid for internal tool configs
-  DEFAULT_GEMINI_MODEL,
-  DEFAULT_GEMINI_FLASH_MODEL,
-  DEFAULT_GEMINI_FLASH_LITE_MODEL,
 ]);
 
 // Legacy aliases kept for backward compatibility with other code paths
@@ -110,22 +102,18 @@ export function resolveModel(
       );
 
     case GEMINI_MODEL_ALIAS_PRO:
-      // Pro alias → best available pro model
-      return useGemini3_1
-        ? useCustomToolModel
-          ? PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL
-          : PREVIEW_GEMINI_3_1_MODEL
-        : PREVIEW_GEMINI_MODEL;
+      // Pro alias → best available 3.1 pro model
+      return useCustomToolModel
+        ? PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL
+        : PREVIEW_GEMINI_3_1_MODEL;
 
     case GEMINI_MODEL_ALIAS_FLASH:
-      return PREVIEW_GEMINI_FLASH_MODEL;
-
     case GEMINI_MODEL_ALIAS_FLASH_LITE:
       return PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1;
 
     default:
-      // Concrete model name — if it's a Gemini 2 model, redirect to auto
-      if (isGemini2Model(requestedModel)) {
+      // Concrete model name — if it's an old Gemini model, redirect to auto (3.1+)
+      if (isOldGeminiModel(requestedModel)) {
         return resolveProgressiveAutoModel(
           useGemini3_1,
           useCustomToolModel,
@@ -142,12 +130,12 @@ export function resolveModel(
 export function resolveClassifierModel(
   requestedModel: string,
   modelAlias: string,
-  useGemini3_1: boolean = false,
+  useGemini3_1: boolean = true,
   useCustomToolModel: boolean = false,
   hasAccessToPreview: boolean = true,
 ): string {
   if (modelAlias === GEMINI_MODEL_ALIAS_FLASH) {
-    return PREVIEW_GEMINI_FLASH_MODEL;
+    return PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1;
   }
   return resolveModel(
     requestedModel,
@@ -162,9 +150,9 @@ export function resolveClassifierModel(
  * Falls back to gemini-3-flash-preview as the absolute floor.
  */
 function resolveProgressiveAutoModel(
-  useGemini3_1: boolean,
-  useCustomToolModel: boolean,
-  hasAccessToPreview: boolean,
+  useGemini3_1: boolean = true,
+  useCustomToolModel: boolean = false,
+  hasAccessToPreview: boolean = true,
 ): string {
   for (const model of MODEL_TIER_LIST) {
     if (
@@ -173,8 +161,8 @@ function resolveProgressiveAutoModel(
       return model;
     }
   }
-  // Absolute floor: Gemini 3 Flash
-  return PREVIEW_GEMINI_FLASH_MODEL;
+  // Absolute floor: Gemini 3.1 Flash Lite
+  return PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1;
 }
 
 export function getDisplayString(
@@ -189,14 +177,15 @@ export function getDisplayString(
   }
 
   switch (model) {
-    case GEMINI_MODEL_ALIAS_AUTO:
     case PREVIEW_GEMINI_MODEL_AUTO:
+    case GEMINI_MODEL_ALIAS_AUTO:
+      return 'Auto (Gemini 3)';
     case DEFAULT_GEMINI_MODEL_AUTO:
-      return 'Auto';
+      return 'Auto (Gemini 2.5)';
     case GEMINI_MODEL_ALIAS_PRO:
-      return PREVIEW_GEMINI_MODEL;
+      return PREVIEW_GEMINI_3_1_MODEL;
     case GEMINI_MODEL_ALIAS_FLASH:
-      return PREVIEW_GEMINI_FLASH_MODEL;
+      return PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1;
     case PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL:
       return PREVIEW_GEMINI_3_1_MODEL;
     default:
@@ -227,7 +216,8 @@ export function isPreviewModel(
     model === PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL ||
     model === PREVIEW_GEMINI_FLASH_MODEL ||
     model === PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1 ||
-    model === PREVIEW_GEMINI_MODEL_AUTO
+    model === PREVIEW_GEMINI_MODEL_AUTO ||
+    model === GEMINI_MODEL_ALIAS_AUTO
   );
 }
 
@@ -270,6 +260,25 @@ export function isGemini3Model(
 
   const resolved = resolveModel(model);
   return /^gemini-3(\.|-|$)/.test(resolved);
+}
+
+/**
+ * Checks if the model is an old Gemini model (pre-3.1).
+ */
+export function isOldGeminiModel(model: string): boolean {
+  return isGemini2Model(model) || isGemini3_0Model(model);
+}
+
+/**
+ * Checks if the model is a Gemini 3.0 model.
+ */
+export function isGemini3_0Model(model: string): boolean {
+  return (
+    model === PREVIEW_GEMINI_MODEL ||
+    model === PREVIEW_GEMINI_FLASH_MODEL ||
+    model === 'gemini-3-pro' ||
+    model === 'gemini-3-flash'
+  );
 }
 
 /**
@@ -354,7 +363,7 @@ export function supportsMultimodalFunctionResponse(
  */
 export function isActiveModel(
   model: string,
-  useGemini3_1: boolean = false,
+  _useGemini3_1: boolean = true,
   useCustomToolModel: boolean = false,
   hasAccessToPreview: boolean = true,
 ): boolean {
@@ -373,18 +382,11 @@ export function isActiveModel(
     return false;
   }
 
-  // Gemini 3.1 model gating
-  if (useGemini3_1) {
-    if (useCustomToolModel) {
-      return model !== PREVIEW_GEMINI_3_1_MODEL;
-    } else {
-      return model !== PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL;
-    }
+  // Gemini 3.1 model gating - No longer gating since we only allow 3.1+
+  if (useCustomToolModel) {
+    return model !== PREVIEW_GEMINI_3_1_MODEL;
   } else {
-    return (
-      model !== PREVIEW_GEMINI_3_1_MODEL &&
-      model !== PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL
-    );
+    return model !== PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL;
   }
 }
 
