@@ -12,7 +12,7 @@ import {
   type Config,
   type ConversationRecord,
   type MessageRecord,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import { stripUnsafeCharacters } from '../ui/utils/textUtils.js';

@@ -160,7 +160,7 @@
             "slug": "docs/cli/enterprise"
           },
           {
-            "label": "Ignore files (.geminiignore)",
+            "label": "Ignore files (.polluxignore)",
             "slug": "docs/cli/gemini-ignore"
           },
           {
@@ -168,7 +168,7 @@
             "slug": "docs/cli/generation-settings"
           },
           {
-            "label": "Project context (GEMINI.md)",
+            "label": "Project context (POLLUX.md)",
             "slug": "docs/cli/gemini-md"
           },
           { "label": "Settings", "slug": "docs/cli/settings" },

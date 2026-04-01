@@ -7,19 +7,19 @@
 // Copied exactly from packages/cli/src/config/extension.ts, last PR #1026
 
 import {
-  GEMINI_DIR,
+  POLLUX_DIR,
   type MCPServerConfig,
   type ExtensionInstallMetadata,
   type GeminiCLIExtension,
   homedir,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { logger } from '../utils/logger.js';
 
-export const EXTENSIONS_DIRECTORY_NAME = path.join(GEMINI_DIR, 'extensions');
+export const EXTENSIONS_DIRECTORY_NAME = path.join(POLLUX_DIR, 'extensions');
 export const EXTENSIONS_CONFIG_FILENAME = 'gemini-extension.json';
-export const INSTALL_METADATA_FILENAME = '.gemini-extension-install.json';
+export const INSTALL_METADATA_FILENAME = '.pollux-extension-install.json';
 
 /**
  * Extension definition as written to disk in gemini-extension.json files.
@@ -129,7 +129,7 @@ function loadExtension(extensionDir: string): GeminiCLIExtension | null {
 
 function getContextFileNames(config: ExtensionConfig): string[] {
   if (!config.contextFileName) {
-    return ['GEMINI.md'];
+    return ['POLLUX.md'];
   } else if (!Array.isArray(config.contextFileName)) {
     return [config.contextFileName];
   }

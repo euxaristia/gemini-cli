@@ -11,7 +11,7 @@ import {
   type ExtensionInstallMetadata,
   type ExtensionSetting,
   type CustomTheme,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   EXTENSIONS_CONFIG_FILENAME,
   INSTALL_METADATA_FILENAME,
@@ -43,7 +43,7 @@ export function createExtension({
   );
 
   if (addContextFile) {
-    fs.writeFileSync(path.join(extDir, 'GEMINI.md'), 'context');
+    fs.writeFileSync(path.join(extDir, 'POLLUX.md'), 'context');
   }
 
   if (contextFileName) {

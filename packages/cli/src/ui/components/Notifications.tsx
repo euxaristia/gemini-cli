@@ -16,16 +16,16 @@ import { useKeypress } from '../hooks/useKeypress.js';
 import { KeypressPriority } from '../contexts/KeypressContext.js';
 
 import {
-  GEMINI_DIR,
+  POLLUX_DIR,
   Storage,
   homedir,
   WarningPriority,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 
-const settingsPath = path.join(homedir(), GEMINI_DIR, 'settings.json');
+const settingsPath = path.join(homedir(), POLLUX_DIR, 'settings.json');
 
 const screenReaderNudgeFilePath = path.join(
   Storage.getGlobalTempDir(),

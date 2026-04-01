@@ -20,8 +20,8 @@ import {
   MCPDiscoveryState,
   makeFakeConfig,
   coreEvents,
-  type GeminiClient,
-} from '@euxaristia/gemini-cli-core';
+  type PolluxClient,
+} from '@euxaristia/pollux-cli-core';
 
 const {
   logSlashCommand,
@@ -46,9 +46,9 @@ vi.mock('./useAlternateBuffer.js', () => ({
   useAlternateBuffer: mockUseAlternateBuffer,
 }));
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
 
   return {
     ...original,
@@ -577,8 +577,8 @@ describe('useSlashCommandProcessor', () => {
       const mockClient = {
         setHistory: vi.fn(),
         stripThoughtsFromHistory: vi.fn(),
-      } as unknown as GeminiClient;
-      vi.spyOn(mockConfig, 'getGeminiClient').mockReturnValue(mockClient);
+      } as unknown as PolluxClient;
+      vi.spyOn(mockConfig, 'getPolluxClient').mockReturnValue(mockClient);
 
       const command = createTestCommand({
         name: 'load',

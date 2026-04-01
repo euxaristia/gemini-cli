@@ -9,7 +9,7 @@ import {
   checkExhaustive,
   getErrorMessage,
   type GeminiCLIExtension,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   ExtensionUpdateState,
   extensionUpdatesReducer,

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { listExtensions } from '@euxaristia/gemini-cli-core';
+import { listExtensions } from '@euxaristia/pollux-cli-core';
 import type {
   Command,
   CommandContext,

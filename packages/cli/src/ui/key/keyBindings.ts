@@ -7,7 +7,7 @@
 import * as fs from 'node:fs/promises';
 import * as z from 'zod';
 import { parse as parseIgnoringComments } from 'comment-json';
-import { isNodeError, Storage } from '@euxaristia/gemini-cli-core';
+import { isNodeError, Storage } from '@euxaristia/pollux-cli-core';
 
 /**
  * Command enum for all available keyboard shortcuts

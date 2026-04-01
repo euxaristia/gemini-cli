@@ -13,11 +13,11 @@ import {
   openBrowserSecurely,
   shouldLaunchBrowser,
   UPGRADE_URL_PAGE,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     openBrowserSecurely: vi.fn(),

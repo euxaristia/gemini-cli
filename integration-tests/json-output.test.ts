@@ -7,7 +7,7 @@
 import { expect, describe, it, beforeEach, afterEach } from 'vitest';
 import { TestRig } from './test-helper.js';
 import { join } from 'node:path';
-import { ExitCodes } from '@euxaristia/gemini-cli-core/src/index.js';
+import { ExitCodes } from '@euxaristia/pollux-cli-core/src/index.js';
 
 describe('JSON output', () => {
   let rig: TestRig;

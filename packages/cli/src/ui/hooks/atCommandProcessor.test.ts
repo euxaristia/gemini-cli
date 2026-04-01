@@ -25,13 +25,13 @@ import {
   StandardFileSystemService,
   ToolRegistry,
   COMMON_IGNORE_PATTERNS,
-  GEMINI_IGNORE_FILE_NAME,
+  POLLUX_IGNORE_FILE_NAME,
   // DEFAULT_FILE_EXCLUDES,
   CoreToolCallStatus,
   type Config,
   type DiscoveredMCPResource,
-} from '@euxaristia/gemini-cli-core';
-import * as core from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
+import * as core from '@euxaristia/pollux-cli-core';
 import * as os from 'node:os';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import * as fsPromises from 'node:fs/promises';
@@ -81,10 +81,10 @@ describe('handleAtCommand', () => {
       getExcludeTools: vi.fn(),
       getFileService: () => new FileDiscoveryService(testRootDir),
       getFileFilteringRespectGitIgnore: () => true,
-      getFileFilteringRespectGeminiIgnore: () => true,
+      getFileFilteringRespectPolluxIgnore: () => true,
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectPolluxIgnore: true,
       }),
       getFileSystemService: () => new StandardFileSystemService(),
       getEnableRecursiveFileSearch: vi.fn(() => true),
@@ -94,7 +94,7 @@ describe('handleAtCommand', () => {
         getDirectories: () => [testRootDir],
       }),
       storage: {
-        getProjectTempDir: () => path.join(os.tmpdir(), 'gemini-cli-temp'),
+        getProjectTempDir: () => path.join(os.tmpdir(), 'pollux-cli-temp'),
       },
       isPathAllowed(this: Config, absolutePath: string): boolean {
         if (this.interactive && path.isAbsolute(absolutePath)) {
@@ -710,14 +710,14 @@ describe('handleAtCommand', () => {
   describe('gemini-ignore filtering', () => {
     it('should skip gemini-ignored files in @ commands', async () => {
       await createTestFile(
-        path.join(testRootDir, GEMINI_IGNORE_FILE_NAME),
+        path.join(testRootDir, POLLUX_IGNORE_FILE_NAME),
         'build/output.js',
       );
-      const geminiIgnoredFile = await createTestFile(
+      const polluxIgnoredFile = await createTestFile(
         path.join(testRootDir, 'build', 'output.js'),
         'console.log("Hello");',
       );
-      const query = `@${geminiIgnoredFile}`;
+      const query = `@${polluxIgnoredFile}`;
 
       const result = await handleAtCommand({
         query,
@@ -732,16 +732,16 @@ describe('handleAtCommand', () => {
         processedQuery: [{ text: query }],
       });
       expect(mockOnDebugMessage).toHaveBeenCalledWith(
-        `Path ${geminiIgnoredFile} is gemini-ignored and will be skipped.`,
+        `Path ${polluxIgnoredFile} is gemini-ignored and will be skipped.`,
       );
       expect(mockOnDebugMessage).toHaveBeenCalledWith(
-        `Ignored 1 files:\nGemini-ignored: ${geminiIgnoredFile}`,
+        `Ignored 1 files:\nGemini-ignored: ${polluxIgnoredFile}`,
       );
     });
   });
-  it('should process non-ignored files when .geminiignore is present', async () => {
+  it('should process non-ignored files when .polluxignore is present', async () => {
     await createTestFile(
-      path.join(testRootDir, GEMINI_IGNORE_FILE_NAME),
+      path.join(testRootDir, POLLUX_IGNORE_FILE_NAME),
       'build/output.js',
     );
     const validFile = await createTestFile(
@@ -772,18 +772,18 @@ describe('handleAtCommand', () => {
 
   it('should handle mixed gemini-ignored and valid files', async () => {
     await createTestFile(
-      path.join(testRootDir, GEMINI_IGNORE_FILE_NAME),
+      path.join(testRootDir, POLLUX_IGNORE_FILE_NAME),
       'dist/bundle.js',
     );
     const validFile = await createTestFile(
       path.join(testRootDir, 'src', 'main.ts'),
       '// Main application entry',
     );
-    const geminiIgnoredFile = await createTestFile(
+    const polluxIgnoredFile = await createTestFile(
       path.join(testRootDir, 'dist', 'bundle.js'),
       'console.log("bundle");',
     );
-    const query = `@${validFile} @${geminiIgnoredFile}`;
+    const query = `@${validFile} @${polluxIgnoredFile}`;
 
     const result = await handleAtCommand({
       query,
@@ -796,7 +796,7 @@ describe('handleAtCommand', () => {
 
     expect(result).toEqual({
       processedQuery: [
-        { text: `@${getRelativePath(validFile)} @${geminiIgnoredFile}` },
+        { text: `@${getRelativePath(validFile)} @${polluxIgnoredFile}` },
         { text: '\n--- Content from referenced files ---' },
         { text: `\nContent from @${getRelativePath(validFile)}:\n` },
         { text: '// Main application entry' },
@@ -804,10 +804,10 @@ describe('handleAtCommand', () => {
       ],
     });
     expect(mockOnDebugMessage).toHaveBeenCalledWith(
-      `Path ${geminiIgnoredFile} is gemini-ignored and will be skipped.`,
+      `Path ${polluxIgnoredFile} is gemini-ignored and will be skipped.`,
     );
     expect(mockOnDebugMessage).toHaveBeenCalledWith(
-      `Ignored 1 files:\nGemini-ignored: ${geminiIgnoredFile}`,
+      `Ignored 1 files:\nGemini-ignored: ${polluxIgnoredFile}`,
     );
   });
 

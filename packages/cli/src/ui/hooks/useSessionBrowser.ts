@@ -15,7 +15,7 @@ import {
   type Config,
   type ConversationRecord,
   type ResumedSessionData,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   convertSessionToHistoryFormats,
   type SessionInfo,
@@ -105,7 +105,7 @@ export const useSessionBrowser = (
         // (without the ".json" extension), not the full session UUID.
         try {
           const chatRecordingService = config
-            .getGeminiClient()
+            .getPolluxClient()
             ?.getChatRecordingService();
           if (chatRecordingService) {
             await chatRecordingService.deleteSession(session.file);

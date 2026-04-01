@@ -11,13 +11,13 @@ import {
   logIdeConnection,
   IdeConnectionEvent,
   IdeConnectionType,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   getIdeInstaller,
   IDEConnectionStatus,
   ideContextStore,
-  GEMINI_CLI_COMPANION_EXTENSION_NAME,
-} from '@euxaristia/gemini-cli-core';
+  POLLUX_CLI_COMPANION_EXTENSION_NAME,
+} from '@euxaristia/pollux-cli-core';
 import path from 'node:path';
 import type {
   CommandContext,
@@ -186,7 +186,7 @@ export const ideCommand = async (): Promise<SlashCommand> => {
         context.ui.addItem(
           {
             type: 'error',
-            text: `No installer is available for ${ideClient.getDetectedIdeDisplayName()}. Please install the '${GEMINI_CLI_COMPANION_EXTENSION_NAME}' extension manually from the marketplace.`,
+            text: `No installer is available for ${ideClient.getDetectedIdeDisplayName()}. Please install the '${POLLUX_CLI_COMPANION_EXTENSION_NAME}' extension manually from the marketplace.`,
           },
           Date.now(),
         );

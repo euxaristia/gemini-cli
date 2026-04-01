@@ -22,7 +22,7 @@ on:
 
 jobs:
   generate-release-notes:
-    if: "github.repository == 'google-gemini/gemini-cli'"
+    if: "github.repository == 'google-gemini/pollux-cli'"
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'write'
@@ -54,7 +54,7 @@ jobs:
           printf "%s\n" "$BODY" >> "$GITHUB_OUTPUT"
           echo 'EOF' >> "$GITHUB_OUTPUT"
         env:
-          GH_TOKEN: '${{ secrets.GEMINI_CLI_ROBOT_GITHUB_PAT }}'
+          GH_TOKEN: '${{ secrets.POLLUX_CLI_ROBOT_GITHUB_PAT }}'
           BODY: '${{ github.event.inputs.body || github.event.release.body }}'
 
       - name: 'Validate version'
@@ -69,7 +69,7 @@ jobs:
 
       - name: 'Generate Changelog with Gemini'
         if: "steps.validate_version.outputs.CONTINUE == 'true'"
-        uses: 'google-github-actions/run-gemini-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-gemini-cli@v0
+        uses: 'google-github-actions/run-pollux-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-pollux-cli@v0
         with:
           gemini_api_key: '${{ secrets.GEMINI_API_KEY }}'
           prompt: |
@@ -88,7 +88,7 @@ jobs:
         if: "steps.validate_version.outputs.CONTINUE == 'true'"
         uses: 'peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c' # ratchet:peter-evans/create-pull-request@v6
         with:
-          token: '${{ secrets.GEMINI_CLI_ROBOT_GITHUB_PAT }}'
+          token: '${{ secrets.POLLUX_CLI_ROBOT_GITHUB_PAT }}'
           commit-message: 'docs(changelog): update for ${{ steps.release_info.outputs.VERSION }}'
           title: 'Changelog for ${{ steps.release_info.outputs.VERSION }}'
           body: |
@@ -99,5 +99,5 @@ jobs:
             Related to #18505
           branch: 'changelog-${{ steps.release_info.outputs.VERSION }}'
           base: 'main'
-          team-reviewers: 'gemini-cli-docs, gemini-cli-maintainers'
+          team-reviewers: 'pollux-cli-docs, pollux-cli-maintainers'
           delete-branch: true

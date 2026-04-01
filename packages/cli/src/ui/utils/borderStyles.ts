@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CoreToolCallStatus } from '@euxaristia/gemini-cli-core';
+import { CoreToolCallStatus } from '@euxaristia/pollux-cli-core';
 import { isShellTool } from '../components/messages/ToolShared.js';
 import { theme } from '../semantic-colors.js';
 import type {

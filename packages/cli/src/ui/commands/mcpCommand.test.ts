@@ -14,14 +14,14 @@ import {
   getMCPDiscoveryState,
   DiscoveredMCPTool,
   type MessageBus,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 import type { CallableTool } from '@google/genai';
 import { MessageType, type HistoryItemMcpStatus } from '../types.js';
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   const mockAuthenticate = vi.fn();
   return {
     ...actual,
@@ -74,7 +74,7 @@ describe('mcpCommand', () => {
     getMcpServers: ReturnType<typeof vi.fn>;
     getBlockedMcpServers: ReturnType<typeof vi.fn>;
     getPromptRegistry: ReturnType<typeof vi.fn>;
-    getGeminiClient: ReturnType<typeof vi.fn>;
+    getPolluxClient: ReturnType<typeof vi.fn>;
     getMcpClientManager: ReturnType<typeof vi.fn>;
     getResourceRegistry: ReturnType<typeof vi.fn>;
     setUserInteractedWithMcp: ReturnType<typeof vi.fn>;
@@ -104,7 +104,7 @@ describe('mcpCommand', () => {
         getAllPrompts: vi.fn().mockReturnValue([]),
         getPromptsByServer: vi.fn().mockReturnValue([]),
       }),
-      getGeminiClient: vi.fn(),
+      getPolluxClient: vi.fn(),
       getMcpClientManager: vi.fn().mockImplementation(() => ({
         getBlockedMcpServers: vi.fn().mockReturnValue([]),
         getMcpServers: vi.fn().mockReturnValue({}),

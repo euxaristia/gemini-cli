@@ -9,7 +9,7 @@ import type {
   ToolCallRequestInfo,
   ResumedSessionData,
   UserFeedbackPayload,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { isSlashCommand } from './ui/utils/commandUtils.js';
 import type { LoadedSettings } from './config/settings.js';
 import {
@@ -30,7 +30,7 @@ import {
   ToolErrorType,
   Scheduler,
   ROOT_SCHEDULER_ID,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 import type { Content, Part } from '@google/genai';
 import readline from 'node:readline';
@@ -72,7 +72,7 @@ export async function runNonInteractive({
       },
     });
 
-    if (process.env['GEMINI_CLI_ACTIVITY_LOG_TARGET']) {
+    if (process.env['POLLUX_CLI_ACTIVITY_LOG_TARGET']) {
       const { setupInitialActivityLogger } = await import(
         './utils/devtoolsService.js'
       );
@@ -211,7 +211,7 @@ export async function runNonInteractive({
         }
       });
 
-      const geminiClient = config.getGeminiClient();
+      const polluxClient = config.getPolluxClient();
       scheduler = new Scheduler({
         context: config,
         messageBus: config.getMessageBus(),
@@ -222,7 +222,7 @@ export async function runNonInteractive({
       try {
         // Initialize chat.  Resume if resume data is passed.
         if (resumedSessionData) {
-          await geminiClient.resumeChat(
+          await polluxClient.resumeChat(
             convertSessionToClientHistory(
               resumedSessionData.conversation.messages,
             ),
@@ -302,7 +302,7 @@ export async function runNonInteractive({
           }
           const toolCallRequests: ToolCallRequestInfo[] = [];
 
-          const responseStream = geminiClient.sendMessageStream(
+          const responseStream = polluxClient.sendMessageStream(
             currentMessages[0]?.parts || [],
             abortController.signal,
             prompt_id,
@@ -447,8 +447,8 @@ export async function runNonInteractive({
             // Record tool calls with full metadata before sending responses to Gemini
             try {
               const currentModel =
-                geminiClient.getCurrentSequenceModel() ?? config.getModel();
-              geminiClient
+                polluxClient.getCurrentSequenceModel() ?? config.getModel();
+              polluxClient
                 .getChat()
                 .recordCompletedToolCalls(currentModel, completedToolCalls);
 

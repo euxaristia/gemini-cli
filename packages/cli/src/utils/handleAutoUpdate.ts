@@ -11,7 +11,7 @@ import { updateEventEmitter } from './updateEventEmitter.js';
 import { MessageType, type HistoryItem } from '../ui/types.js';
 import { spawnWrapper } from './spawnWrapper.js';
 import type { spawn } from 'node:child_process';
-import { debugLogger } from '@euxaristia/gemini-cli-core';
+import { debugLogger } from '@euxaristia/pollux-cli-core';
 
 let _updateInProgress = false;
 
@@ -70,7 +70,7 @@ export function handleAutoUpdate(
     return;
   }
 
-  if (settings.merged.tools.sandbox || process.env['GEMINI_SANDBOX']) {
+  if (settings.merged.tools.sandbox || process.env['POLLUX_SANDBOX']) {
     updateEventEmitter.emit('update-info', {
       message: `${info.message}\nAutomatic update is not available in sandbox mode.`,
     });

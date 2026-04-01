@@ -16,7 +16,7 @@ import {
   debugLogger,
   type ConsoleLogPayload,
   type Config,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import WebSocket from 'ws';
 
 const ACTIVITY_ID_HEADER = 'x-activity-request-id';

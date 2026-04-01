@@ -7,17 +7,18 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { Storage, debugLogger } from '@euxaristia/gemini-cli-core';
+import { Storage, debugLogger, writeFileSyncAtomic } from '@euxaristia/pollux-cli-core';
 import { PersistentState } from './persistentState.js';
 
 vi.mock('node:fs');
-vi.mock('@euxaristia/gemini-cli-core', () => ({
+vi.mock('@euxaristia/pollux-cli-core', () => ({
   Storage: {
-    getGlobalGeminiDir: vi.fn(),
+    getGlobalPolluxDir: vi.fn(),
   },
   debugLogger: {
     warn: vi.fn(),
   },
+  writeFileSyncAtomic: vi.fn(),
 }));
 
 describe('PersistentState', () => {
@@ -27,7 +28,7 @@ describe('PersistentState', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
-    vi.mocked(Storage.getGlobalGeminiDir).mockReturnValue(mockDir);
+    vi.mocked(Storage.getGlobalPolluxDir).mockReturnValue(mockDir);
     persistentState = new PersistentState();
   });
 
@@ -48,13 +49,9 @@ describe('PersistentState', () => {
   });
 
   it('should save state to file', () => {
-    vi.mocked(fs.existsSync).mockReturnValue(false);
     persistentState.set('defaultBannerShownCount', { banner1: 1 });
 
-    expect(fs.mkdirSync).toHaveBeenCalledWith(path.normalize(mockDir), {
-      recursive: true,
-    });
-    expect(fs.writeFileSync).toHaveBeenCalledWith(
+    expect(writeFileSyncAtomic).toHaveBeenCalledWith(
       mockFilePath,
       JSON.stringify({ defaultBannerShownCount: { banner1: 1 } }, null, 2),
     );
@@ -72,8 +69,7 @@ describe('PersistentState', () => {
   });
 
   it('should handle save errors', () => {
-    vi.mocked(fs.existsSync).mockReturnValue(false);
-    vi.mocked(fs.writeFileSync).mockImplementation(() => {
+    vi.mocked(writeFileSyncAtomic).mockImplementation(() => {
       throw new Error('Write error');
     });
 

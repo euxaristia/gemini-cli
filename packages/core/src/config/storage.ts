@@ -9,7 +9,7 @@ import * as os from 'node:os';
 import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import {
-  GEMINI_DIR,
+  POLLUX_DIR,
   homedir,
   GOOGLE_ACCOUNTS_FILENAME,
   isSubpath,
@@ -42,12 +42,12 @@ export class Storage {
     this.customPlansDir = dir;
   }
 
-  static getGlobalGeminiDir(): string {
+  static getGlobalPolluxDir(): string {
     const homeDir = homedir();
     if (!homeDir) {
-      return path.join(os.tmpdir(), GEMINI_DIR);
+      return path.join(os.tmpdir(), POLLUX_DIR);
     }
-    return path.join(homeDir, GEMINI_DIR);
+    return path.join(homeDir, POLLUX_DIR);
   }
 
   static getGlobalAgentsDir(): string {
@@ -59,31 +59,31 @@ export class Storage {
   }
 
   static getMcpOAuthTokensPath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'mcp-oauth-tokens.json');
+    return path.join(Storage.getGlobalPolluxDir(), 'mcp-oauth-tokens.json');
   }
 
   static getA2AOAuthTokensPath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'a2a-oauth-tokens.json');
+    return path.join(Storage.getGlobalPolluxDir(), 'a2a-oauth-tokens.json');
   }
 
   static getGlobalSettingsPath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'settings.json');
+    return path.join(Storage.getGlobalPolluxDir(), 'settings.json');
   }
 
   static getInstallationIdPath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'installation_id');
+    return path.join(Storage.getGlobalPolluxDir(), 'installation_id');
   }
 
   static getGoogleAccountsPath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), GOOGLE_ACCOUNTS_FILENAME);
+    return path.join(Storage.getGlobalPolluxDir(), GOOGLE_ACCOUNTS_FILENAME);
   }
 
   static getUserCommandsDir(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'commands');
+    return path.join(Storage.getGlobalPolluxDir(), 'commands');
   }
 
   static getUserSkillsDir(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'skills');
+    return path.join(Storage.getGlobalPolluxDir(), 'skills');
   }
 
   static getUserAgentSkillsDir(): string {
@@ -91,46 +91,46 @@ export class Storage {
   }
 
   static getGlobalMemoryFilePath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'memory.md');
+    return path.join(Storage.getGlobalPolluxDir(), 'memory.md');
   }
 
   static getUserPoliciesDir(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'policies');
+    return path.join(Storage.getGlobalPolluxDir(), 'policies');
   }
 
   static getUserKeybindingsPath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'keybindings.json');
+    return path.join(Storage.getGlobalPolluxDir(), 'keybindings.json');
   }
 
   static getUserAgentsDir(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'agents');
+    return path.join(Storage.getGlobalPolluxDir(), 'agents');
   }
 
   static getAcknowledgedAgentsPath(): string {
     return path.join(
-      Storage.getGlobalGeminiDir(),
+      Storage.getGlobalPolluxDir(),
       'acknowledgments',
       'agents.json',
     );
   }
 
   static getPolicyIntegrityStoragePath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), 'policy_integrity.json');
+    return path.join(Storage.getGlobalPolluxDir(), 'policy_integrity.json');
   }
 
   private static getSystemConfigDir(): string {
     if (os.platform() === 'darwin') {
       return '/Library/Application Support/GeminiCli';
     } else if (os.platform() === 'win32') {
-      return 'C:\\ProgramData\\gemini-cli';
+      return 'C:\\ProgramData\\pollux-cli';
     } else {
-      return '/etc/gemini-cli';
+      return '/etc/pollux-cli';
     }
   }
 
   static getSystemSettingsPath(): string {
-    if (process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH']) {
-      return process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH'];
+    if (process.env['POLLUX_CLI_SYSTEM_SETTINGS_PATH']) {
+      return process.env['POLLUX_CLI_SYSTEM_SETTINGS_PATH'];
     }
     return path.join(Storage.getSystemConfigDir(), 'settings.json');
   }
@@ -140,15 +140,15 @@ export class Storage {
   }
 
   static getGlobalTempDir(): string {
-    return path.join(Storage.getGlobalGeminiDir(), TMP_DIR_NAME);
+    return path.join(Storage.getGlobalPolluxDir(), TMP_DIR_NAME);
   }
 
   static getGlobalBinDir(): string {
     return path.join(Storage.getGlobalTempDir(), BIN_DIR_NAME);
   }
 
-  getGeminiDir(): string {
-    return path.join(this.targetDir, GEMINI_DIR);
+  getPolluxDir(): string {
+    return path.join(this.targetDir, POLLUX_DIR);
   }
 
   /**
@@ -173,7 +173,7 @@ export class Storage {
   }
 
   getWorkspacePoliciesDir(): string {
-    return path.join(this.getGeminiDir(), 'policies');
+    return path.join(this.getPolluxDir(), 'policies');
   }
 
   getWorkspaceAutoSavedPolicyPath(): string {
@@ -192,7 +192,7 @@ export class Storage {
   }
 
   static getOAuthCredsPath(): string {
-    return path.join(Storage.getGlobalGeminiDir(), OAUTH_FILE);
+    return path.join(Storage.getGlobalPolluxDir(), OAUTH_FILE);
   }
 
   getProjectRoot(): string {
@@ -224,12 +224,12 @@ export class Storage {
       }
 
       const registryPath = path.join(
-        Storage.getGlobalGeminiDir(),
+        Storage.getGlobalPolluxDir(),
         'projects.json',
       );
       const registry = new ProjectRegistry(registryPath, [
         Storage.getGlobalTempDir(),
-        path.join(Storage.getGlobalGeminiDir(), 'history'),
+        path.join(Storage.getGlobalPolluxDir(), 'history'),
       ]);
       await registry.initialize();
 
@@ -254,7 +254,7 @@ export class Storage {
     await StorageMigration.migrateDirectory(oldTempDir, newTempDir);
 
     // Migrate History Dir
-    const historyDir = path.join(Storage.getGlobalGeminiDir(), 'history');
+    const historyDir = path.join(Storage.getGlobalPolluxDir(), 'history');
     const newHistoryDir = path.join(historyDir, shortId);
     const oldHistoryDir = path.join(historyDir, oldHash);
     await StorageMigration.migrateDirectory(oldHistoryDir, newHistoryDir);
@@ -262,7 +262,7 @@ export class Storage {
 
   getHistoryDir(): string {
     const identifier = this.getProjectIdentifier();
-    const historyDir = path.join(Storage.getGlobalGeminiDir(), 'history');
+    const historyDir = path.join(Storage.getGlobalPolluxDir(), 'history');
     return path.join(historyDir, identifier);
   }
 
@@ -272,15 +272,15 @@ export class Storage {
   }
 
   getWorkspaceSettingsPath(): string {
-    return path.join(this.getGeminiDir(), 'settings.json');
+    return path.join(this.getPolluxDir(), 'settings.json');
   }
 
   getProjectCommandsDir(): string {
-    return path.join(this.getGeminiDir(), 'commands');
+    return path.join(this.getPolluxDir(), 'commands');
   }
 
   getProjectSkillsDir(): string {
-    return path.join(this.getGeminiDir(), 'skills');
+    return path.join(this.getPolluxDir(), 'skills');
   }
 
   getProjectAgentSkillsDir(): string {
@@ -288,7 +288,7 @@ export class Storage {
   }
 
   getProjectAgentsDir(): string {
-    return path.join(this.getGeminiDir(), 'agents');
+    return path.join(this.getPolluxDir(), 'agents');
   }
 
   getProjectTempCheckpointsDir(): string {
@@ -398,7 +398,7 @@ export class Storage {
   }
 
   getExtensionsDir(): string {
-    return path.join(this.getGeminiDir(), 'extensions');
+    return path.join(this.getPolluxDir(), 'extensions');
   }
 
   getExtensionsConfigPath(): string {

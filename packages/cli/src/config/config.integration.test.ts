@@ -17,11 +17,11 @@ import {
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { tmpdir } from 'node:os';
-import type { ConfigParameters } from '@euxaristia/gemini-cli-core';
+import type { ConfigParameters } from '@euxaristia/pollux-cli-core';
 import {
   Config,
   DEFAULT_FILE_FILTERING_OPTIONS,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { createTestMergedSettings } from './settings.js';
 import { http, HttpResponse } from 'msw';
 
@@ -45,8 +45,8 @@ afterAll(() => {
 const CLEARCUT_URL = 'https://play.googleapis.com/log';
 
 // Mock file discovery service and tool registry
-vi.mock('@euxaristia/gemini-cli-core', async () => {
-  const actual = await vi.importActual('@euxaristia/gemini-cli-core');
+vi.mock('@euxaristia/pollux-cli-core', async () => {
+  const actual = await vi.importActual('@euxaristia/pollux-cli-core');
   return {
     ...actual,
     FileDiscoveryService: vi.fn().mockImplementation(() => ({
@@ -62,7 +62,7 @@ describe('Configuration Integration Tests', () => {
   beforeEach(() => {
     server.resetHandlers(http.post(CLEARCUT_URL, () => HttpResponse.text()));
 
-    tempDir = fs.mkdtempSync(path.join(tmpdir(), 'gemini-cli-test-'));
+    tempDir = fs.mkdtempSync(path.join(tmpdir(), 'pollux-cli-test-'));
     vi.stubEnv('GEMINI_API_KEY', 'test-api-key');
     vi.clearAllMocks();
   });

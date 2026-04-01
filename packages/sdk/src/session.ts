@@ -13,7 +13,7 @@ import {
   GeminiEventType,
   type ToolCallRequestInfo,
   type ServerGeminiStreamEvent,
-  type GeminiClient,
+  type PolluxClient,
   type Content,
   scheduleAgentTools,
   getAuthTypeFromEnv,
@@ -22,7 +22,7 @@ import {
   ActivateSkillTool,
   type ResumedSessionData,
   PolicyDecision,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 import { type Tool, SdkTool } from './tool.js';
 import { SdkAgentFilesystem } from './fs.js';
@@ -41,7 +41,7 @@ export class GeminiCliSession {
   private readonly tools: Array<Tool<any>>;
   private readonly skillRefs: SkillReference[];
   private readonly instructions: SystemInstructions | undefined;
-  private client: GeminiClient | undefined;
+  private client: PolluxClient | undefined;
   private initialized = false;
 
   constructor(
@@ -146,7 +146,7 @@ export class GeminiCliSession {
       registry.registerTool(sdkTool);
     }
 
-    this.client = loopContext2.geminiClient;
+    this.client = loopContext2.polluxClient;
 
     if (this.resumedData) {
       const history: Content[] = this.resumedData.conversation.messages.map(
@@ -182,7 +182,7 @@ export class GeminiCliSession {
     const fs = new SdkAgentFilesystem(this.config);
     const shell = new SdkAgentShell(this.config);
 
-    let request: Parameters<GeminiClient['sendMessageStream']>[0] = [
+    let request: Parameters<PolluxClient['sendMessageStream']>[0] = [
       { text: prompt },
     ];
 
@@ -269,7 +269,7 @@ export class GeminiCliSession {
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
       request = functionResponses as unknown as Parameters<
-        GeminiClient['sendMessageStream']
+        PolluxClient['sendMessageStream']
       >[0];
     }
   }

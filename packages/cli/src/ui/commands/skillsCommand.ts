@@ -20,7 +20,7 @@ import { disableSkill, enableSkill } from '../../utils/skillSettings.js';
 import {
   getAdminErrorMessage,
   getErrorMessage,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   linkSkill,
   renderSkillActionFeedback,

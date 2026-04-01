@@ -12,7 +12,9 @@ import { type SessionMetrics } from '../contexts/SessionContext.js';
 import {
   ToolCallDecision,
   type RetrieveUserQuotaResponse,
-} from '@euxaristia/gemini-cli-core';
+  PREVIEW_GEMINI_3_1_MODEL,
+  PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
+} from '@euxaristia/pollux-cli-core';
 
 // Mock the context to provide controlled data for testing
 vi.mock('../contexts/SessionContext.js', async (importOriginal) => {
@@ -92,7 +94,7 @@ describe('<StatsDisplay />', () => {
   it('renders a table with two models correctly', async () => {
     const metrics = createTestMetrics({
       models: {
-        'gemini-2.5-pro': {
+        [PREVIEW_GEMINI_3_1_MODEL]: {
           api: { totalRequests: 3, totalErrors: 0, totalLatencyMs: 15000 },
           tokens: {
             input: 500,
@@ -105,7 +107,7 @@ describe('<StatsDisplay />', () => {
           },
           roles: {},
         },
-        'gemini-2.5-flash': {
+        [PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1]: {
           api: { totalRequests: 5, totalErrors: 1, totalLatencyMs: 4500 },
           tokens: {
             input: 15000,
@@ -124,8 +126,8 @@ describe('<StatsDisplay />', () => {
     const { lastFrame } = await renderWithMockedStats(metrics);
     const output = lastFrame();
 
-    expect(output).toContain('gemini-2.5-pro');
-    expect(output).toContain('gemini-2.5-flash');
+    expect(output).toContain(PREVIEW_GEMINI_3_1_MODEL);
+    expect(output).toContain('gemini-3.1-flash-lite-…');
     expect(output).toContain('15,000');
     expect(output).toContain('10,000');
     expect(output).toMatchSnapshot();
@@ -134,7 +136,7 @@ describe('<StatsDisplay />', () => {
   it('renders all sections when all data is present', async () => {
     const metrics = createTestMetrics({
       models: {
-        'gemini-2.5-pro': {
+        [PREVIEW_GEMINI_3_1_MODEL]: {
           api: { totalRequests: 1, totalErrors: 0, totalLatencyMs: 100 },
           tokens: {
             input: 50,
@@ -182,7 +184,7 @@ describe('<StatsDisplay />', () => {
     expect(output).toContain('Performance');
     expect(output).toContain('Interaction Summary');
     expect(output).toContain('User Agreement');
-    expect(output).toContain('gemini-2.5-pro');
+    expect(output).toContain(PREVIEW_GEMINI_3_1_MODEL);
     expect(output).toMatchSnapshot();
   });
 
@@ -229,7 +231,7 @@ describe('<StatsDisplay />', () => {
     it('hides Efficiency section when cache is not used', async () => {
       const metrics = createTestMetrics({
         models: {
-          'gemini-2.5-pro': {
+          [PREVIEW_GEMINI_3_1_MODEL]: {
             api: { totalRequests: 1, totalErrors: 0, totalLatencyMs: 100 },
             tokens: {
               input: 100,
@@ -414,7 +416,7 @@ describe('<StatsDisplay />', () => {
 
       const metrics = createTestMetrics({
         models: {
-          'gemini-2.5-pro': {
+          [PREVIEW_GEMINI_3_1_MODEL]: {
             api: { totalRequests: 1, totalErrors: 0, totalLatencyMs: 100 },
             tokens: {
               input: 50,
@@ -435,7 +437,7 @@ describe('<StatsDisplay />', () => {
       const quotas: RetrieveUserQuotaResponse = {
         buckets: [
           {
-            modelId: 'gemini-2.5-pro',
+            modelId: PREVIEW_GEMINI_3_1_MODEL,
             remainingAmount: '75',
             remainingFraction: 0.75,
             resetTime,
@@ -479,12 +481,12 @@ describe('<StatsDisplay />', () => {
       const quotas: RetrieveUserQuotaResponse = {
         buckets: [
           {
-            modelId: 'gemini-2.5-pro',
+            modelId: PREVIEW_GEMINI_3_1_MODEL,
             remainingAmount: '10',
             remainingFraction: 0.1, // limit = 100
           },
           {
-            modelId: 'gemini-2.5-flash',
+            modelId: PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
             remainingAmount: '700',
             remainingFraction: 0.7, // limit = 1000
           },
@@ -538,7 +540,7 @@ describe('<StatsDisplay />', () => {
       const quotas: RetrieveUserQuotaResponse = {
         buckets: [
           {
-            modelId: 'gemini-2.5-flash',
+            modelId: PREVIEW_GEMINI_FLASH_LITE_MODEL_3_1,
             remainingAmount: '50',
             remainingFraction: 0.5,
             resetTime,
@@ -564,7 +566,7 @@ describe('<StatsDisplay />', () => {
       );
       const output = lastFrame();
 
-      expect(output).toContain('gemini-2.5-flash');
+      expect(output).toContain('gemini-3.1-flash-lite-…');
       expect(output).toContain('-'); // for requests
       expect(output).toContain('50%');
       expect(output).toContain('Usage resets');

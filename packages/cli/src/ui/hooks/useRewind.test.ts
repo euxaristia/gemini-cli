@@ -11,7 +11,7 @@ import { useRewind } from './useRewind.js';
 import type {
   ConversationRecord,
   MessageRecord,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { FileChangeStats } from '../utils/rewindFileOps.js';
 import * as rewindFileOps from '../utils/rewindFileOps.js';
 

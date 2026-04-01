@@ -13,12 +13,12 @@ import {
   getErrorMessage,
   isWithinRoot,
   ideContextStore,
-  GEMINI_DIR,
+  POLLUX_DIR,
   homedir,
   isHeadlessMode,
   coreEvents,
   type HeadlessModeOptions,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { Settings } from './settings.js';
 import stripJsonComments from 'strip-json-comments';
 
@@ -27,12 +27,12 @@ const { promises: fsPromises } = fs;
 export const TRUSTED_FOLDERS_FILENAME = 'trustedFolders.json';
 
 export function getUserSettingsDir(): string {
-  return path.join(homedir(), GEMINI_DIR);
+  return path.join(homedir(), POLLUX_DIR);
 }
 
 export function getTrustedFoldersPath(): string {
-  if (process.env['GEMINI_CLI_TRUSTED_FOLDERS_PATH']) {
-    return process.env['GEMINI_CLI_TRUSTED_FOLDERS_PATH'];
+  if (process.env['POLLUX_CLI_TRUSTED_FOLDERS_PATH']) {
+    return process.env['POLLUX_CLI_TRUSTED_FOLDERS_PATH'];
   }
   return path.join(getUserSettingsDir(), TRUSTED_FOLDERS_FILENAME);
 }

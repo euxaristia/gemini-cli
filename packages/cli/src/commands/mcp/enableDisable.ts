@@ -5,7 +5,7 @@
  */
 
 import type { CommandModule } from 'yargs';
-import { debugLogger } from '@euxaristia/gemini-cli-core';
+import { debugLogger } from '@euxaristia/pollux-cli-core';
 import {
   McpServerEnablementManager,
   canLoadServer,

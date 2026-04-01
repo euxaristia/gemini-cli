@@ -16,7 +16,7 @@ import {
 import type {
   AgentDefinition,
   AgentOverride,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { getCachedStringWidth } from '../utils/textUtils.js';
 import {
   BaseSettingsDialog,

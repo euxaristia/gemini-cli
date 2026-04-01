@@ -39,7 +39,7 @@ const argv = yargs(hideBin(process.argv))
   })
   .option('repo', {
     type: 'string',
-    default: 'gemini-cli',
+    default: 'pollux-cli',
     description: 'Repository name',
   })
   .option('dry-run', {

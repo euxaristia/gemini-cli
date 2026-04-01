@@ -5,10 +5,10 @@
  */
 
 import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
 import { Storage } from '../config/storage.js';
 import { debugLogger } from '../utils/debugLogger.js';
 import { getErrorMessage, isNodeError } from '../utils/errors.js';
+import { writeFileAtomic } from '../utils/fileUtils.js';
 
 export interface AcknowledgedAgentsMap {
   // Project Path -> Agent Name -> Agent Hash
@@ -45,9 +45,7 @@ export class AcknowledgedAgentsService {
   async save(): Promise<void> {
     const filePath = Storage.getAcknowledgedAgentsPath();
     try {
-      const dir = path.dirname(filePath);
-      await fs.mkdir(dir, { recursive: true });
-      await fs.writeFile(
+      await writeFileAtomic(
         filePath,
         JSON.stringify(this.acknowledgedAgents, null, 2),
         'utf-8',

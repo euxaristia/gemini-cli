@@ -21,14 +21,14 @@ import {
   type MCPServerConfig,
   type GeminiCLIExtension,
   Storage,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { loadCliConfig, parseArguments, type CliArgs } from './config.js';
 import {
   type Settings,
   type MergedSettings,
   createTestMergedSettings,
 } from './settings.js';
-import * as ServerConfig from '@euxaristia/gemini-cli-core';
+import * as ServerConfig from '@euxaristia/pollux-cli-core';
 
 import { isWorkspaceTrusted } from './trustedFolders.js';
 import { ExtensionManager } from './extension-manager.js';
@@ -98,9 +98,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@euxaristia/gemini-cli-core', async () => {
+vi.mock('@euxaristia/pollux-cli-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@euxaristia/gemini-cli-core',
+    '@euxaristia/pollux-cli-core',
   );
   return {
     ...actualServer,
@@ -135,12 +135,12 @@ vi.mock('@euxaristia/gemini-cli-core', async () => {
     ),
     DEFAULT_MEMORY_FILE_FILTERING_OPTIONS: {
       respectGitIgnore: false,
-      respectGeminiIgnore: true,
+      respectPolluxIgnore: true,
       customIgnoreFilePaths: [],
     },
     DEFAULT_FILE_FILTERING_OPTIONS: {
       respectGitIgnore: true,
-      respectGeminiIgnore: true,
+      respectPolluxIgnore: true,
       customIgnoreFilePaths: [],
     },
     createPolicyEngineConfig: vi.fn(
@@ -156,7 +156,7 @@ vi.mock('@euxaristia/gemini-cli-core', async () => {
     ),
     getAdminErrorMessage: vi.fn(
       (_feature) =>
-        `YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli`,
+        `YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-pollux-cli`,
     ),
     isHeadlessMode: vi.fn((opts) => {
       if (process.env['VITEST'] === 'true') {
@@ -898,8 +898,8 @@ describe('loadCliConfig', () => {
     expect(config.getFileFilteringRespectGitIgnore()).toBe(
       DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
     );
-    expect(config.getFileFilteringRespectGeminiIgnore()).toBe(
-      DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+    expect(config.getFileFilteringRespectPolluxIgnore()).toBe(
+      DEFAULT_FILE_FILTERING_OPTIONS.respectPolluxIgnore,
     );
     expect(config.getCustomIgnoreFilePaths()).toEqual(
       DEFAULT_FILE_FILTERING_OPTIONS.customIgnoreFilePaths,
@@ -952,7 +952,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
         name: 'ext1',
         id: 'ext1-id',
         version: '1.0.0',
-        contextFiles: ['/path/to/ext1/GEMINI.md'],
+        contextFiles: ['/path/to/ext1/POLLUX.md'],
         isActive: true,
       },
       {
@@ -986,7 +986,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectPolluxIgnore: true,
       }),
       200, // maxDirs
       ['.git'], // boundaryMarkers
@@ -1016,7 +1016,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectPolluxIgnore: true,
       }),
       200,
       ['.git'], // boundaryMarkers
@@ -1045,7 +1045,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       'tree',
       expect.objectContaining({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectPolluxIgnore: true,
       }),
       200,
       ['.git'], // boundaryMarkers
@@ -1453,7 +1453,7 @@ describe('Approval mode tool exclusion logic', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-pollux-cli',
     );
   });
 
@@ -1958,9 +1958,9 @@ describe('loadCliConfig folderTrust', () => {
     vi.spyOn(ExtensionManager.prototype, 'getExtensions').mockReturnValue([]);
 
     originalVitest = process.env['VITEST'];
-    originalIntegrationTest = process.env['GEMINI_CLI_INTEGRATION_TEST'];
+    originalIntegrationTest = process.env['POLLUX_CLI_INTEGRATION_TEST'];
     delete process.env['VITEST'];
-    delete process.env['GEMINI_CLI_INTEGRATION_TEST'];
+    delete process.env['POLLUX_CLI_INTEGRATION_TEST'];
   });
 
   afterEach(() => {
@@ -1968,7 +1968,7 @@ describe('loadCliConfig folderTrust', () => {
       process.env['VITEST'] = originalVitest;
     }
     if (originalIntegrationTest !== undefined) {
-      process.env['GEMINI_CLI_INTEGRATION_TEST'] = originalIntegrationTest;
+      process.env['POLLUX_CLI_INTEGRATION_TEST'] = originalIntegrationTest;
     }
 
     vi.unstubAllEnvs();
@@ -3023,13 +3023,13 @@ describe('loadCliConfig fileFiltering', () => {
       value: false,
     },
     {
-      property: 'respectGeminiIgnore',
-      getter: (c) => c.getFileFilteringRespectGeminiIgnore(),
+      property: 'respectPolluxIgnore',
+      getter: (c) => c.getFileFilteringRespectPolluxIgnore(),
       value: true,
     },
     {
-      property: 'respectGeminiIgnore',
-      getter: (c) => c.getFileFilteringRespectGeminiIgnore(),
+      property: 'respectPolluxIgnore',
+      getter: (c) => c.getFileFilteringRespectPolluxIgnore(),
       value: false,
     },
     {
@@ -3551,7 +3551,7 @@ describe('loadCliConfig disableYoloMode', () => {
       security: { disableYoloMode: true },
     });
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-pollux-cli',
     );
   });
 });
@@ -3583,7 +3583,7 @@ describe('loadCliConfig secureModeEnabled', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-pollux-cli',
     );
   });
 
@@ -3597,7 +3597,7 @@ describe('loadCliConfig secureModeEnabled', () => {
     });
 
     await expect(loadCliConfig(settings, 'test-session', argv)).rejects.toThrow(
-      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-gemini-cli',
+      'YOLO mode is disabled by your administrator. To enable it, please request an update to the settings at: https://goo.gle/manage-pollux-cli',
     );
   });
 
@@ -3689,7 +3689,7 @@ describe('loadCliConfig mcpEnabled', () => {
   describe('extension plan settings', () => {
     beforeEach(() => {
       vi.spyOn(Storage.prototype, 'getProjectTempDir').mockReturnValue(
-        '/mock/home/user/.gemini/tmp/test-project',
+        '/mock/home/user/.pollux/tmp/test-project',
       );
     });
 
@@ -3781,7 +3781,7 @@ describe('loadCliConfig mcpEnabled', () => {
           '/mock',
           'home',
           'user',
-          '.gemini',
+          '.pollux',
           'tmp',
           'test-project',
           'test-session',

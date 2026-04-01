@@ -21,11 +21,11 @@ import { createExtension } from '../test-utils/createExtension.js';
 import { ExtensionManager } from './extension-manager.js';
 import { themeManager, DEFAULT_THEME } from '../ui/themes/theme-manager.js';
 import {
-  GEMINI_DIR,
+  POLLUX_DIR,
   type Config,
   tmpdir,
   NoopSandboxManager,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { createTestMergedSettings, SettingScope } from './settings.js';
 
 describe('ExtensionManager theme loading', () => {
@@ -35,7 +35,7 @@ describe('ExtensionManager theme loading', () => {
 
   beforeAll(async () => {
     tempHomeDir = await fs.promises.mkdtemp(
-      path.join(tmpdir(), 'gemini-cli-test-'),
+      path.join(tmpdir(), 'pollux-cli-test-'),
     );
   });
 
@@ -46,8 +46,8 @@ describe('ExtensionManager theme loading', () => {
   });
 
   beforeEach(() => {
-    process.env['GEMINI_CLI_HOME'] = tempHomeDir;
-    userExtensionsDir = path.join(tempHomeDir, GEMINI_DIR, 'extensions');
+    process.env['POLLUX_CLI_HOME'] = tempHomeDir;
+    userExtensionsDir = path.join(tempHomeDir, POLLUX_DIR, 'extensions');
     // Ensure userExtensionsDir is clean for each test
     fs.rmSync(userExtensionsDir, { recursive: true, force: true });
     fs.mkdirSync(userExtensionsDir, { recursive: true });
@@ -70,7 +70,7 @@ describe('ExtensionManager theme loading', () => {
   });
 
   afterEach(() => {
-    delete process.env['GEMINI_CLI_HOME'];
+    delete process.env['POLLUX_CLI_HOME'];
   });
 
   it('should register themes from an extension when started', async () => {
@@ -97,7 +97,7 @@ describe('ExtensionManager theme loading', () => {
       getMcpClientManager: () => ({
         startExtension: vi.fn().mockResolvedValue(undefined),
       }),
-      getGeminiClient: () => ({
+      getPolluxClient: () => ({
         isInitialized: () => false,
         updateSystemInstruction: vi.fn(),
         setTools: vi.fn(),
@@ -109,7 +109,7 @@ describe('ExtensionManager theme loading', () => {
       getFileExclusions: () => ({
         isIgnored: () => false,
       }),
-      getGeminiMdFilePaths: () => [],
+      getPolluxMdFilePaths: () => [],
       getMcpServers: () => ({}),
       getAllowedMcpServers: () => [],
       getSanitizationConfig: () => ({
@@ -196,7 +196,7 @@ describe('ExtensionManager theme loading', () => {
       getImportFormat: () => 'tree',
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectPolluxIgnore: true,
       }),
       getDiscoveryMaxDirs: () => 200,
       getMemoryBoundaryMarkers: () => ['.git'],
@@ -206,10 +206,10 @@ describe('ExtensionManager theme loading', () => {
         stopExtension: vi.fn().mockResolvedValue(undefined),
       }),
       setUserMemory: vi.fn(),
-      setGeminiMdFileCount: vi.fn(),
-      setGeminiMdFilePaths: vi.fn(),
+      setPolluxMdFileCount: vi.fn(),
+      setPolluxMdFilePaths: vi.fn(),
       getEnableExtensionReloading: () => true,
-      getGeminiClient: () => ({
+      getPolluxClient: () => ({
         isInitialized: () => false,
         updateSystemInstruction: vi.fn(),
         setTools: vi.fn(),

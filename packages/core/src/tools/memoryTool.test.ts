@@ -15,9 +15,9 @@ import {
 } from 'vitest';
 import {
   MemoryTool,
-  setGeminiMdFilename,
-  getCurrentGeminiMdFilename,
-  getAllGeminiMdFilenames,
+  setPolluxMdFilename,
+  getCurrentPolluxMdFilename,
+  getAllPolluxMdFilenames,
   DEFAULT_CONTEXT_FILENAME,
   getProjectMemoryFilePath,
 } from './memoryTool.js';
@@ -27,7 +27,7 @@ import * as path from 'node:path';
 import * as os from 'node:os';
 import { ToolConfirmationOutcome } from './tools.js';
 import { ToolErrorType } from './tool-error.js';
-import { GEMINI_DIR } from '../utils/paths.js';
+import { POLLUX_DIR } from '../utils/paths.js';
 import {
   createMockMessageBus,
   getMockMessageBusInstance,
@@ -55,7 +55,7 @@ vi.mock('fs', () => ({
 
 vi.mock('os');
 
-const MEMORY_SECTION_HEADER = '## Gemini Added Memories';
+const MEMORY_SECTION_HEADER = '## Pollux Added Memories';
 
 describe('MemoryTool', () => {
   const mockAbortSignal = new AbortController().signal;
@@ -76,30 +76,30 @@ describe('MemoryTool', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
-    setGeminiMdFilename(DEFAULT_CONTEXT_FILENAME);
+    setPolluxMdFilename(DEFAULT_CONTEXT_FILENAME);
   });
 
-  describe('setGeminiMdFilename', () => {
-    it('should update currentGeminiMdFilename when a valid new name is provided', () => {
+  describe('setPolluxMdFilename', () => {
+    it('should update currentPolluxMdFilename when a valid new name is provided', () => {
       const newName = 'CUSTOM_CONTEXT.md';
-      setGeminiMdFilename(newName);
-      expect(getCurrentGeminiMdFilename()).toBe(newName);
+      setPolluxMdFilename(newName);
+      expect(getCurrentPolluxMdFilename()).toBe(newName);
     });
 
-    it('should not update currentGeminiMdFilename if the new name is empty or whitespace', () => {
-      const initialName = getCurrentGeminiMdFilename();
-      setGeminiMdFilename('  ');
-      expect(getCurrentGeminiMdFilename()).toBe(initialName);
+    it('should not update currentPolluxMdFilename if the new name is empty or whitespace', () => {
+      const initialName = getCurrentPolluxMdFilename();
+      setPolluxMdFilename('  ');
+      expect(getCurrentPolluxMdFilename()).toBe(initialName);
 
-      setGeminiMdFilename('');
-      expect(getCurrentGeminiMdFilename()).toBe(initialName);
+      setPolluxMdFilename('');
+      expect(getCurrentPolluxMdFilename()).toBe(initialName);
     });
 
     it('should handle an array of filenames', () => {
       const newNames = ['CUSTOM_CONTEXT.md', 'ANOTHER_CONTEXT.md'];
-      setGeminiMdFilename(newNames);
-      expect(getCurrentGeminiMdFilename()).toBe('CUSTOM_CONTEXT.md');
-      expect(getAllGeminiMdFilenames()).toEqual(newNames);
+      setPolluxMdFilename(newNames);
+      expect(getCurrentPolluxMdFilename()).toBe('CUSTOM_CONTEXT.md');
+      expect(getAllPolluxMdFilenames()).toEqual(newNames);
     });
   });
 
@@ -145,8 +145,8 @@ describe('MemoryTool', () => {
 
       const expectedFilePath = path.join(
         os.homedir(),
-        GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        POLLUX_DIR,
+        getCurrentPolluxMdFilename(),
       );
       const expectedContent = `${MEMORY_SECTION_HEADER}\n- the sky is blue\n`;
 
@@ -265,17 +265,17 @@ describe('MemoryTool', () => {
       expect(result).not.toBe(false);
 
       if (result && result.type === 'edit') {
-        const expectedPath = path.join('~', GEMINI_DIR, 'GEMINI.md');
+        const expectedPath = path.join('~', POLLUX_DIR, 'POLLUX.md');
         expect(result.title).toBe(`Confirm Memory Save: ${expectedPath}`);
         expect(result.fileName).toContain(
-          path.join('mock', 'home', GEMINI_DIR),
+          path.join('mock', 'home', POLLUX_DIR),
         );
-        expect(result.fileName).toContain('GEMINI.md');
-        expect(result.fileDiff).toContain('Index: GEMINI.md');
-        expect(result.fileDiff).toContain('+## Gemini Added Memories');
+        expect(result.fileName).toContain('POLLUX.md');
+        expect(result.fileDiff).toContain('Index: POLLUX.md');
+        expect(result.fileDiff).toContain('+## Pollux Added Memories');
         expect(result.fileDiff).toContain('+- Test fact');
         expect(result.originalContent).toBe('');
-        expect(result.newContent).toContain('## Gemini Added Memories');
+        expect(result.newContent).toContain('## Pollux Added Memories');
         expect(result.newContent).toContain('- Test fact');
       }
     });
@@ -284,8 +284,8 @@ describe('MemoryTool', () => {
       const params = { fact: 'Test fact' };
       const memoryFilePath = path.join(
         os.homedir(),
-        GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        POLLUX_DIR,
+        getCurrentPolluxMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -302,8 +302,8 @@ describe('MemoryTool', () => {
       const params = { fact: 'Test fact' };
       const memoryFilePath = path.join(
         os.homedir(),
-        GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        POLLUX_DIR,
+        getCurrentPolluxMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -328,8 +328,8 @@ describe('MemoryTool', () => {
       const params = { fact: 'Test fact' };
       const memoryFilePath = path.join(
         os.homedir(),
-        GEMINI_DIR,
-        getCurrentGeminiMdFilename(),
+        POLLUX_DIR,
+        getCurrentPolluxMdFilename(),
       );
 
       const invocation = memoryTool.build(params);
@@ -353,7 +353,7 @@ describe('MemoryTool', () => {
     it('should handle existing memory file with content', async () => {
       const params = { fact: 'New fact' };
       const existingContent =
-        'Some existing content.\n\n## Gemini Added Memories\n- Old fact\n';
+        'Some existing content.\n\n## Pollux Added Memories\n- Old fact\n';
 
       vi.mocked(fs.readFile).mockResolvedValue(existingContent);
 
@@ -364,9 +364,9 @@ describe('MemoryTool', () => {
       expect(result).not.toBe(false);
 
       if (result && result.type === 'edit') {
-        const expectedPath = path.join('~', GEMINI_DIR, 'GEMINI.md');
+        const expectedPath = path.join('~', POLLUX_DIR, 'POLLUX.md');
         expect(result.title).toBe(`Confirm Memory Save: ${expectedPath}`);
-        expect(result.fileDiff).toContain('Index: GEMINI.md');
+        expect(result.fileDiff).toContain('Index: POLLUX.md');
         expect(result.fileDiff).toContain('+- New fact');
         expect(result.originalContent).toBe(existingContent);
         expect(result.newContent).toContain('- Old fact');

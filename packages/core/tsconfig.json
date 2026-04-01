@@ -7,7 +7,7 @@
     "types": ["node", "vitest/globals"],
     "baseUrl": ".",
     "paths": {
-      "@euxaristia/gemini-cli-core": ["./index.ts"]
+      "@euxaristia/pollux-cli-core": ["./index.ts"]
     }
   },
   "include": ["index.ts", "src/**/*.ts", "src/**/*.json"],

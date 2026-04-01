@@ -11,19 +11,19 @@ import { theme } from '../../semantic-colors.js';
 import { SCREEN_READER_MODEL_PREFIX } from '../../textConstants.js';
 import { useUIState } from '../../contexts/UIStateContext.js';
 
-interface GeminiMessageProps {
+interface PolluxMessageProps {
   text: string;
   isPending: boolean;
   availableTerminalHeight?: number;
   terminalWidth: number;
 }
 
-const GeminiMessageInner = ({
+const PolluxMessageInner = ({
   text,
   isPending,
   availableTerminalHeight,
   terminalWidth,
-}: GeminiMessageProps) => {
+}: PolluxMessageProps) => {
   const { renderMarkdown } = useUIState();
   const prefix = '✦ ';
   const prefixWidth = prefix.length;
@@ -57,5 +57,5 @@ const GeminiMessageInner = ({
   );
 };
 
-export const GeminiMessage = memo(GeminiMessageInner);
-GeminiMessage.displayName = 'GeminiMessage';
+export const PolluxMessage = memo(PolluxMessageInner);
+PolluxMessage.displayName = 'PolluxMessage';

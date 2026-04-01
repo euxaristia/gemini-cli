@@ -53,7 +53,7 @@ vi.mock('node:fs', () => {
   };
 });
 
-// Mock GeminiClient and Config constructor
+// Mock PolluxClient and Config constructor
 vi.mock('../core/baseLlmClient.js');
 vi.mock('../config/config.js');
 

@@ -82,7 +82,7 @@ export interface ReadManyFilesParams {
   useDefaultExcludes?: boolean;
 
   /**
-   * Whether to respect .gitignore and .geminiignore patterns (optional, defaults to true)
+   * Whether to respect .gitignore and .polluxignore patterns (optional, defaults to true)
    */
   file_filtering_options?: {
     respect_git_ignore?: boolean;
@@ -111,7 +111,7 @@ type FileProcessingResult =
 
 /**
  * Creates the default exclusion patterns including dynamic patterns.
- * This combines the shared patterns with dynamic patterns like GEMINI.md.
+ * This combines the shared patterns with dynamic patterns like POLLUX.md.
  * TODO(adh): Consider making this configurable or extendable through a command line argument.
  */
 function getDefaultExcludes(config?: Config): string[] {
@@ -237,10 +237,10 @@ ${finalExclusionPatternsForDescription
             this.params.file_filtering_options?.respect_git_ignore ??
             this.config.getFileFilteringOptions().respectGitIgnore ??
             DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
-          respectGeminiIgnore:
+          respectPolluxIgnore:
             this.params.file_filtering_options?.respect_gemini_ignore ??
-            this.config.getFileFilteringOptions().respectGeminiIgnore ??
-            DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+            this.config.getFileFilteringOptions().respectPolluxIgnore ??
+            DEFAULT_FILE_FILTERING_OPTIONS.respectPolluxIgnore,
         });
 
       for (const relativePath of filteredPaths) {

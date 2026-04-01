@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { ChatRecordingService, type Config } from '@euxaristia/gemini-cli-core';
+import { ChatRecordingService, type Config } from '@euxaristia/pollux-cli-core';
 import { listSessions, deleteSession } from './sessions.js';
 import { SessionSelector, type SessionInfo } from './sessionUtils.js';
 
@@ -20,8 +20,8 @@ vi.mock('./sessionUtils.js', () => ({
   formatRelativeTime: vi.fn(() => 'some time ago'),
 }));
 
-vi.mock('@euxaristia/gemini-cli-core', async () => {
-  const actual = await vi.importActual('@euxaristia/gemini-cli-core');
+vi.mock('@euxaristia/pollux-cli-core', async () => {
+  const actual = await vi.importActual('@euxaristia/pollux-cli-core');
   return {
     ...actual,
     ChatRecordingService: vi.fn(),

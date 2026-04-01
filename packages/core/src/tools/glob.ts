@@ -89,7 +89,7 @@ export interface GlobToolParams {
   respect_git_ignore?: boolean;
 
   /**
-   * Whether to respect .geminiignore patterns (optional, defaults to true)
+   * Whether to respect .polluxignore patterns (optional, defaults to true)
    */
   respect_gemini_ignore?: boolean;
 }
@@ -198,10 +198,10 @@ class GlobToolInvocation extends BaseToolInvocation<
             this.params?.respect_git_ignore ??
             this.config.getFileFilteringOptions().respectGitIgnore ??
             DEFAULT_FILE_FILTERING_OPTIONS.respectGitIgnore,
-          respectGeminiIgnore:
+          respectPolluxIgnore:
             this.params?.respect_gemini_ignore ??
-            this.config.getFileFilteringOptions().respectGeminiIgnore ??
-            DEFAULT_FILE_FILTERING_OPTIONS.respectGeminiIgnore,
+            this.config.getFileFilteringOptions().respectPolluxIgnore ??
+            DEFAULT_FILE_FILTERING_OPTIONS.respectPolluxIgnore,
         });
 
       const filteredAbsolutePaths = new Set(

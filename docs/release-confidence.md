@@ -48,7 +48,7 @@ All workflows in `.github/workflows/chained_e2e.yml` must pass.
 After a release is published to npm, the `smoke-test.yml` workflow runs. This
 must pass to confirm the package is installable and the binary is executable.
 
-- **Command:** `npx -y @euxaristia/gemini-cli@<tag> --version` must return the
+- **Command:** `npx -y @euxaristia/pollux-cli@<tag> --version` must return the
   correct version without error.
 - **Platform:** Currently runs on `ubuntu-latest`.
 
@@ -65,7 +65,7 @@ The weekly release cadence promotes code from `main` -> `nightly` -> `preview`
   least **one week** before being promoted to `stable`.
 - **Action:** Maintainers should install the preview version locally:
   ```bash
-  npm install -g @euxaristia/gemini-cli@preview
+  npm install -g @euxaristia/pollux-cli@preview
   ```
 - **Goal:** To catch regressions and UX issues in day-to-day usage before they
   reach the broad user base.
@@ -77,10 +77,10 @@ manually run through this checklist.
 
 - **Setup:**
   - [ ] Uninstall any existing global version:
-        `npm uninstall -g @euxaristia/gemini-cli`
+        `npm uninstall -g @euxaristia/pollux-cli`
   - [ ] Clear npx cache (optional but recommended): `npm cache clean --force`
   - [ ] Install the preview version:
-        `npm install -g @euxaristia/gemini-cli@preview`
+        `npm install -g @euxaristia/pollux-cli@preview`
   - [ ] Verify version: `gemini --version`
 
 - **Authentication:**
@@ -143,14 +143,14 @@ A bug bash should be considered for any release that involves:
 
 ### Dashboard health
 
-- [ ] Go to `go/gemini-cli-dash`.
+- [ ] Go to `go/pollux-cli-dash`.
 - [ ] Navigate to the "Tool Call" tab.
 - [ ] Validate that there are no spikes in errors for the release you would like
       to promote.
 
 ### Model evaluation
 
-- [ ] Navigate to `go/gemini-cli-offline-evals-dash`.
+- [ ] Navigate to `go/pollux-cli-offline-evals-dash`.
 - [ ] Make sure that the release you want to promote's recurring run is within
       average eval runs.
 

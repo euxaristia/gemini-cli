@@ -1,9 +1,9 @@
 # Gemini CLI (euxaristia fork)
 
-[![License](https://img.shields.io/github/license/google-gemini/gemini-cli)](https://github.com/google-gemini/gemini-cli/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/google-gemini/pollux-cli)](https://github.com/google-gemini/pollux-cli/blob/main/LICENSE)
 
 > **This is a performance-focused fork of
-> [google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli) with
+> [google-gemini/pollux-cli](https://github.com/google-gemini/pollux-cli) with
 > first-class [Bun](https://bun.sh) support.** It tracks upstream closely while
 > optimizing the build and runtime for Bun.
 
@@ -39,8 +39,8 @@ curl -fsSL https://bun.sh/install | bash
 **2. Clone and install:**
 
 ```bash
-git clone https://github.com/euxaristia/gemini-cli.git
-cd gemini-cli
+git clone https://github.com/euxaristia/pollux-cli.git
+cd pollux-cli
 ./install.sh
 ```
 
@@ -50,13 +50,13 @@ install the CLI globally via `bun add -g`.
 ### Install upstream from npm
 
 ```bash
-npm install -g @euxaristia/gemini-cli
+npm install -g @euxaristia/pollux-cli
 ```
 
 ### Run instantly without installing
 
 ```bash
-npx @euxaristia/gemini-cli
+npx @euxaristia/pollux-cli
 ```
 
 ## Building from source
@@ -97,18 +97,18 @@ bun run build
   [Google Search](https://ai.google.dev/gemini-api/docs/grounding) for real-time
   information
 - Conversation checkpointing to save and resume complex sessions
-- Custom context files (GEMINI.md) to tailor behavior for your projects
+- Custom context files (POLLUX.md) to tailor behavior for your projects
 
 ### GitHub Integration
 
 Integrate Gemini CLI directly into your GitHub workflows with
-[**Gemini CLI GitHub Action**](https://github.com/google-github-actions/run-gemini-cli):
+[**Gemini CLI GitHub Action**](https://github.com/google-github-actions/run-pollux-cli):
 
 - **Pull Request Reviews**: Automated code review with contextual feedback and
   suggestions
 - **Issue Triage**: Automated labeling and prioritization of GitHub issues based
   on content analysis
-- **On-demand Assistance**: Mention `@gemini-cli` in issues and pull requests
+- **On-demand Assistance**: Mention `@pollux-cli` in issues and pull requests
   for help with debugging, explanations, or task delegation
 - **Custom Workflows**: Build automated, scheduled and on-demand workflows
   tailored to your team's needs
@@ -238,8 +238,8 @@ gemini
 #### Analyze existing code
 
 ```bash
-git clone https://github.com/google-gemini/gemini-cli
-cd gemini-cli
+git clone https://github.com/google-gemini/pollux-cli
+cd pollux-cli
 gemini
 > Give me a summary of all of the changes that went in yesterday
 ```
@@ -263,7 +263,7 @@ gemini
   (`/help`, `/chat`, etc).
 - [**Custom Commands**](./docs/cli/custom-commands.md) - Create your own
   reusable commands.
-- [**Context Files (GEMINI.md)**](./docs/cli/gemini-md.md) - Provide persistent
+- [**Context Files (POLLUX.md)**](./docs/cli/gemini-md.md) - Provide persistent
   context to Gemini CLI.
 - [**Checkpointing**](./docs/cli/checkpointing.md) - Save and resume
   conversations.
@@ -305,7 +305,7 @@ gemini
 
 ### Using MCP Servers
 
-Configure MCP servers in `~/.gemini/settings.json` to extend Gemini CLI with
+Configure MCP servers in `~/.pollux/settings.json` to extend Gemini CLI with
 custom tools:
 
 ```text
@@ -337,11 +337,11 @@ for planned features and priorities.
 
 - **[Official Roadmap](./ROADMAP.md)** - See what's coming next.
 - **[Changelog](./docs/changelogs/index.md)** - See recent notable updates.
-- **[NPM Package](https://www.npmjs.com/package/@euxaristia/gemini-cli)** -
+- **[NPM Package](https://www.npmjs.com/package/@euxaristia/pollux-cli)** -
   Package registry.
-- **[GitHub Issues](https://github.com/google-gemini/gemini-cli/issues)** -
+- **[GitHub Issues](https://github.com/google-gemini/pollux-cli/issues)** -
   Report bugs or request features.
-- **[Security Advisories](https://github.com/google-gemini/gemini-cli/security/advisories)** -
+- **[Security Advisories](https://github.com/google-gemini/pollux-cli/security/advisories)** -
   Security updates.
 
 ### Uninstall

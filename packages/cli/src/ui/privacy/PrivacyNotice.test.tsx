@@ -11,13 +11,13 @@ import type {
   AuthType,
   Config,
   ContentGeneratorConfig,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 // Mock child components
-vi.mock('./GeminiPrivacyNotice.js', async () => {
+vi.mock('./PolluxPrivacyNotice.js', async () => {
   const { Text } = await import('ink');
   return {
-    GeminiPrivacyNotice: () => <Text>GeminiPrivacyNotice</Text>,
+    PolluxPrivacyNotice: () => <Text>PolluxPrivacyNotice</Text>,
   };
 });
 
@@ -48,7 +48,7 @@ describe('PrivacyNotice', () => {
   it.each([
     {
       authType: 'gemini-api-key' as AuthType,
-      expectedComponent: 'GeminiPrivacyNotice',
+      expectedComponent: 'PolluxPrivacyNotice',
     },
     {
       authType: 'vertex-ai' as AuthType,

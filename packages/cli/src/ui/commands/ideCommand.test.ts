@@ -15,10 +15,10 @@ import {
 } from 'vitest';
 import { ideCommand } from './ideCommand.js';
 import { type CommandContext } from './types.js';
-import { IDE_DEFINITIONS } from '@euxaristia/gemini-cli-core';
-import * as core from '@euxaristia/gemini-cli-core';
+import { IDE_DEFINITIONS } from '@euxaristia/pollux-cli-core';
+import * as core from '@euxaristia/pollux-cli-core';
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const original = await importOriginal<typeof core>();
   return {
     ...original,

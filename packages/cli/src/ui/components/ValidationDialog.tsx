@@ -14,7 +14,7 @@ import {
   openBrowserSecurely,
   shouldLaunchBrowser,
   type ValidationIntent,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { useKeypress } from '../hooks/useKeypress.js';
 import { Command } from '../key/keyMatchers.js';
 import { useKeyMatchers } from '../hooks/useKeyMatchers.js';

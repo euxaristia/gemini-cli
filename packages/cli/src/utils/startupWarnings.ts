@@ -7,9 +7,9 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import { join as pathJoin } from 'node:path';
-import { getErrorMessage } from '@euxaristia/gemini-cli-core';
+import { getErrorMessage } from '@euxaristia/pollux-cli-core';
 
-const warningsFilePath = pathJoin(os.tmpdir(), 'gemini-cli-warnings.txt');
+const warningsFilePath = pathJoin(os.tmpdir(), 'pollux-cli-warnings.txt');
 
 export async function getStartupWarnings(): Promise<string[]> {
   try {

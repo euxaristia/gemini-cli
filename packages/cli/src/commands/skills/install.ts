@@ -9,7 +9,7 @@ import {
   debugLogger,
   type SkillDefinition,
   getErrorMessage,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { exitCli } from '../utils.js';
 import { installSkill } from '../../utils/skillUtils.js';
 import chalk from 'chalk';

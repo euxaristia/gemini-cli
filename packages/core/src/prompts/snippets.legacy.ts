@@ -382,10 +382,10 @@ export function renderUserMemory(memory?: string | HierarchicalMemory): string {
     const trimmed = memory.trim();
     if (trimmed.length === 0) return '';
     return `
-# Contextual Instructions (GEMINI.md)
+# Contextual Instructions (POLLUX.md)
 The following content is loaded from local and global configuration files.
 **Context Precedence:**
-- **Global (~/.gemini/):** foundational user preferences. Apply these broadly.
+- **Global (~/.pollux/):** foundational user preferences. Apply these broadly.
 - **Extensions:** supplementary knowledge and capabilities.
 - **Workspace Root:** workspace-wide mandates. Supersedes global preferences.
 - **Sub-directories:** highly specific overrides. These rules supersede all others for files within their scope.

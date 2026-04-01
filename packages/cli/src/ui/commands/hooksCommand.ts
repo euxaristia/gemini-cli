@@ -14,8 +14,8 @@ import { CommandKind } from './types.js';
 import type {
   HookRegistryEntry,
   MessageActionReturn,
-} from '@euxaristia/gemini-cli-core';
-import { getErrorMessage } from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
+import { getErrorMessage } from '@euxaristia/pollux-cli-core';
 import { SettingScope, isLoadableSettingScope } from '../../config/settings.js';
 import { enableHook, disableHook } from '../../utils/hookSettings.js';
 import { renderHookActionFeedback } from '../../utils/hookUtils.js';

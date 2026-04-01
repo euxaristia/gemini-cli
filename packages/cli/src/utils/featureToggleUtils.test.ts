@@ -28,11 +28,11 @@ function createMockLoadedSettings(opts: {
   > = {
     [SettingScope.User]: {
       settings: opts.userSettings ?? {},
-      path: opts.userPath ?? '/home/user/.gemini/settings.json',
+      path: opts.userPath ?? '/home/user/.pollux/settings.json',
     },
     [SettingScope.Workspace]: {
       settings: opts.workspaceSettings ?? {},
-      path: opts.workspacePath ?? '/project/.gemini/settings.json',
+      path: opts.workspacePath ?? '/project/.pollux/settings.json',
     },
   };
 

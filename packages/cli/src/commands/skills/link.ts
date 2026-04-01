@@ -5,7 +5,7 @@
  */
 
 import type { CommandModule } from 'yargs';
-import { debugLogger, getErrorMessage } from '@euxaristia/gemini-cli-core';
+import { debugLogger, getErrorMessage } from '@euxaristia/pollux-cli-core';
 import chalk from 'chalk';
 
 import { exitCli } from '../utils.js';

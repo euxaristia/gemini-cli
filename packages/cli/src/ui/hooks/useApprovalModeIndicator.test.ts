@@ -21,15 +21,15 @@ import {
   Config,
   ApprovalMode,
   type Config as ActualConfigType,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { useKeypress, type Key } from './useKeypress.js';
 import { MessageType } from '../types.js';
 
 vi.mock('./useKeypress.js');
 
-vi.mock('@euxaristia/gemini-cli-core', async () => {
+vi.mock('@euxaristia/pollux-cli-core', async () => {
   const actualServerModule = await vi.importActual(
-    '@euxaristia/gemini-cli-core',
+    '@euxaristia/pollux-cli-core',
   );
   return {
     ...actualServerModule,
@@ -57,7 +57,7 @@ interface MockConfigInstanceShape {
 
   getUserAgent: Mock<() => string>;
   getUserMemory: Mock<() => string>;
-  getGeminiMdFileCount: Mock<() => number>;
+  getPolluxMdFileCount: Mock<() => number>;
   getToolRegistry: Mock<() => { discoverTools: Mock<() => void> }>;
   getRemoteAdminSettings: Mock<
     () => { strictModeDisabled?: boolean; mcpEnabled?: boolean } | undefined
@@ -113,7 +113,7 @@ describe('useApprovalModeIndicator', () => {
           () => string
         >,
         getUserMemory: vi.fn().mockReturnValue('') as Mock<() => string>,
-        getGeminiMdFileCount: vi.fn().mockReturnValue(0) as Mock<() => number>,
+        getPolluxMdFileCount: vi.fn().mockReturnValue(0) as Mock<() => number>,
         getToolRegistry: vi
           .fn()
           .mockReturnValue({ discoverTools: vi.fn() }) as Mock<

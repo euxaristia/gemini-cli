@@ -9,7 +9,7 @@ import { RELAUNCH_EXIT_CODE } from './processUtils.js';
 import {
   writeToStderr,
   type AdminControlsSettings,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 export async function relaunchOnExitCode(runner: () => Promise<number>) {
   while (true) {
@@ -36,7 +36,7 @@ export async function relaunchAppInChildProcess(
   additionalScriptArgs: string[],
   remoteAdminSettings?: AdminControlsSettings,
 ) {
-  if (process.env['GEMINI_CLI_NO_RELAUNCH']) {
+  if (process.env['POLLUX_CLI_NO_RELAUNCH']) {
     return;
   }
 
@@ -55,7 +55,7 @@ export async function relaunchAppInChildProcess(
       ...additionalScriptArgs,
       ...scriptArgs,
     ];
-    const newEnv = { ...process.env, GEMINI_CLI_NO_RELAUNCH: 'true' };
+    const newEnv = { ...process.env, POLLUX_CLI_NO_RELAUNCH: 'true' };
 
     // The parent process should not be reading from stdin while the child is running.
     process.stdin.pause();

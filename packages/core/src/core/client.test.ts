@@ -15,7 +15,7 @@ import {
 } from 'vitest';
 
 import type { Content, GenerateContentResponse, Part } from '@google/genai';
-import { GeminiClient } from './client.js';
+import { PolluxClient } from './client.js';
 import {
   AuthType,
   type ContentGenerator,
@@ -161,7 +161,7 @@ async function fromAsync<T>(promise: AsyncGenerator<T>): Promise<readonly T[]> {
 describe('Gemini Client (client.ts)', () => {
   let mockContentGenerator: ContentGenerator;
   let mockConfig: Config;
-  let client: GeminiClient;
+  let client: PolluxClient;
   let mockGenerateContentFn: Mock;
   let mockRouterService: { route: Mock };
   beforeEach(async () => {
@@ -189,7 +189,7 @@ describe('Gemini Client (client.ts)', () => {
       countTokens: vi.fn().mockResolvedValue({ totalTokens: 100 }),
     } as unknown as ContentGenerator;
 
-    // Because the GeminiClient constructor kicks off an async process (startChat)
+    // Because the PolluxClient constructor kicks off an async process (startChat)
     // that depends on a fully-formed Config object, we need to mock the
     // entire implementation of Config for these tests.
     const mockToolRegistry = {
@@ -238,7 +238,7 @@ describe('Gemini Client (client.ts)', () => {
       getWorkspaceContext: vi.fn().mockReturnValue({
         getDirectories: vi.fn().mockReturnValue(['/test/dir']),
       }),
-      getGeminiClient: vi.fn(),
+      getPolluxClient: vi.fn(),
       getRetryFetchErrors: vi.fn().mockReturnValue(true),
       getMaxAttempts: vi.fn().mockReturnValue(3),
       getModelRouterService: vi
@@ -300,10 +300,10 @@ describe('Gemini Client (client.ts)', () => {
     (mockConfig as unknown as { config: Config; promptId: string }).promptId =
       'test-prompt-id';
 
-    client = new GeminiClient(mockConfig as unknown as AgentLoopContext);
+    client = new PolluxClient(mockConfig as unknown as AgentLoopContext);
     await client.initialize();
-    vi.mocked(mockConfig.getGeminiClient).mockReturnValue(client);
-    (mockConfig as unknown as { geminiClient: GeminiClient }).geminiClient =
+    vi.mocked(mockConfig.getPolluxClient).mockReturnValue(client);
+    (mockConfig as unknown as { polluxClient: PolluxClient }).polluxClient =
       client;
 
     vi.mocked(uiTelemetryService.setLastPromptTokenCount).mockClear();
@@ -411,7 +411,7 @@ describe('Gemini Client (client.ts)', () => {
 
       // The first message should be the environment context
       expect(history[0].role).toBe('user');
-      expect(history[0].parts?.[0]?.text).toContain('This is the Gemini CLI');
+      expect(history[0].parts?.[0]?.text).toContain('This is the Pollux');
       expect(history[0].parts?.[0]?.text).toContain(
         "The project's temporary directory is:",
       );

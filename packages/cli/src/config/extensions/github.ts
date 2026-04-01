@@ -10,7 +10,7 @@ import {
   getErrorMessage,
   type ExtensionInstallMetadata,
   type GeminiCLIExtension,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { ExtensionUpdateState } from '../../ui/state/extensions.js';
 import * as os from 'node:os';
 import * as https from 'node:https';
@@ -521,7 +521,7 @@ export async function downloadFile(
   redirectCount: number = 0,
 ): Promise<void> {
   const headers: Record<string, string> = {
-    'User-agent': 'gemini-cli',
+    'User-agent': 'pollux-cli',
     Accept: 'application/octet-stream',
     ...options?.headers,
   };

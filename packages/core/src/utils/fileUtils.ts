@@ -7,6 +7,7 @@
 import fs from 'node:fs';
 import fsPromises from 'node:fs/promises';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import type { PartUnion } from '@google/genai';
 import mime from 'mime/lite';
 import type { FileSystemService } from '../services/fileSystemService.js';
@@ -21,6 +22,66 @@ import {
 } from './constants.js';
 
 const requireModule = createModuleRequire(import.meta.url);
+
+/**
+ * Writes content to a file atomically by first writing to a temporary file
+ * and then renaming it to the destination. This prevents partial writes
+ * and race conditions where multiple processes try to write to the same file.
+ */
+export async function writeFileAtomic(
+  filePath: string,
+  content: string | Buffer,
+  encoding: BufferEncoding = 'utf-8',
+): Promise<void> {
+  const dir = path.dirname(filePath);
+  await fsPromises.mkdir(dir, { recursive: true });
+
+  const tmpPath = `${filePath}.${crypto.randomUUID()}.tmp`;
+  try {
+    await fsPromises.writeFile(tmpPath, content, encoding);
+    await fsPromises.rename(tmpPath, filePath);
+  } catch (error) {
+    // Cleanup temp file if it was created and rename failed
+    if (fs.existsSync(tmpPath)) {
+      try {
+        await fsPromises.unlink(tmpPath);
+      } catch (e) {
+        debugLogger.error(`Failed to cleanup temp file ${tmpPath}:`, e);
+      }
+    }
+    throw error;
+  }
+}
+
+/**
+ * Synchronous version of writeFileAtomic.
+ */
+export function writeFileSyncAtomic(
+  filePath: string,
+  content: string | Buffer,
+  encoding: BufferEncoding = 'utf-8',
+): void {
+  const dir = path.dirname(filePath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  const tmpPath = `${filePath}.${crypto.randomUUID()}.tmp`;
+  try {
+    fs.writeFileSync(tmpPath, content, encoding);
+    fs.renameSync(tmpPath, filePath);
+  } catch (error) {
+    // Cleanup temp file if it was created and rename failed
+    if (fs.existsSync(tmpPath)) {
+      try {
+        fs.unlinkSync(tmpPath);
+      } catch (e) {
+        debugLogger.error(`Failed to cleanup temp file ${tmpPath}:`, e);
+      }
+    }
+    throw error;
+  }
+}
 
 export async function readWasmBinaryFromDisk(
   specifier: string,

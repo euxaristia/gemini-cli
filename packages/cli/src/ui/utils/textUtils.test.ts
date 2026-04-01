@@ -8,7 +8,7 @@ import { describe, it, expect } from 'vitest';
 import type {
   SerializableConfirmationDetails,
   ToolEditConfirmationDetails,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   escapeAnsiCtrlCodes,
   stripUnsafeCharacters,

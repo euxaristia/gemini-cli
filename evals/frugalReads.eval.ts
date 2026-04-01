@@ -9,7 +9,7 @@ import { evalTest } from './test-helper.js';
 import {
   READ_FILE_TOOL_NAME,
   EDIT_TOOL_NAME,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 describe('Frugal reads eval', () => {
   /**

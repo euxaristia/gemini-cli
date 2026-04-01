@@ -7,15 +7,15 @@
 import fs from 'node:fs/promises';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     Storage: {
       // eslint-disable-next-line @typescript-eslint/no-misused-spread
       ...actual.Storage,
-      getGlobalGeminiDir: () => '/virtual-home/.gemini',
+      getGlobalPolluxDir: () => '/virtual-home/.pollux',
     },
   };
 });

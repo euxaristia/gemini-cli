@@ -30,8 +30,8 @@ vi.mock('./extensions/validate.js', () => ({
   validateCommand: { command: 'validate' },
 }));
 
-// Mock gemini.js
-vi.mock('../gemini.js', () => ({
+// Mock pollux.js
+vi.mock('../pollux.js', () => ({
   initializeOutputListenersAndFlush: vi.fn(),
 }));
 

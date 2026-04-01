@@ -19,7 +19,7 @@ import {
   isOverageEligibleModel,
   getDisplayString,
   type GeminiUserTier,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { type UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType } from '../types.js';

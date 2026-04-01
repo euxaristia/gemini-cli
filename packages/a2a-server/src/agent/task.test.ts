@@ -12,16 +12,16 @@ import {
   type ToolCallRequestInfo,
   type GitService,
   type CompletedToolCall,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { createMockConfig } from '../utils/testing_utils.js';
 import type { ExecutionEventBus, RequestContext } from '@a2a-js/sdk/server';
 import { CoderAgentEvent } from '../types.js';
 
 const mockProcessRestorableToolCalls = vi.hoisted(() => vi.fn());
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...original,
     processRestorableToolCalls: mockProcessRestorableToolCalls,
@@ -381,7 +381,7 @@ describe('Task', () => {
   describe('currentPromptId and promptCount', () => {
     it('should correctly initialize and update promptId and promptCount', async () => {
       const mockConfig = createMockConfig();
-      mockConfig.getGeminiClient = vi.fn().mockReturnValue({
+      mockConfig.getPolluxClient = vi.fn().mockReturnValue({
         sendMessageStream: vi.fn().mockReturnValue((async function* () {})()),
       });
       mockConfig.getSessionId = () => 'test-session-id';

@@ -35,19 +35,19 @@ Note that Gemini CLI comes pre-installed on
 ### Install globally with npm
 
 ```bash
-npm install -g @euxaristia/gemini-cli
+npm install -g @euxaristia/pollux-cli
 ```
 
 ### Install globally with Homebrew (macOS/Linux)
 
 ```bash
-brew install gemini-cli
+brew install pollux-cli
 ```
 
 ### Install globally with MacPorts (macOS)
 
 ```bash
-sudo port install gemini-cli
+sudo port install pollux-cli
 ```
 
 ### Install with Anaconda (for restricted environments)
@@ -58,7 +58,7 @@ conda create -y -n gemini_env -c conda-forge nodejs
 conda activate gemini_env
 
 # Install Gemini CLI globally via npm (inside the environment)
-npm install -g @euxaristia/gemini-cli
+npm install -g @euxaristia/pollux-cli
 ```
 
 ## Run Gemini CLI
@@ -82,14 +82,14 @@ You can also run Gemini CLI using one of the following advanced methods:
 
 ```bash
 # Using npx (no installation required)
-npx @euxaristia/gemini-cli
+npx @euxaristia/pollux-cli
 ```
 
 You can also execute the CLI directly from the main branch on GitHub, which is
 helpful for testing features still in development:
 
 ```bash
-npx https://github.com/google-gemini/gemini-cli
+npx https://github.com/google-gemini/pollux-cli
 ```
 
 ### Run in a sandbox (Docker/Podman)
@@ -102,7 +102,7 @@ the default way that the CLI executes tools that might have side effects.
   to run the CLI.
   ```bash
   # Run the published sandbox image
-  docker run --rm -it us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.1
+  docker run --rm -it us-docker.pkg.dev/gemini-code-dev/pollux-cli/sandbox:0.1.1
   ```
 - **Using the `--sandbox` flag:** If you have Gemini CLI installed locally
   (using the standard installation described above), you can instruct it to run
@@ -148,8 +148,8 @@ by default:
 
 ```bash
 # Both commands install the latest stable release.
-npm install -g @euxaristia/gemini-cli
-npm install -g @euxaristia/gemini-cli@latest
+npm install -g @euxaristia/pollux-cli
+npm install -g @euxaristia/pollux-cli@latest
 ```
 
 ### Preview
@@ -159,7 +159,7 @@ vetted and may contain regressions or other outstanding issues. Try out the
 preview release by using the `preview` tag:
 
 ```bash
-npm install -g @euxaristia/gemini-cli@preview
+npm install -g @euxaristia/pollux-cli@preview
 ```
 
 ### Nightly
@@ -170,5 +170,5 @@ pending validations and issues. You can help test the latest changes by
 installing with the `nightly` tag:
 
 ```bash
-npm install -g @euxaristia/gemini-cli@nightly
+npm install -g @euxaristia/pollux-cli@nightly
 ```

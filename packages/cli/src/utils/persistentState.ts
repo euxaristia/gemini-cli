@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Storage, debugLogger } from '@euxaristia/gemini-cli-core';
+import { Storage, debugLogger, writeFileSyncAtomic } from '@euxaristia/pollux-cli-core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
@@ -26,7 +26,7 @@ export class PersistentState {
 
   private getPath(): string {
     if (!this.filePath) {
-      this.filePath = path.join(Storage.getGlobalGeminiDir(), STATE_FILENAME);
+      this.filePath = path.join(Storage.getGlobalPolluxDir(), STATE_FILENAME);
     }
     return this.filePath;
   }
@@ -56,11 +56,7 @@ export class PersistentState {
     if (!this.cache) return;
     try {
       const filePath = this.getPath();
-      const dir = path.dirname(filePath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
-      fs.writeFileSync(filePath, JSON.stringify(this.cache, null, 2));
+      writeFileSyncAtomic(filePath, JSON.stringify(this.cache, null, 2));
     } catch (error) {
       debugLogger.warn('Failed to save persistent state:', error);
     }

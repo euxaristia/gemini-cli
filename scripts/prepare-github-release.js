@@ -39,9 +39,9 @@ fs.writeFileSync(
 );
 console.log('Wrote .npmrc for @google-gemini scope to packages/core/');
 
-// Update @euxaristia/gemini-cli
+// Update @euxaristia/pollux-cli
 updatePackageJson('packages/cli/package.json', (pkg) => {
-  pkg.name = '@google-gemini/gemini-cli';
+  pkg.name = '@google-gemini/pollux-cli';
   pkg.files = ['bundle/'];
   pkg.bin = {
     gemini: 'bundle/gemini.js',
@@ -55,14 +55,14 @@ updatePackageJson('packages/cli/package.json', (pkg) => {
   delete pkg.config; // Deletes the sandboxImageUri
 });
 
-// Update @euxaristia/gemini-cli-a2a-server
+// Update @euxaristia/pollux-cli-a2a-server
 updatePackageJson('packages/a2a-server/package.json', (pkg) => {
-  pkg.name = '@google-gemini/gemini-cli-a2a-server';
+  pkg.name = '@google-gemini/pollux-cli-a2a-server';
 });
 
-// Update @euxaristia/gemini-cli-core
+// Update @euxaristia/pollux-cli-core
 updatePackageJson('packages/core/package.json', (pkg) => {
-  pkg.name = '@google-gemini/gemini-cli-core';
+  pkg.name = '@google-gemini/pollux-cli-core';
 });
 
 console.log('Successfully prepared packages for GitHub release.');

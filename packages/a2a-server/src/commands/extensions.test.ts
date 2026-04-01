@@ -9,9 +9,9 @@ import { ExtensionsCommand, ListExtensionsCommand } from './extensions.js';
 import type { CommandContext } from './types.js';
 
 const mockListExtensions = vi.hoisted(() => vi.fn());
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
 
   return {
     ...original,

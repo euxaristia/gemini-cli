@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { debugLogger, isGitRepository } from '@euxaristia/gemini-cli-core';
+import { debugLogger, isGitRepository } from '@euxaristia/pollux-cli-core';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as childProcess from 'node:child_process';
@@ -113,7 +113,7 @@ export function getInstallationInfo(
     if (process.platform === 'darwin') {
       try {
         const brewPrefix = childProcess
-          .execSync('brew --prefix gemini-cli', {
+          .execSync('brew --prefix pollux-cli', {
             encoding: 'utf8',
             stdio: ['ignore', 'pipe', 'ignore'],
           })
@@ -125,11 +125,11 @@ export function getInstallationInfo(
             packageManager: PackageManager.HOMEBREW,
             isGlobal: true,
             updateMessage:
-              'Installed via Homebrew. Please update with "brew upgrade gemini-cli".',
+              'Installed via Homebrew. Please update with "brew upgrade pollux-cli".',
           };
         }
       } catch (_error) {
-        // Brew is not installed or gemini-cli is not installed via brew.
+        // Brew is not installed or pollux-cli is not installed via brew.
         // Continue to the next check.
       }
     }
@@ -139,7 +139,7 @@ export function getInstallationInfo(
       realPath.includes('/.pnpm/global') ||
       realPath.includes('/.local/share/pnpm')
     ) {
-      let updateCommand = 'pnpm add -g @euxaristia/gemini-cli@latest';
+      let updateCommand = 'pnpm add -g @euxaristia/pollux-cli@latest';
       const needsSudo =
         process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
       if (needsSudo) {
@@ -160,7 +160,7 @@ export function getInstallationInfo(
 
     // Check for yarn
     if (realPath.includes('/.yarn/global')) {
-      let updateCommand = 'yarn global add @euxaristia/gemini-cli@latest';
+      let updateCommand = 'yarn global add @euxaristia/pollux-cli@latest';
       const needsSudo =
         process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
       if (needsSudo) {
@@ -188,7 +188,7 @@ export function getInstallationInfo(
       };
     }
     if (realPath.includes('/.bun/install/global')) {
-      let updateCommand = 'bun add -g @euxaristia/gemini-cli@latest';
+      let updateCommand = 'bun add -g @euxaristia/pollux-cli@latest';
       const needsSudo =
         process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
       if (needsSudo) {
@@ -229,7 +229,7 @@ export function getInstallationInfo(
     }
 
     // Assume global npm
-    let updateCommand = 'npm install -g @euxaristia/gemini-cli@latest';
+    let updateCommand = 'npm install -g @euxaristia/pollux-cli@latest';
     const needsSudo =
       process.platform !== 'win32' && !isRoot() && !isWritable(cliDir);
     if (needsSudo) {

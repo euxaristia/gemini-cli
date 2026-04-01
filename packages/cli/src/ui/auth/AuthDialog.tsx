@@ -18,7 +18,7 @@ import {
   AuthType,
   clearCachedCredentialFile,
   type Config,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { useKeypress } from '../hooks/useKeypress.js';
 import { AuthState } from '../types.js';
 import { validateAuthMethodWithSettings } from './useAuth.js';
@@ -56,7 +56,7 @@ export function AuthDialog({
             key: AuthType.COMPUTE_ADC,
           },
         ]
-      : process.env['GEMINI_CLI_USE_COMPUTE_ADC'] === 'true'
+      : process.env['POLLUX_CLI_USE_COMPUTE_ADC'] === 'true'
         ? [
             {
               label: 'Use metadata server application default credentials',

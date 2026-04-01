@@ -11,7 +11,7 @@ import {
   EXTENSION_SETTINGS_FILENAME,
   EXTENSIONS_CONFIG_FILENAME,
 } from './variables.js';
-import { Storage, homedir } from '@euxaristia/gemini-cli-core';
+import { Storage, homedir } from '@euxaristia/pollux-cli-core';
 
 export class ExtensionStorage {
   private readonly extensionName: string;

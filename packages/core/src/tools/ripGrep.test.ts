@@ -26,7 +26,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import type { Config } from '../config/config.js';
 import { Storage } from '../config/storage.js';
-import { GEMINI_IGNORE_FILE_NAME } from '../config/constants.js';
+import { POLLUX_IGNORE_FILE_NAME } from '../config/constants.js';
 import { createMockWorkspaceContext } from '../test-utils/mockWorkspaceContext.js';
 import { spawn, type ChildProcess } from 'node:child_process';
 import { PassThrough, Readable } from 'node:stream';
@@ -258,10 +258,10 @@ describe('RipGrepTool', () => {
     getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
     getDebugMode: () => false,
     getFileFilteringRespectGitIgnore: () => true,
-    getFileFilteringRespectGeminiIgnore: () => true,
+    getFileFilteringRespectPolluxIgnore: () => true,
     getFileFilteringOptions: () => ({
       respectGitIgnore: true,
-      respectGeminiIgnore: true,
+      respectPolluxIgnore: true,
     }),
   } as unknown as Config;
 
@@ -284,10 +284,10 @@ describe('RipGrepTool', () => {
       getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
       getDebugMode: () => false,
       getFileFilteringRespectGitIgnore: () => true,
-      getFileFilteringRespectGeminiIgnore: () => true,
+      getFileFilteringRespectPolluxIgnore: () => true,
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectPolluxIgnore: true,
       }),
       storage: {
         getProjectTempDir: vi.fn().mockReturnValue('/tmp/project'),
@@ -706,13 +706,13 @@ describe('RipGrepTool', () => {
     }, 10000);
 
     it('should filter out files based on FileDiscoveryService even if ripgrep returns them', async () => {
-      // Create .geminiignore to ignore 'ignored.txt'
+      // Create .polluxignore to ignore 'ignored.txt'
       await fs.writeFile(
-        path.join(tempRootDir, GEMINI_IGNORE_FILE_NAME),
+        path.join(tempRootDir, POLLUX_IGNORE_FILE_NAME),
         'ignored.txt',
       );
 
-      // Re-initialize tool so FileDiscoveryService loads the new .geminiignore
+      // Re-initialize tool so FileDiscoveryService loads the new .polluxignore
       const toolWithIgnore = new RipGrepTool(
         mockConfig,
         createMockMessageBus(),
@@ -869,10 +869,10 @@ describe('RipGrepTool', () => {
           createMockWorkspaceContext(tempRootDir, [secondDir]),
         getDebugMode: () => false,
         getFileFilteringRespectGitIgnore: () => true,
-        getFileFilteringRespectGeminiIgnore: () => true,
+        getFileFilteringRespectPolluxIgnore: () => true,
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectPolluxIgnore: true,
         }),
         storage: {
           getProjectTempDir: vi.fn().mockReturnValue('/tmp/project'),
@@ -982,10 +982,10 @@ describe('RipGrepTool', () => {
           createMockWorkspaceContext(tempRootDir, [secondDir]),
         getDebugMode: () => false,
         getFileFilteringRespectGitIgnore: () => true,
-        getFileFilteringRespectGeminiIgnore: () => true,
+        getFileFilteringRespectPolluxIgnore: () => true,
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectPolluxIgnore: true,
         }),
         storage: {
           getProjectTempDir: vi.fn().mockReturnValue('/tmp/project'),
@@ -1524,10 +1524,10 @@ describe('RipGrepTool', () => {
         getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
         getDebugMode: () => false,
         getFileFilteringRespectGitIgnore: () => false,
-        getFileFilteringRespectGeminiIgnore: () => true,
+        getFileFilteringRespectPolluxIgnore: () => true,
         getFileFilteringOptions: () => ({
           respectGitIgnore: false,
-          respectGeminiIgnore: true,
+          respectPolluxIgnore: true,
         }),
         storage: {
           getProjectTempDir: vi.fn().mockReturnValue('/tmp/project'),
@@ -1582,18 +1582,18 @@ describe('RipGrepTool', () => {
       );
     });
 
-    it('should add .geminiignore when enabled and patterns exist', async () => {
-      const geminiIgnorePath = path.join(tempRootDir, GEMINI_IGNORE_FILE_NAME);
-      await fs.writeFile(geminiIgnorePath, 'ignored.log');
-      const configWithGeminiIgnore = {
+    it('should add .polluxignore when enabled and patterns exist', async () => {
+      const polluxIgnorePath = path.join(tempRootDir, POLLUX_IGNORE_FILE_NAME);
+      await fs.writeFile(polluxIgnorePath, 'ignored.log');
+      const configWithPolluxIgnore = {
         getTargetDir: () => tempRootDir,
         getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
         getDebugMode: () => false,
         getFileFilteringRespectGitIgnore: () => true,
-        getFileFilteringRespectGeminiIgnore: () => true,
+        getFileFilteringRespectPolluxIgnore: () => true,
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectPolluxIgnore: true,
         }),
         storage: {
           getProjectTempDir: vi.fn().mockReturnValue('/tmp/project'),
@@ -1617,8 +1617,8 @@ describe('RipGrepTool', () => {
           return `Path not in workspace: Attempted path "${absolutePath}" resolves outside the allowed workspace directories: ${workspaceDirs.join(', ')} or the project temp directory: ${projectTempDir}`;
         },
       } as unknown as Config;
-      const geminiIgnoreTool = new RipGrepTool(
-        configWithGeminiIgnore,
+      const polluxIgnoreTool = new RipGrepTool(
+        configWithPolluxIgnore,
         createMockMessageBus(),
       );
 
@@ -1638,28 +1638,28 @@ describe('RipGrepTool', () => {
       );
 
       const params: RipGrepToolParams = { pattern: 'secret' };
-      const invocation = geminiIgnoreTool.build(params);
+      const invocation = polluxIgnoreTool.build(params);
       await invocation.execute(abortSignal);
 
       expect(mockSpawn).toHaveBeenLastCalledWith(
         expect.anything(),
-        expect.arrayContaining(['--ignore-file', geminiIgnorePath]),
+        expect.arrayContaining(['--ignore-file', polluxIgnorePath]),
         expect.anything(),
       );
     });
 
-    it('should skip .geminiignore when disabled', async () => {
-      const geminiIgnorePath = path.join(tempRootDir, GEMINI_IGNORE_FILE_NAME);
-      await fs.writeFile(geminiIgnorePath, 'ignored.log');
-      const configWithoutGeminiIgnore = {
+    it('should skip .polluxignore when disabled', async () => {
+      const polluxIgnorePath = path.join(tempRootDir, POLLUX_IGNORE_FILE_NAME);
+      await fs.writeFile(polluxIgnorePath, 'ignored.log');
+      const configWithoutPolluxIgnore = {
         getTargetDir: () => tempRootDir,
         getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
         getDebugMode: () => false,
         getFileFilteringRespectGitIgnore: () => true,
-        getFileFilteringRespectGeminiIgnore: () => false,
+        getFileFilteringRespectPolluxIgnore: () => false,
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: false,
+          respectPolluxIgnore: false,
         }),
         storage: {
           getProjectTempDir: vi.fn().mockReturnValue('/tmp/project'),
@@ -1683,8 +1683,8 @@ describe('RipGrepTool', () => {
           return `Path not in workspace: Attempted path "${absolutePath}" resolves outside the allowed workspace directories: ${workspaceDirs.join(', ')} or the project temp directory: ${projectTempDir}`;
         },
       } as unknown as Config;
-      const geminiIgnoreTool = new RipGrepTool(
-        configWithoutGeminiIgnore,
+      const polluxIgnoreTool = new RipGrepTool(
+        configWithoutPolluxIgnore,
         createMockMessageBus(),
       );
 
@@ -1704,12 +1704,12 @@ describe('RipGrepTool', () => {
       );
 
       const params: RipGrepToolParams = { pattern: 'secret' };
-      const invocation = geminiIgnoreTool.build(params);
+      const invocation = polluxIgnoreTool.build(params);
       await invocation.execute(abortSignal);
 
       expect(mockSpawn).toHaveBeenLastCalledWith(
         expect.anything(),
-        expect.not.arrayContaining(['--ignore-file', geminiIgnorePath]),
+        expect.not.arrayContaining(['--ignore-file', polluxIgnorePath]),
         expect.anything(),
       );
     });
@@ -1833,7 +1833,7 @@ describe('RipGrepTool', () => {
         getDebugMode: () => false,
         getFileFilteringOptions: () => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectPolluxIgnore: true,
         }),
         storage: {
           getProjectTempDir: vi.fn().mockReturnValue('/tmp/project'),

@@ -13,7 +13,7 @@ import {
   type ToolInvocation,
   Kind,
   type MessageBus,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { SessionContext } from './types.js';
 
 export { z };

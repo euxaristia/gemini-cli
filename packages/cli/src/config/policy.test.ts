@@ -15,12 +15,12 @@ import {
   disableWorkspacePolicies,
   setDisableWorkspacePolicies,
 } from './policy.js';
-import { writeToStderr } from '@euxaristia/gemini-cli-core';
+import { writeToStderr } from '@euxaristia/pollux-cli-core';
 
 // Mock debugLogger to avoid noise in test output
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     debugLogger: {
@@ -39,13 +39,13 @@ describe('resolveWorkspacePolicyState', () => {
 
   beforeEach(() => {
     // Create a temporary directory for the test
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gemini-cli-test-'));
-    // Redirect GEMINI_CLI_HOME to the temp directory to isolate integrity storage
-    vi.stubEnv('GEMINI_CLI_HOME', tempDir);
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pollux-cli-test-'));
+    // Redirect POLLUX_CLI_HOME to the temp directory to isolate integrity storage
+    vi.stubEnv('POLLUX_CLI_HOME', tempDir);
 
     workspaceDir = path.join(tempDir, 'workspace');
     fs.mkdirSync(workspaceDir);
-    policiesDir = path.join(workspaceDir, '.gemini', 'policies');
+    policiesDir = path.join(workspaceDir, '.pollux', 'policies');
 
     // Enable policies for these tests to verify loading logic
     setDisableWorkspacePolicies(false);
@@ -184,7 +184,7 @@ describe('resolveWorkspacePolicyState', () => {
     }
   });
   it('should not return workspace policies if cwd is the home directory', async () => {
-    const policiesDir = path.join(tempDir, '.gemini', 'policies');
+    const policiesDir = path.join(tempDir, '.pollux', 'policies');
     fs.mkdirSync(policiesDir, { recursive: true });
     fs.writeFileSync(path.join(policiesDir, 'policy.toml'), 'rules = []');
 
@@ -219,14 +219,14 @@ describe('resolveWorkspacePolicyState', () => {
   });
 
   it('should return empty state if cwd is a symlink to the home directory', async () => {
-    const policiesDir = path.join(tempDir, '.gemini', 'policies');
+    const policiesDir = path.join(tempDir, '.pollux', 'policies');
     fs.mkdirSync(policiesDir, { recursive: true });
     fs.writeFileSync(path.join(policiesDir, 'policy.toml'), 'rules = []');
 
     // Create a symlink to the home directory
     const symlinkDir = path.join(
       os.tmpdir(),
-      `gemini-cli-symlink-${Date.now()}`,
+      `pollux-cli-symlink-${Date.now()}`,
     );
     fs.symlinkSync(tempDir, symlinkDir, 'dir');
 

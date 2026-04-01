@@ -41,9 +41,9 @@ vi.mock('node:child_process', async (importOriginal) => {
     execSync: vi.fn(),
   };
 });
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     spawnAsync: vi.fn(),
@@ -58,7 +58,7 @@ vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   };
 });
 
-import { spawnAsync } from '@euxaristia/gemini-cli-core';
+import { spawnAsync } from '@euxaristia/pollux-cli-core';
 // Keep static imports for stateless functions
 import {
   cleanupOldClipboardImages,

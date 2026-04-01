@@ -71,7 +71,7 @@ export async function scheduleAgentTools(
     promptRegistry: promptRegistry ?? config.getPromptRegistry(),
     resourceRegistry: resourceRegistry ?? config.getResourceRegistry(),
     messageBus: toolRegistry.messageBus,
-    geminiClient: config.geminiClient,
+    polluxClient: config.polluxClient,
     sandboxManager: config.sandboxManager,
   };
 

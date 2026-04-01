@@ -165,7 +165,7 @@ The available modes are:
 
 | Mode         | Description                                                                                                                                                                                 |
 | :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `persistent` | **(Default)** Launches Chrome with a persistent profile stored at `~/.gemini/cli-browser-profile/`. Cookies, history, and settings are preserved between sessions.                          |
+| `persistent` | **(Default)** Launches Chrome with a persistent profile stored at `~/.pollux/cli-browser-profile/`. Cookies, history, and settings are preserved between sessions.                          |
 | `isolated`   | Launches Chrome with a temporary profile that is deleted after each session. Use this for clean-state automation.                                                                           |
 | `existing`   | Attaches to an already-running Chrome instance. You must enable remote debugging first by navigating to `chrome://inspect/#remote-debugging` in Chrome. No new browser process is launched. |
 
@@ -232,15 +232,15 @@ specific personas.
 Custom agents are defined as Markdown files (`.md`) with YAML frontmatter. You
 can place them in:
 
-1.  **Project-level:** `.gemini/agents/*.md` (Shared with your team)
-2.  **User-level:** `~/.gemini/agents/*.md` (Personal agents)
+1.  **Project-level:** `.pollux/agents/*.md` (Shared with your team)
+2.  **User-level:** `~/.pollux/agents/*.md` (Personal agents)
 
 ### File format
 
 The file **MUST** start with YAML frontmatter enclosed in triple-dashes `---`.
 The body of the markdown file becomes the agent's **System Prompt**.
 
-**Example: `.gemini/agents/security-auditor.md`**
+**Example: `.pollux/agents/security-auditor.md`**
 
 ```markdown
 ---

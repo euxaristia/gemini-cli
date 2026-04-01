@@ -9,7 +9,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import { FolderTrustDiscoveryService } from './FolderTrustDiscoveryService.js';
-import { GEMINI_DIR } from '../utils/paths.js';
+import { POLLUX_DIR } from '../utils/paths.js';
 
 describe('FolderTrustDiscoveryService', () => {
   let tempDir: string;
@@ -26,11 +26,11 @@ describe('FolderTrustDiscoveryService', () => {
   });
 
   it('should discover commands, skills, mcps, and hooks', async () => {
-    const geminiDir = path.join(tempDir, GEMINI_DIR);
-    await fs.mkdir(geminiDir, { recursive: true });
+    const polluxDir = path.join(tempDir, POLLUX_DIR);
+    await fs.mkdir(polluxDir, { recursive: true });
 
     // Mock commands
-    const commandsDir = path.join(geminiDir, 'commands');
+    const commandsDir = path.join(polluxDir, 'commands');
     await fs.mkdir(commandsDir);
     await fs.writeFile(
       path.join(commandsDir, 'test-cmd.toml'),
@@ -38,7 +38,7 @@ describe('FolderTrustDiscoveryService', () => {
     );
 
     // Mock skills
-    const skillsDir = path.join(geminiDir, 'skills');
+    const skillsDir = path.join(polluxDir, 'skills');
     await fs.mkdir(path.join(skillsDir, 'test-skill'), { recursive: true });
     await fs.writeFile(path.join(skillsDir, 'test-skill', 'SKILL.md'), 'body');
 
@@ -59,7 +59,7 @@ describe('FolderTrustDiscoveryService', () => {
       ui: { theme: 'Dark' },
     };
     await fs.writeFile(
-      path.join(geminiDir, 'settings.json'),
+      path.join(polluxDir, 'settings.json'),
       JSON.stringify(settings),
     );
 
@@ -77,8 +77,8 @@ describe('FolderTrustDiscoveryService', () => {
   });
 
   it('should flag security warnings for sensitive settings', async () => {
-    const geminiDir = path.join(tempDir, GEMINI_DIR);
-    await fs.mkdir(geminiDir, { recursive: true });
+    const polluxDir = path.join(tempDir, POLLUX_DIR);
+    await fs.mkdir(polluxDir, { recursive: true });
 
     const settings = {
       tools: {
@@ -92,7 +92,7 @@ describe('FolderTrustDiscoveryService', () => {
       },
     };
     await fs.writeFile(
-      path.join(geminiDir, 'settings.json'),
+      path.join(polluxDir, 'settings.json'),
       JSON.stringify(settings),
     );
 
@@ -109,7 +109,7 @@ describe('FolderTrustDiscoveryService', () => {
     );
   });
 
-  it('should handle missing .gemini directory', async () => {
+  it('should handle missing .pollux directory', async () => {
     const results = await FolderTrustDiscoveryService.discover(tempDir);
     expect(results.commands).toHaveLength(0);
     expect(results.skills).toHaveLength(0);
@@ -119,9 +119,9 @@ describe('FolderTrustDiscoveryService', () => {
   });
 
   it('should handle malformed settings.json', async () => {
-    const geminiDir = path.join(tempDir, GEMINI_DIR);
-    await fs.mkdir(geminiDir, { recursive: true });
-    await fs.writeFile(path.join(geminiDir, 'settings.json'), 'invalid json');
+    const polluxDir = path.join(tempDir, POLLUX_DIR);
+    await fs.mkdir(polluxDir, { recursive: true });
+    await fs.writeFile(path.join(polluxDir, 'settings.json'), 'invalid json');
 
     const results = await FolderTrustDiscoveryService.discover(tempDir);
     expect(results.discoveryErrors[0]).toContain(
@@ -130,9 +130,9 @@ describe('FolderTrustDiscoveryService', () => {
   });
 
   it('should handle null settings.json', async () => {
-    const geminiDir = path.join(tempDir, GEMINI_DIR);
-    await fs.mkdir(geminiDir, { recursive: true });
-    await fs.writeFile(path.join(geminiDir, 'settings.json'), 'null');
+    const polluxDir = path.join(tempDir, POLLUX_DIR);
+    await fs.mkdir(polluxDir, { recursive: true });
+    await fs.writeFile(path.join(polluxDir, 'settings.json'), 'null');
 
     const results = await FolderTrustDiscoveryService.discover(tempDir);
     expect(results.discoveryErrors).toHaveLength(0);
@@ -140,9 +140,9 @@ describe('FolderTrustDiscoveryService', () => {
   });
 
   it('should handle array settings.json', async () => {
-    const geminiDir = path.join(tempDir, GEMINI_DIR);
-    await fs.mkdir(geminiDir, { recursive: true });
-    await fs.writeFile(path.join(geminiDir, 'settings.json'), '[]');
+    const polluxDir = path.join(tempDir, POLLUX_DIR);
+    await fs.mkdir(polluxDir, { recursive: true });
+    await fs.writeFile(path.join(polluxDir, 'settings.json'), '[]');
 
     const results = await FolderTrustDiscoveryService.discover(tempDir);
     expect(results.discoveryErrors).toHaveLength(0);
@@ -150,9 +150,9 @@ describe('FolderTrustDiscoveryService', () => {
   });
 
   it('should handle string settings.json', async () => {
-    const geminiDir = path.join(tempDir, GEMINI_DIR);
-    await fs.mkdir(geminiDir, { recursive: true });
-    await fs.writeFile(path.join(geminiDir, 'settings.json'), '"string"');
+    const polluxDir = path.join(tempDir, POLLUX_DIR);
+    await fs.mkdir(polluxDir, { recursive: true });
+    await fs.writeFile(path.join(polluxDir, 'settings.json'), '"string"');
 
     const results = await FolderTrustDiscoveryService.discover(tempDir);
     expect(results.discoveryErrors).toHaveLength(0);

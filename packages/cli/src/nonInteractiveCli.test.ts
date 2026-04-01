@@ -12,7 +12,7 @@ import type {
   AnyDeclarativeTool,
   AnyToolInvocation,
   UserFeedbackPayload,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   ToolErrorType,
   GeminiEventType,
@@ -21,7 +21,7 @@ import {
   FatalInputError,
   CoreEvent,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { Part } from '@google/genai';
 import { runNonInteractive } from './nonInteractiveCli.js';
 import {
@@ -55,9 +55,9 @@ const mockCoreEvents = vi.hoisted(() => ({
 
 const mockSchedulerSchedule = vi.hoisted(() => vi.fn());
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
 
   class MockChatRecordingService {
     initialize = vi.fn();
@@ -71,6 +71,7 @@ vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
     Scheduler: class {
       schedule = mockSchedulerSchedule;
       cancelAll = vi.fn();
+      dispose = vi.fn();
     },
     isTelemetrySdkInitialized: vi.fn().mockReturnValue(true),
     ChatRecordingService: MockChatRecordingService,
@@ -104,7 +105,7 @@ describe('runNonInteractive', () => {
   let consoleErrorSpy: MockInstance;
   let processStdoutSpy: MockInstance;
   let processStderrSpy: MockInstance;
-  let mockGeminiClient: {
+  let mockPolluxClient: {
     sendMessageStream: Mock;
     resumeChat: Mock;
     getChatRecordingService: Mock;
@@ -154,7 +155,7 @@ describe('runNonInteractive', () => {
       getFunctionDeclarations: vi.fn().mockReturnValue([]),
     } as unknown as ToolRegistry;
 
-    mockGeminiClient = {
+    mockPolluxClient = {
       sendMessageStream: vi.fn(),
       resumeChat: vi.fn().mockResolvedValue(undefined),
       getChatRecordingService: vi.fn(() => ({
@@ -172,13 +173,13 @@ describe('runNonInteractive', () => {
         unsubscribe: vi.fn(),
         publish: vi.fn(),
       }),
-      getGeminiClient: vi.fn().mockReturnValue(mockGeminiClient),
+      getPolluxClient: vi.fn().mockReturnValue(mockPolluxClient),
       getToolRegistry: vi.fn().mockReturnValue(mockToolRegistry),
       getMaxSessionTurns: vi.fn().mockReturnValue(10),
       getSessionId: vi.fn().mockReturnValue('test-session-id'),
       getProjectRoot: vi.fn().mockReturnValue('/test/project'),
       storage: {
-        getProjectTempDir: vi.fn().mockReturnValue('/test/project/.gemini/tmp'),
+        getProjectTempDir: vi.fn().mockReturnValue('/test/project/.pollux/tmp'),
       },
       getIdeMode: vi.fn().mockReturnValue(false),
 
@@ -244,7 +245,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -255,7 +256,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-1',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Test input' }],
       expect.any(AbortSignal),
       'prompt-id-1',
@@ -268,15 +269,15 @@ describe('runNonInteractive', () => {
     // so we no longer expect shutdownTelemetry to be called directly here
   });
 
-  it('should register activity logger when GEMINI_CLI_ACTIVITY_LOG_TARGET is set', async () => {
-    vi.stubEnv('GEMINI_CLI_ACTIVITY_LOG_TARGET', '/tmp/test.jsonl');
+  it('should register activity logger when POLLUX_CLI_ACTIVITY_LOG_TARGET is set', async () => {
+    vi.stubEnv('POLLUX_CLI_ACTIVITY_LOG_TARGET', '/tmp/test.jsonl');
     const events: ServerGeminiStreamEvent[] = [
       {
         type: GeminiEventType.Finished,
         value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -291,15 +292,15 @@ describe('runNonInteractive', () => {
     vi.unstubAllEnvs();
   });
 
-  it('should not register activity logger when GEMINI_CLI_ACTIVITY_LOG_TARGET is not set', async () => {
-    vi.stubEnv('GEMINI_CLI_ACTIVITY_LOG_TARGET', '');
+  it('should not register activity logger when POLLUX_CLI_ACTIVITY_LOG_TARGET is not set', async () => {
+    vi.stubEnv('POLLUX_CLI_ACTIVITY_LOG_TARGET', '');
     const events: ServerGeminiStreamEvent[] = [
       {
         type: GeminiEventType.Finished,
         value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -357,7 +358,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -368,12 +369,12 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-2',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledTimes(2);
     expect(mockSchedulerSchedule).toHaveBeenCalledWith(
       [expect.objectContaining({ name: 'testTool' })],
       expect.any(AbortSignal),
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenNthCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenNthCalledWith(
       2,
       [{ text: 'Tool response' }],
       expect.any(AbortSignal),
@@ -435,7 +436,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(modelTurn1))
       .mockReturnValueOnce(createStreamFromEvents(modelTurn2))
       .mockReturnValueOnce(createStreamFromEvents(modelTurn3));
@@ -508,7 +509,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents([toolCallEvent]))
       .mockReturnValueOnce(createStreamFromEvents(finalResponse));
 
@@ -523,8 +524,8 @@ describe('runNonInteractive', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Error executing tool errorTool: Execution failed',
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenNthCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenNthCalledWith(
       2,
       [
         {
@@ -547,7 +548,7 @@ describe('runNonInteractive', () => {
 
   it('should exit with error if sendMessageStream throws initially', async () => {
     const apiError = new Error('API connection failed');
-    mockGeminiClient.sendMessageStream.mockImplementation(() => {
+    mockPolluxClient.sendMessageStream.mockImplementation(() => {
       throw apiError;
     });
 
@@ -603,7 +604,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents([toolCallEvent]))
       .mockReturnValueOnce(createStreamFromEvents(finalResponse));
 
@@ -618,7 +619,7 @@ describe('runNonInteractive', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Error executing tool nonexistentTool: Tool "nonexistentTool" not found in registry.',
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledTimes(2);
     expect(getWrittenOutput()).toBe("Sorry, I can't find that tool.\n");
   });
 
@@ -663,7 +664,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -676,7 +677,7 @@ describe('runNonInteractive', () => {
     });
 
     // 5. Assert that sendMessageStream was called with the PROCESSED parts, not the raw input
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledWith(
       processedParts,
       expect.any(AbortSignal),
       'prompt-id-7',
@@ -697,7 +698,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
@@ -712,7 +713,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-1',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Test input' }],
       expect.any(AbortSignal),
       'prompt-id-1',
@@ -786,7 +787,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -802,7 +803,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-tool-only',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(2);
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledTimes(2);
     expect(mockSchedulerSchedule).toHaveBeenCalledWith(
       [expect.objectContaining({ name: 'testTool' })],
       expect.any(AbortSignal),
@@ -830,7 +831,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 1 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
@@ -845,7 +846,7 @@ describe('runNonInteractive', () => {
       prompt_id: 'prompt-id-empty',
     });
 
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Empty response test' }],
       expect.any(AbortSignal),
       'prompt-id-empty',
@@ -872,7 +873,7 @@ describe('runNonInteractive', () => {
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
     const testError = new Error('Invalid input provided');
 
-    mockGeminiClient.sendMessageStream.mockImplementation(() => {
+    mockPolluxClient.sendMessageStream.mockImplementation(() => {
       throw testError;
     });
 
@@ -914,7 +915,7 @@ describe('runNonInteractive', () => {
     vi.mocked(mockConfig.getOutputFormat).mockReturnValue(OutputFormat.JSON);
     const fatalError = new FatalInputError('Invalid command syntax provided');
 
-    mockGeminiClient.sendMessageStream.mockImplementation(() => {
+    mockPolluxClient.sendMessageStream.mockImplementation(() => {
       throw fatalError;
     });
 
@@ -970,7 +971,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -982,7 +983,7 @@ describe('runNonInteractive', () => {
     });
 
     // Ensure the prompt sent to the model is from the command, not the raw input
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Prompt from command' }],
       expect.any(AbortSignal),
       'prompt-id-slash',
@@ -1011,7 +1012,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1028,7 +1029,7 @@ describe('runNonInteractive', () => {
       mockConfig,
       mockSettings,
     );
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: 'Slash command output' }],
       expect.any(AbortSignal),
       'prompt-id-slash',
@@ -1078,7 +1079,7 @@ describe('runNonInteractive', () => {
       { type: GeminiEventType.Content, value: 'Thinking...' },
     ];
     // Create a stream that responds to abortion
-    mockGeminiClient.sendMessageStream.mockImplementation(
+    mockPolluxClient.sendMessageStream.mockImplementation(
       (_messages, signal: AbortSignal) =>
         (async function* () {
           yield events[0];
@@ -1194,7 +1195,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1206,7 +1207,7 @@ describe('runNonInteractive', () => {
     });
 
     // Ensure the raw input is sent to the model
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledWith(
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledWith(
       [{ text: '/unknowncommand' }],
       expect.any(AbortSignal),
       'prompt-id-unknown',
@@ -1259,7 +1260,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 1 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1292,7 +1293,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 1 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1375,7 +1376,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -1401,7 +1402,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1426,7 +1427,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1450,7 +1451,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1487,7 +1488,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -1572,7 +1573,7 @@ describe('runNonInteractive', () => {
       },
     ];
 
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents(secondCallEvents));
 
@@ -1595,7 +1596,7 @@ describe('runNonInteractive', () => {
       { type: GeminiEventType.Content, value: 'Hello' },
       { type: GeminiEventType.Content, value: ' World' },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1634,7 +1635,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(events),
     );
 
@@ -1660,7 +1661,7 @@ describe('runNonInteractive', () => {
       resumedSessionData,
     });
 
-    expect(mockGeminiClient.resumeChat).toHaveBeenCalledWith(
+    expect(mockPolluxClient.resumeChat).toHaveBeenCalledWith(
       expect.any(Array),
       resumedSessionData,
     );
@@ -1701,7 +1702,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(streamEvents),
       );
 
@@ -1759,7 +1760,7 @@ describe('runNonInteractive', () => {
         value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
       },
     ];
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(events))
       .mockReturnValueOnce(
         createStreamFromEvents([
@@ -1778,14 +1779,14 @@ describe('runNonInteractive', () => {
       }),
     };
     // @ts-expect-error - Mocking internal structure
-    mockGeminiClient.getChat = vi.fn().mockReturnValue(mockChat);
+    mockPolluxClient.getChat = vi.fn().mockReturnValue(mockChat);
     // @ts-expect-error - Mocking internal structure
-    mockGeminiClient.getCurrentSequenceModel = vi
+    mockPolluxClient.getCurrentSequenceModel = vi
       .fn()
       .mockReturnValue('model-1');
 
     // Mock debugLogger.error
-    const { debugLogger } = await import('@euxaristia/gemini-cli-core');
+    const { debugLogger } = await import('@euxaristia/pollux-cli-core');
     const debugLoggerErrorSpy = vi
       .spyOn(debugLogger, 'error')
       .mockImplementation(() => {});
@@ -1842,7 +1843,7 @@ describe('runNonInteractive', () => {
     // Setup the mock to return events for the first call.
     // We expect the loop to terminate after the tool execution.
     // If it doesn't, it might call sendMessageStream again, which we'll assert against.
-    mockGeminiClient.sendMessageStream
+    mockPolluxClient.sendMessageStream
       .mockReturnValueOnce(createStreamFromEvents(firstCallEvents))
       .mockReturnValueOnce(createStreamFromEvents([]));
 
@@ -1856,7 +1857,7 @@ describe('runNonInteractive', () => {
     expect(mockSchedulerSchedule).toHaveBeenCalled();
 
     // The key assertion: sendMessageStream should have been called ONLY ONCE (initial user input).
-    expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(1);
+    expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledTimes(1);
 
     expect(processStderrSpy).toHaveBeenCalledWith(
       'Agent execution stopped: Stop reason from hook\n',
@@ -1901,7 +1902,7 @@ describe('runNonInteractive', () => {
       toolCallEvent,
     ];
 
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(firstCallEvents),
     );
 
@@ -1962,7 +1963,7 @@ describe('runNonInteractive', () => {
 
     const firstCallEvents: ServerGeminiStreamEvent[] = [toolCallEvent];
 
-    mockGeminiClient.sendMessageStream.mockReturnValue(
+    mockPolluxClient.sendMessageStream.mockReturnValue(
       createStreamFromEvents(firstCallEvents),
     );
 
@@ -1986,7 +1987,7 @@ describe('runNonInteractive', () => {
           value: { reason: 'Stopped by hook' },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2001,7 +2002,7 @@ describe('runNonInteractive', () => {
         'Agent execution stopped: Stopped by hook\n',
       );
       // Should exit without calling sendMessageStream again
-      expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(1);
+      expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledTimes(1);
     });
 
     it('should handle AgentExecutionBlocked event', async () => {
@@ -2017,7 +2018,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(allEvents),
       );
 
@@ -2032,7 +2033,7 @@ describe('runNonInteractive', () => {
         '[WARNING] Agent execution blocked: Blocked by hook\n',
       );
       // sendMessageStream is called once, recursion is internal to it and transparent to the caller
-      expect(mockGeminiClient.sendMessageStream).toHaveBeenCalledTimes(1);
+      expect(mockPolluxClient.sendMessageStream).toHaveBeenCalledTimes(1);
       expect(getWrittenOutput()).toBe('Final answer\n');
     });
   });
@@ -2054,7 +2055,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2080,7 +2081,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 10 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2105,7 +2106,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 5 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2129,7 +2130,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2155,7 +2156,7 @@ describe('runNonInteractive', () => {
           value: { reason: undefined, usageMetadata: { totalTokenCount: 0 } },
         },
       ];
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 
@@ -2209,7 +2210,7 @@ describe('runNonInteractive', () => {
         },
       ];
 
-      mockGeminiClient.sendMessageStream.mockReturnValue(
+      mockPolluxClient.sendMessageStream.mockReturnValue(
         createStreamFromEvents(events),
       );
 

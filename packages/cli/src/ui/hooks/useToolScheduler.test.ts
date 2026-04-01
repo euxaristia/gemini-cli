@@ -21,13 +21,13 @@ import {
   ROOT_SCHEDULER_ID,
   CoreToolCallStatus,
   type WaitingToolCall,
-} from '@euxaristia/gemini-cli-core';
-import { createMockMessageBus } from '@euxaristia/gemini-cli-core/src/test-utils/mock-message-bus.js';
+} from '@euxaristia/pollux-cli-core';
+import { createMockMessageBus } from '@euxaristia/pollux-cli-core/src/test-utils/mock-message-bus.js';
 
 // Mock Core Scheduler
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     Scheduler: vi.fn().mockImplementation(() => ({
@@ -274,7 +274,7 @@ describe('useToolScheduler', () => {
     };
 
     // Mock the specific return value for this test
-    const { Scheduler } = await import('@euxaristia/gemini-cli-core');
+    const { Scheduler } = await import('@euxaristia/pollux-cli-core');
     vi.mocked(Scheduler).mockImplementation(
       () =>
         ({

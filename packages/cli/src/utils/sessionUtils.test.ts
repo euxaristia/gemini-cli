@@ -16,7 +16,7 @@ import {
   SESSION_FILE_PREFIX,
   type Config,
   type MessageRecord,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import * as fs from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';

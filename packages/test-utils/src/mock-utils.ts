@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { SandboxConfig } from '@euxaristia/gemini-cli-core';
+import type { SandboxConfig } from '@euxaristia/pollux-cli-core';
 
 export function createMockSandboxConfig(
   overrides?: Partial<SandboxConfig>,

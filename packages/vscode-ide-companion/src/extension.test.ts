@@ -10,11 +10,11 @@ import { activate } from './extension.js';
 import {
   IDE_DEFINITIONS,
   detectIdeFromEnv,
-} from '@euxaristia/gemini-cli-core/src/ide/detect-ide.js';
+} from '@euxaristia/pollux-cli-core/src/ide/detect-ide.js';
 
-vi.mock('@euxaristia/gemini-cli-core/src/ide/detect-ide.js', async () => {
+vi.mock('@euxaristia/pollux-cli-core/src/ide/detect-ide.js', async () => {
   const actual = await vi.importActual(
-    '@euxaristia/gemini-cli-core/src/ide/detect-ide.js',
+    '@euxaristia/pollux-cli-core/src/ide/detect-ide.js',
   );
   return {
     ...actual,
@@ -290,7 +290,7 @@ describe('activate', () => {
 
       expect(executeCommandMock).toHaveBeenCalledWith(
         'workbench.extensions.installExtension',
-        'Google.gemini-cli-vscode-ide-companion',
+        'Google.pollux-cli-vscode-ide-companion',
       );
     });
 

@@ -66,7 +66,7 @@ describe('ask_user', () => {
       'packages/core/src/index.ts': '// index\nexport const version = "1.0.0";',
       'packages/core/src/util.ts': '// util\nexport function help() {}',
       'packages/core/package.json': JSON.stringify({
-        name: '@euxaristia/gemini-cli-core',
+        name: '@euxaristia/pollux-cli-core',
       }),
       'README.md': '# Gemini CLI',
     },
@@ -99,7 +99,7 @@ describe('ask_user', () => {
   // Regression test for issue #20177: Ensure the agent does not use \`ask_user\` to
   // confirm shell commands. Fixed via prompt refinements and tool definition
   // updates to clarify that shell command confirmation is handled by the UI.
-  // See fix: https://github.com/google-gemini/gemini-cli/pull/20504
+  // See fix: https://github.com/google-gemini/pollux-cli/pull/20504
   askUserEvalTest('USUALLY_PASSES', {
     name: 'Agent does NOT use AskUser to confirm shell commands',
     files: {

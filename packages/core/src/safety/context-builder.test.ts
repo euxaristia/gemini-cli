@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ContextBuilder } from './context-builder.js';
 import type { Config } from '../config/config.js';
 import type { Content, FunctionCall } from '@google/genai';
-import type { GeminiClient } from '../core/client.js';
+import type { PolluxClient } from '../core/client.js';
 
 describe('ContextBuilder', () => {
   let contextBuilder: ContextBuilder;
@@ -21,19 +21,19 @@ describe('ContextBuilder', () => {
     vi.spyOn(process, 'cwd').mockReturnValue(mockCwd);
     mockHistory = [];
 
-    const mockGeminiClient = {
+    const mockPolluxClient = {
       getHistory: vi.fn().mockImplementation(() => mockHistory),
     };
     mockConfig = {
       get config() {
         return this as unknown as Config;
       },
-      geminiClient: mockGeminiClient as unknown as GeminiClient,
+      polluxClient: mockPolluxClient as unknown as PolluxClient,
       getWorkspaceContext: vi.fn().mockReturnValue({
         getDirectories: vi.fn().mockReturnValue(mockWorkspaces),
       }),
       getQuestion: vi.fn().mockReturnValue('mock question'),
-      getGeminiClient: vi.fn().mockReturnValue(mockGeminiClient),
+      getPolluxClient: vi.fn().mockReturnValue(mockPolluxClient),
     } as Partial<Config>;
     contextBuilder = new ContextBuilder(mockConfig as unknown as Config);
   });

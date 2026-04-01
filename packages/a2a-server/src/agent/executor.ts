@@ -17,7 +17,7 @@ import {
   SimpleExtensionLoader,
   type ToolCallRequestInfo,
   type Config,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { v4 as uuidv4 } from 'uuid';
 
 import { logger } from '../utils/logger.js';
@@ -127,7 +127,7 @@ export class CoderAgentExecutor implements AgentExecutor {
       agentSettings.autoExecute,
     );
     runtimeTask.taskState = persistedState._taskState;
-    await runtimeTask.geminiClient.initialize();
+    await runtimeTask.polluxClient.initialize();
 
     const wrapper = new TaskWrapper(runtimeTask, agentSettings);
     this.tasks.set(sdkTask.id, wrapper);
@@ -153,7 +153,7 @@ export class CoderAgentExecutor implements AgentExecutor {
       eventBus,
       agentSettings.autoExecute,
     );
-    await runtimeTask.geminiClient.initialize();
+    await runtimeTask.polluxClient.initialize();
 
     const wrapper = new TaskWrapper(runtimeTask, agentSettings);
     this.tasks.set(taskId, wrapper);

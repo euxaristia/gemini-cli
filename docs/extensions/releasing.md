@@ -19,7 +19,7 @@ To have your extension automatically discovered and listed:
 
 1.  **Use a public repository:** Ensure your extension is hosted in a public
     GitHub repository.
-2.  **Add the GitHub topic:** Add the `gemini-cli-extension` topic to your
+2.  **Add the GitHub topic:** Add the `pollux-cli-extension` topic to your
     repository's **About** section. Our crawler uses this topic to find new
     extensions.
 3.  **Place the manifest at the root:** Ensure your `gemini-extension.json` file

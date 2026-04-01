@@ -30,7 +30,7 @@ import {
   debugLogger,
   SimpleExtensionLoader,
   GitService,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { Command, CommandArgument } from '../commands/types.js';
 
 type CommandResponse = {

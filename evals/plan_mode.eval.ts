@@ -5,7 +5,7 @@
  */
 
 import { describe, expect } from 'vitest';
-import { ApprovalMode } from '@euxaristia/gemini-cli-core';
+import { ApprovalMode } from '@euxaristia/pollux-cli-core';
 import { evalTest } from './test-helper.js';
 import {
   assertModelHasOutput,
@@ -190,7 +190,7 @@ describe('plan_mode', () => {
 
       if (writeCall) {
         const args = JSON.parse(writeCall.toolRequest.args);
-        expect(args.file_path).toContain('.gemini/tmp');
+        expect(args.file_path).toContain('.pollux/tmp');
         expect(args.file_path).toContain('/plans/');
         expect(args.file_path).toMatch(/\.md$/);
       }

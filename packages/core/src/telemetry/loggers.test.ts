@@ -8,7 +8,7 @@ import {
   CoreToolCallStatus,
   AuthType,
   EditTool,
-  GeminiClient,
+  PolluxClient,
   ToolConfirmationOutcome,
   ToolErrorType,
   ToolRegistry,
@@ -1125,7 +1125,7 @@ describe('loggers', () => {
     const cfg1 = {
       getSessionId: () => 'test-session-id',
       getTargetDir: () => 'target-dir',
-      getGeminiClient: () => mockGeminiClient,
+      getPolluxClient: () => mockPolluxClient,
     } as Config;
     const cfg2 = {
       getSessionId: () => 'test-session-id',
@@ -1162,11 +1162,11 @@ describe('loggers', () => {
     (cfg2 as unknown as { config: Config; promptId: string }).promptId =
       'test-prompt-id';
 
-    const mockGeminiClient = new GeminiClient(cfg2);
+    const mockPolluxClient = new PolluxClient(cfg2);
     const mockConfig = {
       getSessionId: () => 'test-session-id',
       getTargetDir: () => 'target-dir',
-      getGeminiClient: () => mockGeminiClient,
+      getPolluxClient: () => mockPolluxClient,
       getUsageStatisticsEnabled: () => true,
       getTelemetryEnabled: () => true,
       getTelemetryLogPromptsEnabled: () => true,

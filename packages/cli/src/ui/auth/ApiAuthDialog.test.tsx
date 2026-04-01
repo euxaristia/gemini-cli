@@ -13,12 +13,12 @@ import {
   useTextBuffer,
   type TextBuffer,
 } from '../components/shared/text-buffer.js';
-import { clearApiKey } from '@euxaristia/gemini-cli-core';
+import { clearApiKey } from '@euxaristia/pollux-cli-core';
 
 // Mocks
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     clearApiKey: vi.fn().mockResolvedValue(undefined),

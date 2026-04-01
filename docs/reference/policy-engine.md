@@ -14,16 +14,16 @@ To create your first policy:
     **macOS/Linux**
 
     ```bash
-    mkdir -p ~/.gemini/policies
+    mkdir -p ~/.pollux/policies
     ```
 
     **Windows (PowerShell)**
 
     ```powershell
-    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\policies"
+    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.pollux\policies"
     ```
 
-2.  **Create a new policy file** (e.g., `~/.gemini/policies/my-rules.toml`). You
+2.  **Create a new policy file** (e.g., `~/.pollux/policies/my-rules.toml`). You
     can use any filename ending in `.toml`; all such files in this directory
     will be loaded and combined:
     ```toml
@@ -198,8 +198,8 @@ User, and (if configured) Admin directories.
 
 | Tier          | Type   | Location                                  |
 | :------------ | :----- | :---------------------------------------- |
-| **User**      | Custom | `~/.gemini/policies/*.toml`               |
-| **Workspace** | Custom | `$WORKSPACE_ROOT/.gemini/policies/*.toml` |
+| **User**      | Custom | `~/.pollux/policies/*.toml`               |
+| **Workspace** | Custom | `$WORKSPACE_ROOT/.pollux/policies/*.toml` |
 | **Admin**     | System | _See below (OS specific)_                 |
 
 #### System-wide policies (Admin)
@@ -214,9 +214,9 @@ These are the default paths the CLI searches for admin policies:
 
 | OS          | Policy Directory Path                             |
 | :---------- | :------------------------------------------------ |
-| **Linux**   | `/etc/gemini-cli/policies`                        |
+| **Linux**   | `/etc/pollux-cli/policies`                        |
 | **macOS**   | `/Library/Application Support/GeminiCli/policies` |
-| **Windows** | `C:\ProgramData\gemini-cli\policies`              |
+| **Windows** | `C:\ProgramData\pollux-cli\policies`              |
 
 ##### Supplemental Admin Policies
 

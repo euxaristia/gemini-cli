@@ -9,7 +9,7 @@ import { requestConsentNonInteractive } from '../../config/extensions/consent.js
 import {
   debugLogger,
   type ResolvedExtensionSetting,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { ExtensionConfig } from '../../config/extension.js';
 import prompts from 'prompts';
 import {

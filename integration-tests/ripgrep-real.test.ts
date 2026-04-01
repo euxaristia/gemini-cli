@@ -33,14 +33,14 @@ class MockConfig {
     return true;
   }
 
-  getFileFilteringRespectGeminiIgnore() {
+  getFileFilteringRespectPolluxIgnore() {
     return true;
   }
 
   getFileFilteringOptions() {
     return {
       respectGitIgnore: true,
-      respectGeminiIgnore: true,
+      respectPolluxIgnore: true,
       customIgnoreFilePaths: [],
     };
   }

@@ -12,7 +12,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AlternateBufferQuittingDisplay } from './AlternateBufferQuittingDisplay.js';
 import type { HistoryItem, HistoryItemWithoutId } from '../types.js';
 import { Text } from 'ink';
-import { CoreToolCallStatus } from '@euxaristia/gemini-cli-core';
+import { CoreToolCallStatus } from '@euxaristia/pollux-cli-core';
 
 vi.mock('../utils/terminalSetup.js', () => ({
   getTerminalProgram: () => null,
@@ -29,17 +29,17 @@ vi.mock('../contexts/AppContext.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     getMCPServerStatus: vi.fn(),
   };
 });
 
-vi.mock('../GeminiRespondingSpinner.js', () => ({
-  GeminiRespondingSpinner: () => <Text>Spinner</Text>,
+vi.mock('../PolluxRespondingSpinner.js', () => ({
+  PolluxRespondingSpinner: () => <Text>Spinner</Text>,
 }));
 
 const mockHistory: HistoryItem[] = [

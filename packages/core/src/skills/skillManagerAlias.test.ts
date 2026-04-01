@@ -35,12 +35,12 @@ describe('SkillManager Alias', () => {
   });
 
   it('should discover skills from .agents/skills directory', async () => {
-    const userGeminiDir = path.join(testRootDir, 'user', '.gemini', 'skills');
+    const userPolluxDir = path.join(testRootDir, 'user', '.pollux', 'skills');
     const userAgentDir = path.join(testRootDir, 'user', '.agents', 'skills');
-    const projectGeminiDir = path.join(
+    const projectPolluxDir = path.join(
       testRootDir,
       'workspace',
-      '.gemini',
+      '.pollux',
       'skills',
     );
     const projectAgentDir = path.join(
@@ -50,13 +50,13 @@ describe('SkillManager Alias', () => {
       'skills',
     );
 
-    await fs.mkdir(userGeminiDir, { recursive: true });
+    await fs.mkdir(userPolluxDir, { recursive: true });
     await fs.mkdir(userAgentDir, { recursive: true });
-    await fs.mkdir(projectGeminiDir, { recursive: true });
+    await fs.mkdir(projectPolluxDir, { recursive: true });
     await fs.mkdir(projectAgentDir, { recursive: true });
 
     vi.mocked(loadSkillsFromDir).mockImplementation(async (dir) => {
-      if (dir === userGeminiDir) {
+      if (dir === userPolluxDir) {
         return [
           {
             name: 'user-gemini',
@@ -76,7 +76,7 @@ describe('SkillManager Alias', () => {
           },
         ];
       }
-      if (dir === projectGeminiDir) {
+      if (dir === projectPolluxDir) {
         return [
           {
             name: 'project-gemini',
@@ -99,11 +99,11 @@ describe('SkillManager Alias', () => {
       return [];
     });
 
-    vi.spyOn(Storage, 'getUserSkillsDir').mockReturnValue(userGeminiDir);
+    vi.spyOn(Storage, 'getUserSkillsDir').mockReturnValue(userPolluxDir);
     vi.spyOn(Storage, 'getUserAgentSkillsDir').mockReturnValue(userAgentDir);
 
     const storage = new Storage(path.join(testRootDir, 'workspace'));
-    vi.spyOn(storage, 'getProjectSkillsDir').mockReturnValue(projectGeminiDir);
+    vi.spyOn(storage, 'getProjectSkillsDir').mockReturnValue(projectPolluxDir);
     vi.spyOn(storage, 'getProjectAgentSkillsDir').mockReturnValue(
       projectAgentDir,
     );
@@ -123,15 +123,15 @@ describe('SkillManager Alias', () => {
     expect(names).toContain('project-agent');
   });
 
-  it('should give .agents precedence over .gemini when in the same tier', async () => {
-    const userGeminiDir = path.join(testRootDir, 'user', '.gemini', 'skills');
+  it('should give .agents precedence over .pollux when in the same tier', async () => {
+    const userPolluxDir = path.join(testRootDir, 'user', '.pollux', 'skills');
     const userAgentDir = path.join(testRootDir, 'user', '.agents', 'skills');
 
-    await fs.mkdir(userGeminiDir, { recursive: true });
+    await fs.mkdir(userPolluxDir, { recursive: true });
     await fs.mkdir(userAgentDir, { recursive: true });
 
     vi.mocked(loadSkillsFromDir).mockImplementation(async (dir) => {
-      if (dir === userGeminiDir) {
+      if (dir === userPolluxDir) {
         return [
           {
             name: 'same-skill',
@@ -154,7 +154,7 @@ describe('SkillManager Alias', () => {
       return [];
     });
 
-    vi.spyOn(Storage, 'getUserSkillsDir').mockReturnValue(userGeminiDir);
+    vi.spyOn(Storage, 'getUserSkillsDir').mockReturnValue(userPolluxDir);
     vi.spyOn(Storage, 'getUserAgentSkillsDir').mockReturnValue(userAgentDir);
 
     const storage = new Storage('/dummy');

@@ -39,9 +39,9 @@ function getArgs() {
     })
     .option('cli-package-name', {
       description:
-        'fully qualified package name with scope (e.g @euxaristia/gemini-cli)',
+        'fully qualified package name with scope (e.g @euxaristia/pollux-cli)',
       string: true,
-      default: '@euxaristia/gemini-cli',
+      default: '@euxaristia/pollux-cli',
     })
     .option('preview_version_override', {
       description: 'Override the calculated preview version.',

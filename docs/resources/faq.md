@@ -74,7 +74,7 @@ You can check your current Gemini CLI version using one of these methods:
 ### How do I update Gemini CLI to the latest version?
 
 If you installed it globally via `npm`, update it using the command
-`npm install -g @euxaristia/gemini-cli@latest`. If you compiled it from source,
+`npm install -g @euxaristia/pollux-cli@latest`. If you compiled it from source,
 pull the latest changes from the repository, and then rebuild using the command
 `npm run build`.
 
@@ -123,8 +123,8 @@ risk.
 
 To store your API keys securely, you can:
 
-- **Use a `.env` file:** Create a `.env` file in your project's `.gemini`
-  directory (`.gemini/.env`) and store your keys there. Gemini CLI will
+- **Use a `.env` file:** Create a `.env` file in your project's `.pollux`
+  directory (`.pollux/.env`) and store your keys there. Gemini CLI will
   automatically load these variables.
 - **Use your system's keyring:** For the most secure storage, use your operating
   system's secret management tool (like macOS Keychain, Windows Credential
@@ -135,8 +135,8 @@ To store your API keys securely, you can:
 
 The Gemini CLI configuration is stored in two `settings.json` files:
 
-1.  In your home directory: `~/.gemini/settings.json`.
-2.  In your project's root directory: `./.gemini/settings.json`.
+1.  In your home directory: `~/.pollux/settings.json`.
+2.  In your project's root directory: `./.pollux/settings.json`.
 
 Refer to [Gemini CLI Configuration](../reference/configuration.md) for more
 details.
@@ -183,6 +183,6 @@ for more information.
 ## Not seeing your question?
 
 Search the
-[Gemini CLI Q&A discussions on GitHub](https://github.com/google-gemini/gemini-cli/discussions/categories/q-a)
+[Gemini CLI Q&A discussions on GitHub](https://github.com/google-gemini/pollux-cli/discussions/categories/q-a)
 or
-[start a new discussion on GitHub](https://github.com/google-gemini/gemini-cli/discussions/new?category=q-a)
+[start a new discussion on GitHub](https://github.com/google-gemini/pollux-cli/discussions/new?category=q-a)

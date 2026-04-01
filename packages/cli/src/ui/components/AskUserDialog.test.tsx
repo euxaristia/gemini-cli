@@ -11,7 +11,7 @@ import { createMockSettings } from '../../test-utils/settings.js';
 import { makeFakeConfig } from '@google/gemini-cli-core';
 import { waitFor } from '../../test-utils/async.js';
 import { AskUserDialog } from './AskUserDialog.js';
-import { QuestionType, type Question } from '@euxaristia/gemini-cli-core';
+import { QuestionType, type Question } from '@euxaristia/pollux-cli-core';
 import { UIStateContext, type UIState } from '../contexts/UIStateContext.js';
 
 // Helper to write to stdin with proper act() wrapping

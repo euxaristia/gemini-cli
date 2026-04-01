@@ -58,7 +58,7 @@ let ripgrepAcquisitionPromise: Promise<string | null> | null = null;
  * Ensures a ripgrep binary is available.
  *
  * NOTE:
- * - The Gemini CLI currently prefers a managed ripgrep binary downloaded
+ * - The Pollux currently prefers a managed ripgrep binary downloaded
  *   into its global bin directory.
  * - Even if ripgrep is available on the system PATH, it is intentionally
  *   not used at this time.
@@ -474,10 +474,10 @@ class GrepToolInvocation extends BaseToolInvocation<
         rgArgs.push('--glob', `!${exclude}`);
       });
 
-      // Add .geminiignore and custom ignore files support (if provided/mandated)
+      // Add .polluxignore and custom ignore files support (if provided/mandated)
       // (ripgrep natively handles .gitignore)
-      const geminiIgnorePaths = this.fileDiscoveryService.getIgnoreFilePaths();
-      for (const ignorePath of geminiIgnorePaths) {
+      const polluxIgnorePaths = this.fileDiscoveryService.getIgnoreFilePaths();
+      for (const ignorePath of polluxIgnorePaths) {
         rgArgs.push('--ignore-file', ignorePath);
       }
     }

@@ -17,7 +17,7 @@ import { SimpleExtensionLoader } from './extensionLoader.js';
 import { PolicyDecision } from '../policy/types.js';
 import type { Config, GeminiCLIExtension } from '../config/config.js';
 import { type McpClientManager } from '../tools/mcp-client-manager.js';
-import type { GeminiClient } from '../core/client.js';
+import type { PolluxClient } from '../core/client.js';
 
 const mockRefreshServerHierarchicalMemory = vi.hoisted(() => vi.fn());
 
@@ -33,8 +33,8 @@ describe('SimpleExtensionLoader', () => {
   let mockConfig: Config;
   let extensionReloadingEnabled: boolean;
   let mockMcpClientManager: McpClientManager;
-  let mockGeminiClientSetTools: MockInstance<
-    typeof GeminiClient.prototype.setTools
+  let mockPolluxClientSetTools: MockInstance<
+    typeof PolluxClient.prototype.setTools
   >;
   let mockHookSystemInit: MockInstance;
   let mockAgentRegistryReload: MockInstance;
@@ -85,7 +85,7 @@ describe('SimpleExtensionLoader', () => {
       stopExtension: vi.fn(),
     } as unknown as McpClientManager;
     extensionReloadingEnabled = false;
-    mockGeminiClientSetTools = vi.fn();
+    mockPolluxClientSetTools = vi.fn();
     mockHookSystemInit = vi.fn();
     mockAgentRegistryReload = vi.fn();
     mockSkillsReload = vi.fn();
@@ -98,13 +98,13 @@ describe('SimpleExtensionLoader', () => {
     mockConfig = {
       getMcpClientManager: () => mockMcpClientManager,
       getEnableExtensionReloading: () => extensionReloadingEnabled,
-      geminiClient: {
+      polluxClient: {
         isInitialized: () => true,
-        setTools: mockGeminiClientSetTools,
+        setTools: mockPolluxClientSetTools,
       },
-      getGeminiClient: vi.fn(() => ({
+      getPolluxClient: vi.fn(() => ({
         isInitialized: () => true,
-        setTools: mockGeminiClientSetTools,
+        setTools: mockPolluxClientSetTools,
       })),
       getHookSystem: () => ({
         initialize: mockHookSystemInit,
@@ -195,20 +195,20 @@ describe('SimpleExtensionLoader', () => {
             ).toHaveBeenCalledExactlyOnceWith(activeExtension);
             expect(mockRefreshServerHierarchicalMemory).toHaveBeenCalledOnce();
             expect(mockHookSystemInit).toHaveBeenCalledOnce();
-            expect(mockGeminiClientSetTools).toHaveBeenCalledOnce();
+            expect(mockPolluxClientSetTools).toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).toHaveBeenCalledOnce();
             expect(mockSkillsReload).toHaveBeenCalledOnce();
           } else {
             expect(mockMcpClientManager.startExtension).not.toHaveBeenCalled();
             expect(mockRefreshServerHierarchicalMemory).not.toHaveBeenCalled();
             expect(mockHookSystemInit).not.toHaveBeenCalled();
-            expect(mockGeminiClientSetTools).not.toHaveBeenCalledOnce();
+            expect(mockPolluxClientSetTools).not.toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).not.toHaveBeenCalled();
             expect(mockSkillsReload).not.toHaveBeenCalled();
           }
           mockRefreshServerHierarchicalMemory.mockClear();
           mockHookSystemInit.mockClear();
-          mockGeminiClientSetTools.mockClear();
+          mockPolluxClientSetTools.mockClear();
           mockAgentRegistryReload.mockClear();
           mockSkillsReload.mockClear();
 
@@ -219,14 +219,14 @@ describe('SimpleExtensionLoader', () => {
             ).toHaveBeenCalledExactlyOnceWith(activeExtension);
             expect(mockRefreshServerHierarchicalMemory).toHaveBeenCalledOnce();
             expect(mockHookSystemInit).toHaveBeenCalledOnce();
-            expect(mockGeminiClientSetTools).toHaveBeenCalledOnce();
+            expect(mockPolluxClientSetTools).toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).toHaveBeenCalledOnce();
             expect(mockSkillsReload).toHaveBeenCalledOnce();
           } else {
             expect(mockMcpClientManager.stopExtension).not.toHaveBeenCalled();
             expect(mockRefreshServerHierarchicalMemory).not.toHaveBeenCalled();
             expect(mockHookSystemInit).not.toHaveBeenCalled();
-            expect(mockGeminiClientSetTools).not.toHaveBeenCalledOnce();
+            expect(mockPolluxClientSetTools).not.toHaveBeenCalledOnce();
             expect(mockAgentRegistryReload).not.toHaveBeenCalled();
             expect(mockSkillsReload).not.toHaveBeenCalled();
           }

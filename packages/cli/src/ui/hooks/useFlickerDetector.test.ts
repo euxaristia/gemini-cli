@@ -8,7 +8,7 @@ import { renderHook } from '../../test-utils/render.js';
 import { vi, type Mock } from 'vitest';
 import { useFlickerDetector } from './useFlickerDetector.js';
 import { useConfig } from '../contexts/ConfigContext.js';
-import { recordFlickerFrame, type Config } from '@euxaristia/gemini-cli-core';
+import { recordFlickerFrame, type Config } from '@euxaristia/pollux-cli-core';
 import { type DOMElement, measureElement } from 'ink';
 import { useUIState } from '../contexts/UIStateContext.js';
 import { appEvents, AppEvent } from '../../utils/events.js';
@@ -16,13 +16,13 @@ import { appEvents, AppEvent } from '../../utils/events.js';
 // Mock dependencies
 vi.mock('../contexts/ConfigContext.js');
 vi.mock('../contexts/UIStateContext.js');
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     recordFlickerFrame: vi.fn(),
-    GEMINI_DIR: '.gemini',
+    POLLUX_DIR: '.pollux',
   };
 });
 vi.mock('ink', async (importOriginal) => {

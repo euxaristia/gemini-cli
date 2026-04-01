@@ -9,9 +9,9 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import { updateSettingsFilePreservingFormat } from './commentJson.js';
-import { coreEvents } from '@euxaristia/gemini-cli-core';
+import { coreEvents } from '@euxaristia/pollux-cli-core';
 
-vi.mock('@euxaristia/gemini-cli-core', () => ({
+vi.mock('@euxaristia/pollux-cli-core', () => ({
   coreEvents: {
     emitFeedback: vi.fn(),
   },

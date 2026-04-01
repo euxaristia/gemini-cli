@@ -109,10 +109,6 @@ export class NumericalClassifierStrategy implements RoutingStrategy {
         return null;
       }
 
-      if (!isGemini3Model(model, config)) {
-        return null;
-      }
-
       const promptId = getPromptIdWithFallback('classifier-router');
 
       const finalHistory = context.history.slice(-HISTORY_TURNS_FOR_CONTEXT);

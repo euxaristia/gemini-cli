@@ -11,9 +11,9 @@ echo "Running generate script..."
 bun run generate
 
 # Only remove the old version after a successful build
-bun remove -g @euxaristia/gemini-cli 2>/dev/null || true
+bun remove -g @euxaristia/pollux-cli 2>/dev/null || true
 
-echo "Installing Gemini CLI globally..."
+echo "Installing Pollux CLI globally..."
 bun add -g "$SCRIPT_DIR/packages/cli"
 
-echo "Gemini CLI installed globally."
+echo "Pollux CLI installed globally."

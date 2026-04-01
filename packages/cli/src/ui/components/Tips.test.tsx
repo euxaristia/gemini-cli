@@ -7,15 +7,15 @@
 import { render } from '../../test-utils/render.js';
 import { Tips } from './Tips.js';
 import { describe, it, expect, vi } from 'vitest';
-import type { Config } from '@euxaristia/gemini-cli-core';
+import type { Config } from '@euxaristia/pollux-cli-core';
 
 describe('Tips', () => {
   it.each([
-    { fileCount: 0, description: 'renders all tips including GEMINI.md tip' },
-    { fileCount: 5, description: 'renders fewer tips when GEMINI.md exists' },
+    { fileCount: 0, description: 'renders all tips including POLLUX.md tip' },
+    { fileCount: 5, description: 'renders fewer tips when POLLUX.md exists' },
   ])('$description', async ({ fileCount }) => {
     const config = {
-      getGeminiMdFileCount: vi.fn().mockReturnValue(fileCount),
+      getPolluxMdFileCount: vi.fn().mockReturnValue(fileCount),
     } as unknown as Config;
 
     const { lastFrame, unmount } = await render(<Tips config={config} />);

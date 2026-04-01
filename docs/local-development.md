@@ -59,7 +59,7 @@ You can view traces in the Jaeger UI for local development.
 
     This command configures your workspace for local telemetry and provides a
     link to the Jaeger UI (usually `http://localhost:16686`).
-    - **Collector logs:** `~/.gemini/tmp/<projectHash>/otel/collector.log`
+    - **Collector logs:** `~/.pollux/tmp/<projectHash>/otel/collector.log`
 
 2.  **Run Gemini CLI:**
 
@@ -85,7 +85,7 @@ Trace for custom processing or routing.
 > [Google Cloud telemetry prerequisites](./cli/telemetry.md#prerequisites)
 > (Project ID, authentication, IAM roles, and APIs) before using this method.
 
-1.  **Configure `.gemini/settings.json`:**
+1.  **Configure `.pollux/settings.json`:**
 
     ```json
     {
@@ -108,7 +108,7 @@ Trace for custom processing or routing.
 
     The script outputs links to view traces, metrics, and logs in the Google
     Cloud Console.
-    - **Collector logs:** `~/.gemini/tmp/<projectHash>/otel/collector-gcp.log`
+    - **Collector logs:** `~/.pollux/tmp/<projectHash>/otel/collector-gcp.log`
 
 3.  **Run Gemini CLI:**
 
@@ -137,14 +137,14 @@ Adding traces helps you debug and understand the flow of execution. Use the
 Here is a basic example:
 
 ```typescript
-import { runInDevTraceSpan } from '@euxaristia/gemini-cli-core';
-import { GeminiCliOperation } from '@euxaristia/gemini-cli-core/lib/telemetry/constants.js';
+import { runInDevTraceSpan } from '@euxaristia/pollux-cli-core';
+import { GeminiCliOperation } from '@euxaristia/pollux-cli-core/lib/telemetry/constants.js';
 
 await runInDevTraceSpan(
   {
     operation: GeminiCliOperation.ToolCall,
     attributes: {
-      [GEN_AI_AGENT_NAME]: 'gemini-cli',
+      [GEN_AI_AGENT_NAME]: 'pollux-cli',
     },
   },
   async ({ metadata }) => {

@@ -79,7 +79,7 @@ const external = [
   '@lydell/node-pty-win32-arm64',
   '@lydell/node-pty-win32-x64',
   'keytar',
-  '@euxaristia/gemini-cli-devtools',
+  '@euxaristia/pollux-cli-devtools',
 ];
 
 const baseConfig = {
@@ -100,14 +100,14 @@ const cliConfig = {
   banner: {
     js: `const require = (await import('node:module')).createRequire(import.meta.url); const __chunk_filename = (await import('node:url')).fileURLToPath(import.meta.url); const __chunk_dirname = (await import('node:path')).dirname(__chunk_filename);`,
   },
-  entryPoints: { gemini: 'packages/cli/index.ts' },
+  entryPoints: { pollux: 'packages/cli/index.ts' },
   outdir: 'bundle',
   splitting: true,
   define: {
     __filename: '__chunk_filename',
     __dirname: '__chunk_dirname',
     'process.env.CLI_VERSION': JSON.stringify(dynamicVersion),
-    'process.env.GEMINI_SANDBOX_IMAGE_DEFAULT': JSON.stringify(
+    'process.env.POLLUX_SANDBOX_IMAGE_DEFAULT': JSON.stringify(
       dynamicSandboxImageUri,
     ),
   },
@@ -145,10 +145,10 @@ Promise.allSettled([
 ]).then((results) => {
   const [cliResult, a2aResult] = results;
   if (cliResult.status === 'rejected') {
-    console.error('gemini.js build failed:', cliResult.reason);
+    console.error('pollux.js build failed:', cliResult.reason);
     process.exit(1);
   }
-  // error in a2a-server bundling will not stop gemini.js bundling process
+  // error in a2a-server bundling will not stop pollux.js bundling process
   if (a2aResult.status === 'rejected') {
     console.warn('a2a-server build failed:', a2aResult.reason);
   }

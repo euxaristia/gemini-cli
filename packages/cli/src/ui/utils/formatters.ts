@@ -7,7 +7,7 @@
 import {
   REFERENCE_CONTENT_START,
   REFERENCE_CONTENT_END,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 export const formatBytes = (bytes: number): string => {
   const gb = bytes / (1024 * 1024 * 1024);

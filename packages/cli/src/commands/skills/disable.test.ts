@@ -20,9 +20,9 @@ const { emitConsoleLog, debugLogger } = await vi.hoisted(async () => {
   return createMockDebugLogger({ stripAnsi: true });
 });
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     debugLogger,
@@ -87,7 +87,7 @@ describe('skills disable command', () => {
       const mockSettings = {
         forScope: vi.fn().mockReturnValue({
           settings: { skills: { disabled: [] } },
-          path: '/workspace/.gemini/settings.json',
+          path: '/workspace/.pollux/settings.json',
         }),
         setValue: vi.fn(),
       };
@@ -107,7 +107,7 @@ describe('skills disable command', () => {
       );
       expect(emitConsoleLog).toHaveBeenCalledWith(
         'log',
-        'Skill "skill1" disabled by adding it to the disabled list in workspace (/workspace/.gemini/settings.json) settings.',
+        'Skill "skill1" disabled by adding it to the disabled list in workspace (/workspace/.pollux/settings.json) settings.',
       );
     });
 

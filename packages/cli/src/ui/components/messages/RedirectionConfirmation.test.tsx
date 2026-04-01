@@ -9,8 +9,8 @@ import { ToolConfirmationMessage } from './ToolConfirmationMessage.js';
 import type {
   SerializableConfirmationDetails,
   Config,
-} from '@euxaristia/gemini-cli-core';
-import { initializeShellParsers } from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
+import { initializeShellParsers } from '@euxaristia/pollux-cli-core';
 import { renderWithProviders } from '../../../test-utils/render.js';
 
 describe('ToolConfirmationMessage Redirection', () => {

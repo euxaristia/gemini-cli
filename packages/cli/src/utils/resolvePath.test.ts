@@ -13,7 +13,7 @@ vi.mock('node:os', () => ({
   homedir: vi.fn(),
 }));
 
-vi.mock('@euxaristia/gemini-cli-core', () => ({
+vi.mock('@euxaristia/pollux-cli-core', () => ({
   homedir: () => os.homedir(),
 }));
 

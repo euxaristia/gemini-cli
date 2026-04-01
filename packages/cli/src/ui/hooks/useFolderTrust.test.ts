@@ -29,16 +29,16 @@ import {
   coreEvents,
   ExitCodes,
   isHeadlessMode,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { MessageType } from '../types.js';
 
 const mockedCwd = vi.hoisted(() => vi.fn());
 const mockedExit = vi.hoisted(() => vi.fn());
 
-vi.mock('@euxaristia/gemini-cli-core', async () => {
+vi.mock('@euxaristia/pollux-cli-core', async () => {
   const actual = await vi.importActual<
-    typeof import('@euxaristia/gemini-cli-core')
-  >('@euxaristia/gemini-cli-core');
+    typeof import('@euxaristia/pollux-cli-core')
+  >('@euxaristia/pollux-cli-core');
   return {
     ...actual,
     isHeadlessMode: vi.fn().mockReturnValue(false),
@@ -162,7 +162,7 @@ describe('useFolderTrust', () => {
     );
     expect(addItem).toHaveBeenCalledWith(
       {
-        text: 'This folder is untrusted, project settings, hooks, MCPs, and GEMINI.md files will not be applied for this folder.\nUse the `/permissions` command to change the trust level.',
+        text: 'This folder is untrusted, project settings, hooks, MCPs, and POLLUX.md files will not be applied for this folder.\nUse the `/permissions` command to change the trust level.',
         type: 'info',
       },
       expect.any(Number),

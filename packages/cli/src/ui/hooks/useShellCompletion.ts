@@ -9,7 +9,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import type { Suggestion } from '../components/SuggestionsDisplay.js';
-import { debugLogger } from '@euxaristia/gemini-cli-core';
+import { debugLogger } from '@euxaristia/pollux-cli-core';
 import { getArgumentCompletions } from './shell-completions/index.js';
 
 /**

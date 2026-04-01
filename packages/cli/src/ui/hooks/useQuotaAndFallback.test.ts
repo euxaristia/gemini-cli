@@ -36,7 +36,7 @@ import {
   shouldShowEmptyWalletMenu,
   logBillingEvent,
   G1_CREDIT_TYPE,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { useQuotaAndFallback } from './useQuotaAndFallback.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType } from '../types.js';
@@ -44,9 +44,9 @@ import { MessageType } from '../types.js';
 // Use a type alias for SpyInstance as it's not directly exported
 type SpyInstance = ReturnType<typeof vi.spyOn>;
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     getG1CreditBalance: vi.fn(),
@@ -510,8 +510,7 @@ describe('useQuotaAndFallback', () => {
 
         const message = request!.message;
         expect(message).toBe(
-          `It seems like you don't have access to gemini-3-pro-preview.
-Your admin might have disabled the access. Contact them to enable the Preview Release Channel.`,
+          `Model "gemini-3-pro-preview" was not found or is invalid.\n/model to switch models.`,
         );
 
         // Simulate the user choosing to switch

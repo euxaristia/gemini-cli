@@ -8,7 +8,7 @@ release may not be as stable as our [latest weekly release](latest.md).
 To install the preview release:
 
 ```
-npm install -g @euxaristia/gemini-cli@preview
+npm install -g @euxaristia/pollux-cli@preview
 ```
 
 ## Highlights

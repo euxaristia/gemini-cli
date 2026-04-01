@@ -19,7 +19,7 @@ import {
   type WaitingToolCall,
   type CancelledToolCall,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { ToolCallStatus, mapCoreStatusToDisplayStatus } from '../types.js';
 
 describe('toolMapping', () => {

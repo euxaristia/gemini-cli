@@ -25,7 +25,7 @@ import os from 'node:os';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import dotenv from 'dotenv';
-import { GEMINI_DIR } from '@euxaristia/gemini-cli-core';
+import { POLLUX_DIR } from '@euxaristia/pollux-cli-core';
 
 const argv = yargs(hideBin(process.argv)).option('q', {
   alias: 'quiet',
@@ -33,12 +33,12 @@ const argv = yargs(hideBin(process.argv)).option('q', {
   default: false,
 }).argv;
 
-const homedir = () => process.env['GEMINI_CLI_HOME'] || os.homedir();
+const homedir = () => process.env['POLLUX_CLI_HOME'] || os.homedir();
 
-let geminiSandbox = process.env.GEMINI_SANDBOX;
+let geminiSandbox = process.env.POLLUX_SANDBOX;
 
 if (!geminiSandbox) {
-  const userSettingsFile = join(homedir(), GEMINI_DIR, 'settings.json');
+  const userSettingsFile = join(homedir(), POLLUX_DIR, 'settings.json');
   if (existsSync(userSettingsFile)) {
     const settings = JSON.parse(
       stripJsonComments(readFileSync(userSettingsFile, 'utf-8')),
@@ -52,7 +52,7 @@ if (!geminiSandbox) {
 if (!geminiSandbox) {
   let currentDir = process.cwd();
   while (true) {
-    const geminiEnv = join(currentDir, GEMINI_DIR, '.env');
+    const geminiEnv = join(currentDir, POLLUX_DIR, '.env');
     const regularEnv = join(currentDir, '.env');
     if (existsSync(geminiEnv)) {
       dotenv.config({ path: geminiEnv, quiet: true });
@@ -67,7 +67,7 @@ if (!geminiSandbox) {
     }
     currentDir = parentDir;
   }
-  geminiSandbox = process.env.GEMINI_SANDBOX;
+  geminiSandbox = process.env.POLLUX_SANDBOX;
 }
 
 geminiSandbox = (geminiSandbox || '').toLowerCase();
@@ -98,7 +98,7 @@ if (['1', 'true'].includes(geminiSandbox)) {
     command = 'podman';
   } else {
     console.error(
-      'ERROR: install docker or podman or specify command in GEMINI_SANDBOX',
+      'ERROR: install docker or podman or specify command in POLLUX_SANDBOX',
     );
     process.exit(1);
   }
@@ -107,7 +107,7 @@ if (['1', 'true'].includes(geminiSandbox)) {
     command = geminiSandbox;
   } else {
     console.error(
-      `ERROR: missing sandbox command '${geminiSandbox}' (from GEMINI_SANDBOX)`,
+      `ERROR: missing sandbox command '${geminiSandbox}' (from POLLUX_SANDBOX)`,
     );
     process.exit(1);
   }

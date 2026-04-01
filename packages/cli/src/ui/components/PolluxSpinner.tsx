@@ -14,12 +14,12 @@ import tinygradient from 'tinygradient';
 
 const COLOR_CYCLE_DURATION_MS = 4000;
 
-interface GeminiSpinnerProps {
+interface PolluxSpinnerProps {
   spinnerType?: SpinnerName;
   altText?: string;
 }
 
-export const GeminiSpinner: React.FC<GeminiSpinnerProps> = ({
+export const PolluxSpinner: React.FC<PolluxSpinnerProps> = ({
   spinnerType = 'dots',
   altText,
 }) => {

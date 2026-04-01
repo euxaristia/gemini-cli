@@ -12,7 +12,7 @@ import {
   getCompatibilityWarnings,
   WarningPriority,
   type StartupWarning,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { Settings } from '../config/settingsSchema.js';
 import {
   isFolderTrustEnabled,

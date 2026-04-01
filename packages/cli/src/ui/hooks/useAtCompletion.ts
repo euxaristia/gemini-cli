@@ -13,7 +13,7 @@ import {
   FileDiscoveryService,
   type Config,
   type FileSearch,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   MAX_SUGGESTIONS_TO_SHOW,
   type Suggestion,

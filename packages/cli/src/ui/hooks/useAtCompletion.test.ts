@@ -16,12 +16,12 @@ import {
   escapePath,
   type Config,
   type FileSearch,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import {
   createTmpDir,
   cleanupTmpDir,
   type FileSystemStructure,
-} from '@euxaristia/gemini-cli-test-utils';
+} from '@euxaristia/pollux-cli-test-utils';
 import type { Suggestion } from '../components/SuggestionsDisplay.js';
 
 // Test harness to capture the state from the hook's callbacks.
@@ -54,7 +54,7 @@ describe('useAtCompletion', () => {
     mockConfig = {
       getFileFilteringOptions: vi.fn(() => ({
         respectGitIgnore: true,
-        respectGeminiIgnore: true,
+        respectPolluxIgnore: true,
       })),
       getEnableRecursiveFileSearch: () => true,
       getFileFilteringEnableFuzzySearch: () => true,
@@ -159,7 +159,7 @@ describe('useAtCompletion', () => {
         ignoreDirs: [],
         fileDiscoveryService: new FileDiscoveryService(testRootDir, {
           respectGitIgnore: false,
-          respectGeminiIgnore: false,
+          respectPolluxIgnore: false,
         }),
         cache: false,
         cacheTtl: 0,
@@ -291,7 +291,7 @@ describe('useAtCompletion', () => {
         ignoreDirs: [],
         fileDiscoveryService: new FileDiscoveryService(testRootDir, {
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectPolluxIgnore: true,
         }),
         cache: false,
         cacheTtl: 0,
@@ -613,7 +613,7 @@ describe('useAtCompletion', () => {
         getEnableRecursiveFileSearch: () => false,
         getFileFilteringOptions: vi.fn(() => ({
           respectGitIgnore: true,
-          respectGeminiIgnore: true,
+          respectPolluxIgnore: true,
         })),
         getFileFilteringEnableFuzzySearch: () => true,
       } as unknown as Config;

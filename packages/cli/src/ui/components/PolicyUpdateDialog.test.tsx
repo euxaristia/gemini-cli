@@ -13,16 +13,16 @@ import {
   type Config,
   type PolicyUpdateConfirmationRequest,
   PolicyIntegrityManager,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 const { mockAcceptIntegrity } = vi.hoisted(() => ({
   mockAcceptIntegrity: vi.fn(),
 }));
 
 // Mock PolicyIntegrityManager
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...original,
     PolicyIntegrityManager: vi.fn().mockImplementation(() => ({
@@ -44,8 +44,8 @@ describe('PolicyUpdateDialog', () => {
 
     mockRequest = {
       scope: 'workspace',
-      identifier: '/test/workspace/.gemini/policies',
-      policyDir: '/test/workspace/.gemini/policies',
+      identifier: '/test/workspace/.pollux/policies',
+      policyDir: '/test/workspace/.pollux/policies',
       newHash: 'test-hash',
     } as PolicyUpdateConfirmationRequest;
 
@@ -68,7 +68,7 @@ describe('PolicyUpdateDialog', () => {
     const output = lastFrame();
     expect(output).toMatchSnapshot();
     expect(output).toContain('New or changed workspace policies detected');
-    expect(output).toContain('Location: /test/workspace/.gemini/policies');
+    expect(output).toContain('Location: /test/workspace/.pollux/policies');
     expect(output).toContain('Accept and Load');
     expect(output).toContain('Ignore');
   });

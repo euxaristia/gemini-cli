@@ -9,7 +9,7 @@ import {
   getToolCallDataSchema,
   isNodeError,
   performRestore,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import type {

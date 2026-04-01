@@ -332,7 +332,7 @@ Use the `/mcp auth` command to manage OAuth authentication:
 
 OAuth tokens are automatically:
 
-- **Stored securely** in `~/.gemini/mcp-oauth-tokens.json`
+- **Stored securely** in `~/.pollux/mcp-oauth-tokens.json`
 - **Refreshed** when expired (if refresh tokens are available)
 - **Validated** before each connection attempt
 - **Cleaned up** when invalid or expired
@@ -1039,7 +1039,7 @@ directly edit JSON files.
 
 The `add` command configures a new MCP server in your `settings.json`. Based on
 the scope (`-s, --scope`), it will be added to either the user config
-`~/.gemini/settings.json` or the project config `.gemini/settings.json` file.
+`~/.pollux/settings.json` or the project config `.pollux/settings.json` file.
 
 **Command:**
 
@@ -1196,7 +1196,7 @@ gemini mcp disable <name> [--session]
 
 Disabled servers appear in `/mcp` status as "Disabled" but won't connect or
 provide tools. Enablement state is stored in
-`~/.gemini/mcp-server-enablement.json`.
+`~/.pollux/mcp-server-enablement.json`.
 
 The same commands are available as slash commands during an active session:
 `/mcp enable <name>` and `/mcp disable <name>`.

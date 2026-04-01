@@ -8,7 +8,7 @@ import { render } from '../../test-utils/render.js';
 import { ShellInputPrompt } from './ShellInputPrompt.js';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { act } from 'react';
-import { ShellExecutionService } from '@euxaristia/gemini-cli-core';
+import { ShellExecutionService } from '@euxaristia/pollux-cli-core';
 import { useUIActions, type UIActions } from '../contexts/UIActionsContext.js';
 
 // Mock useUIActions
@@ -24,8 +24,8 @@ vi.mock('../hooks/useKeypress.js', () => ({
 }));
 
 // Mock ShellExecutionService
-vi.mock('@euxaristia/gemini-cli-core', async () => {
-  const actual = await vi.importActual('@euxaristia/gemini-cli-core');
+vi.mock('@euxaristia/pollux-cli-core', async () => {
+  const actual = await vi.importActual('@euxaristia/pollux-cli-core');
   return {
     ...actual,
     ShellExecutionService: {

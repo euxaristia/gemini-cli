@@ -16,7 +16,7 @@ import {
   afterEach,
   type Mock,
 } from 'vitest';
-import { NoopSandboxManager } from '@euxaristia/gemini-cli-core';
+import { NoopSandboxManager } from '@euxaristia/pollux-cli-core';
 
 const mockIsBinary = vi.hoisted(() => vi.fn());
 const mockShellExecutionService = vi.hoisted(() => vi.fn());
@@ -53,9 +53,9 @@ const mockLifecycleBackground = vi.hoisted(() => vi.fn());
 const mockLifecycleOnBackground = vi.hoisted(() => vi.fn());
 const mockLifecycleOffBackground = vi.hoisted(() => vi.fn());
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     ShellExecutionService: {
@@ -98,11 +98,11 @@ import {
 } from './useExecutionLifecycle.js';
 import {
   type Config,
-  type GeminiClient,
+  type PolluxClient,
   type ShellExecutionResult,
   type ShellOutputEvent,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
@@ -114,7 +114,7 @@ describe('useExecutionLifecycle', () => {
   let onExecMock: Mock;
   let onDebugMessageMock: Mock;
   let mockConfig: Config;
-  let mockGeminiClient: GeminiClient;
+  let mockPolluxClient: PolluxClient;
 
   let mockShellOutputCallback: (event: ShellOutputEvent) => void;
   let resolveExecutionPromise: (result: ShellExecutionResult) => void;
@@ -143,7 +143,7 @@ describe('useExecutionLifecycle', () => {
         },
       }),
     } as unknown as Config;
-    mockGeminiClient = { addHistory: vi.fn() } as unknown as GeminiClient;
+    mockPolluxClient = { addHistory: vi.fn() } as unknown as PolluxClient;
 
     vi.mocked(os.platform).mockReturnValue('linux');
     vi.mocked(os.tmpdir).mockReturnValue('/tmp');
@@ -179,7 +179,7 @@ describe('useExecutionLifecycle', () => {
         onExecMock,
         onDebugMessageMock,
         mockConfig,
-        mockGeminiClient,
+        mockPolluxClient,
         setShellInputFocusedMock,
         undefined,
         undefined,
@@ -278,7 +278,7 @@ describe('useExecutionLifecycle', () => {
         ],
       }),
     );
-    expect(mockGeminiClient.addHistory).toHaveBeenCalled();
+    expect(mockPolluxClient.addHistory).toHaveBeenCalled();
     expect(setShellInputFocusedMock).toHaveBeenCalledWith(false);
   });
 
@@ -488,7 +488,7 @@ describe('useExecutionLifecycle', () => {
     await act(async () => await execPromise);
 
     // With the new logic, cancelled commands are not added to history by this hook
-    // to avoid duplication/flickering, as they are handled by useGeminiStream.
+    // to avoid duplication/flickering, as they are handled by usePolluxStream.
     expect(addItemToHistoryMock).toHaveBeenCalledTimes(1);
     expect(setPendingHistoryItemMock).toHaveBeenCalledWith(null);
     expect(setShellInputFocusedMock).toHaveBeenCalledWith(false);

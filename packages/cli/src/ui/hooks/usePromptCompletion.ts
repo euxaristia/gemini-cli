@@ -10,7 +10,7 @@ import {
   getResponseText,
   LlmRole,
   type Config,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import type { Content } from '@google/genai';
 import type { TextBuffer } from '../components/shared/text-buffer.js';
 import { isSlashCommand } from '../utils/commandUtils.js';
@@ -67,7 +67,7 @@ export function usePromptCompletion({
 
   const generatePromptSuggestions = useCallback(async () => {
     const trimmedText = buffer.text.trim();
-    const geminiClient = config?.getGeminiClient();
+    const polluxClient = config?.getPolluxClient();
 
     if (trimmedText === lastRequestedTextRef.current) {
       return;
@@ -79,7 +79,7 @@ export function usePromptCompletion({
 
     if (
       trimmedText.length < PROMPT_COMPLETION_MIN_LENGTH ||
-      !geminiClient ||
+      !polluxClient ||
       isSlashCommand(trimmedText) ||
       trimmedText.includes('@') ||
       !isPromptCompletionEnabled
@@ -107,7 +107,7 @@ export function usePromptCompletion({
         },
       ];
 
-      const response = await geminiClient.generateContent(
+      const response = await polluxClient.generateContent(
         { model: 'prompt-completion' },
         contents,
         signal,

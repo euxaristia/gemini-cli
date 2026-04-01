@@ -29,22 +29,22 @@ export function logConsecaPolicyGeneration(
   if (clearcutLogger) {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.CONSECA_USER_PROMPT,
+        pollux_cli_key: EventMetadataKey.CONSECA_USER_PROMPT,
         value: safeJsonStringify(event.user_prompt),
       },
       {
-        gemini_cli_key: EventMetadataKey.CONSECA_TRUSTED_CONTENT,
+        pollux_cli_key: EventMetadataKey.CONSECA_TRUSTED_CONTENT,
         value: safeJsonStringify(event.trusted_content),
       },
       {
-        gemini_cli_key: EventMetadataKey.CONSECA_GENERATED_POLICY,
+        pollux_cli_key: EventMetadataKey.CONSECA_GENERATED_POLICY,
         value: safeJsonStringify(event.policy),
       },
     ];
 
     if (event.error) {
       data.push({
-        gemini_cli_key: EventMetadataKey.CONSECA_ERROR,
+        pollux_cli_key: EventMetadataKey.CONSECA_ERROR,
         value: event.error,
       });
     }
@@ -73,30 +73,30 @@ export function logConsecaVerdict(
   if (clearcutLogger) {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.CONSECA_USER_PROMPT,
+        pollux_cli_key: EventMetadataKey.CONSECA_USER_PROMPT,
         value: safeJsonStringify(event.user_prompt),
       },
       {
-        gemini_cli_key: EventMetadataKey.CONSECA_GENERATED_POLICY,
+        pollux_cli_key: EventMetadataKey.CONSECA_GENERATED_POLICY,
         value: safeJsonStringify(event.policy),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_CALL_NAME,
+        pollux_cli_key: EventMetadataKey.POLLUX_CLI_TOOL_CALL_NAME,
         value: safeJsonStringify(event.tool_call),
       },
       {
-        gemini_cli_key: EventMetadataKey.CONSECA_VERDICT_RESULT,
+        pollux_cli_key: EventMetadataKey.CONSECA_VERDICT_RESULT,
         value: safeJsonStringify(event.verdict),
       },
       {
-        gemini_cli_key: EventMetadataKey.CONSECA_VERDICT_RATIONALE,
+        pollux_cli_key: EventMetadataKey.CONSECA_VERDICT_RATIONALE,
         value: event.verdict_rationale,
       },
     ];
 
     if (event.error) {
       data.push({
-        gemini_cli_key: EventMetadataKey.CONSECA_ERROR,
+        pollux_cli_key: EventMetadataKey.CONSECA_ERROR,
         value: event.error,
       });
     }

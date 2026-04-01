@@ -9,7 +9,7 @@ import {
   hasValidEditorCommand,
   type EditorType,
   EDITOR_DISPLAY_NAMES,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 
 export interface EditorDisplay {
   name: string;

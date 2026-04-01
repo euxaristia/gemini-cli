@@ -9,7 +9,7 @@ import path from 'node:path';
 import {
   coreEvents,
   type GeminiCLIExtension,
-} from '@euxaristia/gemini-cli-core';
+} from '@euxaristia/pollux-cli-core';
 import { ExtensionStorage } from './storage.js';
 
 export interface ExtensionEnablementConfig {

@@ -9,16 +9,16 @@ import { renderWithProviders } from '../../test-utils/render.js';
 import { AppHeader } from './AppHeader.js';
 
 // We mock the entire module to control the isAppleTerminal export
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
   return {
     ...actual,
     isAppleTerminal: vi.fn(),
   };
 });
 
-import { isAppleTerminal } from '@euxaristia/gemini-cli-core';
+import { isAppleTerminal } from '@euxaristia/pollux-cli-core';
 
 describe('AppHeader Icon Rendering', () => {
   beforeEach(() => {
