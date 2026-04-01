@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { debugLogger } from '@euxaristia/pollux-cli-core';
+import { debugLogger } from '@euxaristia/gemini-cli-core';
 import type { Command } from './types.js';
 
 export class CommandRegistry {

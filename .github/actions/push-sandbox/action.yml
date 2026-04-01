@@ -77,13 +77,13 @@ runs:
       id: 'docker_build'
       shell: 'bash'
       env:
-        POLLUX_SANDBOX_IMAGE_TAG: '${{ steps.image_tag.outputs.FINAL_TAG }}'
-        POLLUX_SANDBOX: 'docker'
+        GEMINI_SANDBOX_IMAGE_TAG: '${{ steps.image_tag.outputs.FINAL_TAG }}'
+        GEMINI_SANDBOX: 'docker'
         BUILD_SANDBOX_FLAGS: '--platform linux/amd64 --load'
         STEPS_IMAGE_TAG_OUTPUTS_FINAL_TAG: '${{ steps.image_tag.outputs.FINAL_TAG }}'
       run: |-
         npm run build:sandbox -- \
-          --image "google/pollux-cli-sandbox:${STEPS_IMAGE_TAG_OUTPUTS_FINAL_TAG}" \
+          --image "google/gemini-cli-sandbox:${STEPS_IMAGE_TAG_OUTPUTS_FINAL_TAG}" \
           --output-file final_image_uri.txt
         echo "uri=$(cat final_image_uri.txt)" >> $GITHUB_OUTPUT
     - name: 'verify'
@@ -91,20 +91,20 @@ runs:
       run: |-
         docker run --rm --entrypoint sh "${{ steps.docker_build.outputs.uri }}" -lc '
           set -e
-          node -e "const fs=require(\"node:fs\"); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@euxaristia/pollux-cli/package.json\",\"utf8\")); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@euxaristia/pollux-cli-core/package.json\",\"utf8\"));"
+          node -e "const fs=require(\"node:fs\"); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@euxaristia/gemini-cli/package.json\",\"utf8\")); JSON.parse(fs.readFileSync(\"/usr/local/share/npm-global/lib/node_modules/@euxaristia/gemini-cli-core/package.json\",\"utf8\"));"
           /usr/local/share/npm-global/bin/gemini --version >/dev/null
         '
     - name: 'publish'
       shell: 'bash'
       if: "${{ inputs.dry-run != 'true' }}"
       env:
-        POLLUX_SANDBOX_IMAGE_TAG: '${{ steps.image_tag.outputs.FINAL_TAG }}'
-        POLLUX_SANDBOX: 'docker'
+        GEMINI_SANDBOX_IMAGE_TAG: '${{ steps.image_tag.outputs.FINAL_TAG }}'
+        GEMINI_SANDBOX: 'docker'
         BUILD_SANDBOX_FLAGS: '--platform linux/amd64,linux/arm64 --push'
         STEPS_IMAGE_TAG_OUTPUTS_FINAL_TAG: '${{ steps.image_tag.outputs.FINAL_TAG }}'
       run: |-
         npm run build:sandbox -- \
-          --image "google/pollux-cli-sandbox:${STEPS_IMAGE_TAG_OUTPUTS_FINAL_TAG}"
+          --image "google/gemini-cli-sandbox:${STEPS_IMAGE_TAG_OUTPUTS_FINAL_TAG}"
     - name: 'Create issue on failure'
       if: |-
         ${{ failure() }}

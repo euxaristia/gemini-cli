@@ -34,7 +34,7 @@ import { injectAutomationOverlay } from './automationOverlay.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Default browser profile directory name within ~/.pollux/
+// Default browser profile directory name within ~/.gemini/
 const BROWSER_PROFILE_DIR = 'cli-browser-profile';
 
 /**
@@ -471,7 +471,7 @@ export class BrowserManager {
     // Create raw MCP SDK Client (not the wrapper McpClient)
     this.rawMcpClient = new Client(
       {
-        name: 'pollux-cli-browser-agent',
+        name: 'gemini-cli-browser-agent',
         version: '1.0.0',
       },
       {
@@ -487,7 +487,7 @@ export class BrowserManager {
 
     // Session mode determines how the browser is managed:
     // - "isolated": Temp profile, cleaned up after session (--isolated)
-    // - "persistent": Persistent profile at ~/.pollux/cli-browser-profile/ (default)
+    // - "persistent": Persistent profile at ~/.gemini/cli-browser-profile/ (default)
     // - "existing": Connect to already-running Chrome (--autoConnect, requires
     //   remote debugging enabled at chrome://inspect/#remote-debugging)
     if (sessionMode === 'isolated') {
@@ -507,9 +507,9 @@ export class BrowserManager {
     if (browserConfig.customConfig.profilePath) {
       mcpArgs.push('--userDataDir', browserConfig.customConfig.profilePath);
     } else if (sessionMode === 'persistent') {
-      // Default persistent profile lives under ~/.pollux/cli-browser-profile
+      // Default persistent profile lives under ~/.gemini/cli-browser-profile
       const defaultProfilePath = path.join(
-        Storage.getGlobalPolluxDir(),
+        Storage.getGlobalGeminiDir(),
         BROWSER_PROFILE_DIR,
       );
       mcpArgs.push('--userDataDir', defaultProfilePath);

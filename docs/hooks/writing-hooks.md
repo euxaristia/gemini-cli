@@ -31,8 +31,8 @@ Create a directory for hooks and a simple logging script.
 **macOS/Linux**
 
 ```bash
-mkdir -p .pollux/hooks
-cat > .pollux/hooks/log-tools.sh << 'EOF'
+mkdir -p .gemini/hooks
+cat > .gemini/hooks/log-tools.sh << 'EOF'
 #!/usr/bin/env bash
 # Read hook input from stdin
 input=$(cat)
@@ -44,20 +44,20 @@ tool_name=$(echo "$input" | jq -r '.tool_name')
 echo "Logging tool: $tool_name" >&2
 
 # Log to file
-echo "[$(date)] Tool executed: $tool_name" >> .pollux/tool-log.txt
+echo "[$(date)] Tool executed: $tool_name" >> .gemini/tool-log.txt
 
 # Return success (exit 0) with empty JSON
 echo "{}"
 exit 0
 EOF
 
-chmod +x .pollux/hooks/log-tools.sh
+chmod +x .gemini/hooks/log-tools.sh
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-New-Item -ItemType Directory -Force -Path ".pollux\hooks"
+New-Item -ItemType Directory -Force -Path ".gemini\hooks"
 @"
 # Read hook input from stdin
 `$inputJson = `$input | Out-String | ConvertFrom-Json
@@ -69,11 +69,11 @@ New-Item -ItemType Directory -Force -Path ".pollux\hooks"
 [Console]::Error.WriteLine("Logging tool: `$toolName")
 
 # Log to file
-"[`$(Get-Date -Format 'o')] Tool executed: `$toolName" | Out-File -FilePath ".pollux\tool-log.txt" -Append -Encoding utf8
+"[`$(Get-Date -Format 'o')] Tool executed: `$toolName" | Out-File -FilePath ".gemini\tool-log.txt" -Append -Encoding utf8
 
 # Return success with empty JSON
 "{}"
-"@ | Out-File -FilePath ".pollux\hooks\log-tools.ps1" -Encoding utf8
+"@ | Out-File -FilePath ".gemini\hooks\log-tools.ps1" -Encoding utf8
 ```
 
 ## Exit Code Strategies
@@ -92,7 +92,7 @@ There are two ways to control or block an action in Gemini CLI:
 Prevent committing files containing API keys or passwords. Note that we use
 **Exit Code 0** to provide a structured denial message to the agent.
 
-**`.pollux/hooks/block-secrets.sh`:**
+**`.gemini/hooks/block-secrets.sh`:**
 
 ```bash
 #!/usr/bin/env bash
@@ -126,7 +126,7 @@ exit 0
 
 Add relevant project context before each agent interaction.
 
-**`.pollux/hooks/inject-context.sh`:**
+**`.gemini/hooks/inject-context.sh`:**
 
 ```bash
 #!/usr/bin/env bash
@@ -150,7 +150,7 @@ EOF
 Use `BeforeToolSelection` to intelligently reduce the tool space. This example
 uses a Node.js script to check the user's prompt and allow only relevant tools.
 
-**`.pollux/hooks/filter-tools.js`:**
+**`.gemini/hooks/filter-tools.js`:**
 
 ```javascript
 #!/usr/bin/env node
@@ -207,7 +207,7 @@ main().catch((err) => {
 });
 ```
 
-**`.pollux/settings.json`:**
+**`.gemini/settings.json`:**
 
 ```json
 {
@@ -219,7 +219,7 @@ main().catch((err) => {
           {
             "name": "intent-filter",
             "type": "command",
-            "command": "node .pollux/hooks/filter-tools.js"
+            "command": "node .gemini/hooks/filter-tools.js"
           }
         ]
       }
@@ -251,7 +251,7 @@ security.
 6. **AfterAgent**: Validate final response quality (Retry).
 7. **SessionEnd**: Consolidate memories.
 
-### Configuration (`.pollux/settings.json`)
+### Configuration (`.gemini/settings.json`)
 
 ```json
 {
@@ -263,7 +263,7 @@ security.
           {
             "name": "init",
             "type": "command",
-            "command": "node .pollux/hooks/init.js"
+            "command": "node .gemini/hooks/init.js"
           }
         ]
       }
@@ -275,7 +275,7 @@ security.
           {
             "name": "memory",
             "type": "command",
-            "command": "node .pollux/hooks/inject-memories.js"
+            "command": "node .gemini/hooks/inject-memories.js"
           }
         ]
       }
@@ -287,7 +287,7 @@ security.
           {
             "name": "filter",
             "type": "command",
-            "command": "node .pollux/hooks/rag-filter.js"
+            "command": "node .gemini/hooks/rag-filter.js"
           }
         ]
       }
@@ -299,7 +299,7 @@ security.
           {
             "name": "security",
             "type": "command",
-            "command": "node .pollux/hooks/security.js"
+            "command": "node .gemini/hooks/security.js"
           }
         ]
       }
@@ -311,7 +311,7 @@ security.
           {
             "name": "record",
             "type": "command",
-            "command": "node .pollux/hooks/record.js"
+            "command": "node .gemini/hooks/record.js"
           }
         ]
       }
@@ -323,7 +323,7 @@ security.
           {
             "name": "validate",
             "type": "command",
-            "command": "node .pollux/hooks/validate.js"
+            "command": "node .gemini/hooks/validate.js"
           }
         ]
       }
@@ -335,7 +335,7 @@ security.
           {
             "name": "save",
             "type": "command",
-            "command": "node .pollux/hooks/consolidate.js"
+            "command": "node .gemini/hooks/consolidate.js"
           }
         ]
       }
@@ -420,7 +420,7 @@ const input = JSON.parse(fs.readFileSync(0));
 const { llm_request, llm_response } = input;
 const logFile = path.join(
   process.env.GEMINI_PROJECT_DIR,
-  '.pollux/memory/session.jsonl',
+  '.gemini/memory/session.jsonl',
 );
 
 fs.appendFileSync(

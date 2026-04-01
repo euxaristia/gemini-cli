@@ -14,7 +14,6 @@ import {
   type HookEventName,
 } from './types.js';
 import { debugLogger } from '../utils/debugLogger.js';
-import { writeFileSyncAtomic } from '../utils/fileUtils.js';
 
 interface TrustedHooksConfig {
   [projectPath: string]: string[]; // Array of trusted hook keys (name:command)
@@ -26,7 +25,7 @@ export class TrustedHooksManager {
 
   constructor() {
     this.configPath = path.join(
-      Storage.getGlobalPolluxDir(),
+      Storage.getGlobalGeminiDir(),
       'trusted_hooks.json',
     );
     this.load();
@@ -47,7 +46,11 @@ export class TrustedHooksManager {
 
   private save(): void {
     try {
-      writeFileSyncAtomic(
+      const dir = path.dirname(this.configPath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.writeFileSync(
         this.configPath,
         JSON.stringify(this.trustedHooks, null, 2),
       );

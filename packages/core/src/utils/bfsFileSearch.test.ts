@@ -10,7 +10,7 @@ import * as path from 'node:path';
 import * as os from 'node:os';
 import { bfsFileSearch, bfsFileSearchSync } from './bfsFileSearch.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
-import { POLLUX_IGNORE_FILE_NAME } from 'src/config/constants.js';
+import { GEMINI_IGNORE_FILE_NAME } from 'src/config/constants.js';
 
 describe('bfsFileSearch', () => {
   let testRootDir: string;
@@ -131,7 +131,7 @@ describe('bfsFileSearch', () => {
         fileService,
         fileFilteringOptions: {
           respectGitIgnore: true,
-          respectPolluxIgnore: true,
+          respectGeminiIgnore: true,
           customIgnoreFilePaths: [],
         },
       });
@@ -140,7 +140,7 @@ describe('bfsFileSearch', () => {
     });
 
     it('should ignore geminiignored files', async () => {
-      await createTestFile('node_modules/', 'project', POLLUX_IGNORE_FILE_NAME);
+      await createTestFile('node_modules/', 'project', GEMINI_IGNORE_FILE_NAME);
       await createTestFile('content', 'project', 'node_modules', 'target.txt');
       const targetFilePath = await createTestFile(
         'content',
@@ -155,7 +155,7 @@ describe('bfsFileSearch', () => {
         fileService,
         fileFilteringOptions: {
           respectGitIgnore: false,
-          respectPolluxIgnore: true,
+          respectGeminiIgnore: true,
           customIgnoreFilePaths: [],
         },
       });
@@ -185,7 +185,7 @@ describe('bfsFileSearch', () => {
         fileService,
         fileFilteringOptions: {
           respectGitIgnore: false,
-          respectPolluxIgnore: false,
+          respectGeminiIgnore: false,
           customIgnoreFilePaths: [],
         },
       });
@@ -214,16 +214,16 @@ describe('bfsFileSearch', () => {
     for (let i = 0; i < numTargetDirs; i++) {
       // Add target files in some directories
       fileCreationPromises.push(
-        createTestFile('content', `dir${i}`, 'POLLUX.md'),
+        createTestFile('content', `dir${i}`, 'GEMINI.md'),
       );
       fileCreationPromises.push(
-        createTestFile('content', `dir${i}`, 'subdir1', 'POLLUX.md'),
+        createTestFile('content', `dir${i}`, 'subdir1', 'GEMINI.md'),
       );
     }
     const expectedFiles = await Promise.all(fileCreationPromises);
 
     const result = await bfsFileSearch(testRootDir, {
-      fileName: 'POLLUX.md',
+      fileName: 'GEMINI.md',
       // Provide a generous maxDirs limit to ensure it doesn't prematurely stop
       // in this large test case. Total dirs created is 200.
       maxDirs: 250,
@@ -319,7 +319,7 @@ describe('bfsFileSearchSync', () => {
       fileService,
       fileFilteringOptions: {
         respectGitIgnore: true,
-        respectPolluxIgnore: true,
+        respectGeminiIgnore: true,
         customIgnoreFilePaths: [],
       },
     });

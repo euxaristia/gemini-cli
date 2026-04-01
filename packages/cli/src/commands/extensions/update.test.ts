@@ -34,9 +34,9 @@ const debugLogger = vi.hoisted(() => ({
   }),
 }));
 
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     coreEvents: {

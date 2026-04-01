@@ -11,10 +11,10 @@ import { StreamingState } from '../types.js';
 import {
   hasRedirection,
   CoreToolCallStatus,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { type TrackedToolCall } from './useToolScheduler.js';
 
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual = await importOriginal<Record<string, unknown>>();
   return {
     ...actual,

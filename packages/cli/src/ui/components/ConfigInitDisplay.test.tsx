@@ -23,12 +23,12 @@ import {
   MCPServerStatus,
   type McpClient,
   coreEvents,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { Text } from 'ink';
 
-// Mock PolluxSpinner
-vi.mock('./PolluxSpinner.js', () => ({
-  PolluxSpinner: () => <Text>Spinner</Text>,
+// Mock GeminiSpinner
+vi.mock('./GeminiSpinner.js', () => ({
+  GeminiSpinner: () => <Text>Spinner</Text>,
 }));
 
 describe('ConfigInitDisplay', () => {

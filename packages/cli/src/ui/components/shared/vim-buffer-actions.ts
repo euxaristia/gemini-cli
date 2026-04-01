@@ -20,7 +20,7 @@ import {
   findBigWordEndInLine,
 } from './text-buffer.js';
 import { cpLen, toCodePoints } from '../../utils/textUtils.js';
-import { assumeExhaustive } from '@euxaristia/pollux-cli-core';
+import { assumeExhaustive } from '@euxaristia/gemini-cli-core';
 
 export type VimAction = Extract<
   TextBufferAction,

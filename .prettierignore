@@ -6,7 +6,7 @@
 .docker
 .DS_Store
 .env
-.pollux/
+.gemini/
 .idea
 .integration-tests/
 *.iml
@@ -17,7 +17,7 @@ eslint.config.js
 **/generated
 gha-creds-*.json
 junit.xml
-.pollux-linters/
+.gemini-linters/
 Thumbs.db
 .pytest_cache
 **/SKILL.md

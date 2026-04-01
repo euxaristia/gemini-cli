@@ -5,7 +5,7 @@
  */
 
 import { createContext, useContext } from 'react';
-import type { StartupWarning } from '@euxaristia/pollux-cli-core';
+import type { StartupWarning } from '@euxaristia/gemini-cli-core';
 
 export interface AppState {
   version: string;

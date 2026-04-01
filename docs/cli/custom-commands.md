@@ -9,10 +9,10 @@ all your projects, streamlining your workflow and ensuring consistency.
 
 Gemini CLI discovers commands from two locations, loaded in a specific order:
 
-1.  **User commands (global):** Located in `~/.pollux/commands/`. These commands
+1.  **User commands (global):** Located in `~/.gemini/commands/`. These commands
     are available in any project you are working on.
 2.  **Project commands (local):** Located in
-    `<your-project-root>/.pollux/commands/`. These commands are specific to the
+    `<your-project-root>/.gemini/commands/`. These commands are specific to the
     current project and can be checked into version control to be shared with
     your team.
 
@@ -26,8 +26,8 @@ The name of a command is determined by its file path relative to its `commands`
 directory. Subdirectories are used to create namespaced commands, with the path
 separator (`/` or `\`) being converted to a colon (`:`).
 
-- A file at `~/.pollux/commands/test.toml` becomes the command `/test`.
-- A file at `<project>/.pollux/commands/git/commit.toml` becomes the namespaced
+- A file at `~/.gemini/commands/test.toml` becomes the command `/test`.
+- A file at `<project>/.gemini/commands/git/commit.toml` becomes the namespaced
   command `/git:commit`.
 
 <!-- prettier-ignore -->
@@ -131,7 +131,7 @@ model, explaining where to find the user's input, and specifying the expected
 format and behavior.
 
 ```toml
-# In: <project>/.pollux/commands/changelog.toml
+# In: <project>/.gemini/commands/changelog.toml
 # Invoked via: /changelog 1.2.0 added "Support for default argument parsing."
 
 description = "Adds a new entry to the project's CHANGELOG.md file."
@@ -198,7 +198,7 @@ This command gets the staged git diff and uses it to ask the model to write a
 commit message.
 
 ````toml
-# In: <project>/.pollux/commands/git/commit.toml
+# In: <project>/.gemini/commands/git/commit.toml
 # Invoked via: /git:commit
 
 description = "Generates a Git commit message based on staged changes."
@@ -234,7 +234,7 @@ operate on specific files.
   multimodal input. Other binary files are handled gracefully and skipped.
 - **Directory listing**: `@{path/to/dir}` is traversed and each file present
   within the directory and all subdirectories is inserted into the prompt. This
-  respects `.gitignore` and `.polluxignore` if enabled.
+  respects `.gitignore` and `.geminiignore` if enabled.
 - **Workspace-aware**: The command searches for the path in the current
   directory and any other workspace directories. Absolute paths are allowed if
   they are within the workspace.
@@ -250,7 +250,7 @@ This command injects the content of a _fixed_ best practices file
 the review.
 
 ```toml
-# In: <project>/.pollux/commands/review.toml
+# In: <project>/.gemini/commands/review.toml
 # Invoked via: /review FileCommandLoader.ts
 
 description = "Reviews the provided context using a best practice guide."
@@ -283,25 +283,25 @@ subdirectory for organization and the final TOML file.
 **macOS/Linux**
 
 ```bash
-mkdir -p ~/.pollux/commands/refactor
-touch ~/.pollux/commands/refactor/pure.toml
+mkdir -p ~/.gemini/commands/refactor
+touch ~/.gemini/commands/refactor/pure.toml
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.pollux\commands\refactor"
-New-Item -ItemType File -Force -Path "$env:USERPROFILE\.pollux\commands\refactor\pure.toml"
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.gemini\commands\refactor"
+New-Item -ItemType File -Force -Path "$env:USERPROFILE\.gemini\commands\refactor\pure.toml"
 ```
 
 **2. Add the content to the file:**
 
-Open `~/.pollux/commands/refactor/pure.toml` in your editor and add the
+Open `~/.gemini/commands/refactor/pure.toml` in your editor and add the
 following content. We are including the optional `description` for best
 practice.
 
 ```toml
-# In: ~/.pollux/commands/refactor/pure.toml
+# In: ~/.gemini/commands/refactor/pure.toml
 # This command will be invoked via: /refactor:pure
 
 description = "Asks the model to refactor the current context into a pure function."

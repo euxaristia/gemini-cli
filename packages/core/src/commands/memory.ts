@@ -11,7 +11,7 @@ import type { MessageActionReturn, ToolActionReturn } from './types.js';
 
 export function showMemory(config: Config): MessageActionReturn {
   const memoryContent = flattenMemory(config.getUserMemory());
-  const fileCount = config.getPolluxMdFileCount() || 0;
+  const fileCount = config.getGeminiMdFileCount() || 0;
   let content: string;
 
   if (memoryContent.length > 0) {
@@ -53,7 +53,7 @@ export async function refreshMemory(
   if (config.isJitContextEnabled()) {
     await config.getContextManager()?.refresh();
     memoryContent = flattenMemory(config.getUserMemory());
-    fileCount = config.getPolluxMdFileCount();
+    fileCount = config.getGeminiMdFileCount();
   } else {
     const result = await refreshServerHierarchicalMemory(config);
     memoryContent = flattenMemory(result.memoryContent);
@@ -77,16 +77,16 @@ export async function refreshMemory(
 }
 
 export function listMemoryFiles(config: Config): MessageActionReturn {
-  const filePaths = config.getPolluxMdFilePaths() || [];
+  const filePaths = config.getGeminiMdFilePaths() || [];
   const fileCount = filePaths.length;
   let content: string;
 
   if (fileCount > 0) {
-    content = `There are ${fileCount} POLLUX.md file(s) in use:\n\n${filePaths.join(
+    content = `There are ${fileCount} GEMINI.md file(s) in use:\n\n${filePaths.join(
       '\n',
     )}`;
   } else {
-    content = 'No POLLUX.md files in use.';
+    content = 'No GEMINI.md files in use.';
   }
 
   return {

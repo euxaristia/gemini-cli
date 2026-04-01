@@ -23,7 +23,7 @@ import {
   ApprovalMode,
   debugLogger,
   type Config,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import * as path from 'node:path';
 import {
   CommandKind,
@@ -808,7 +808,7 @@ describe('InputPrompt', () => {
     it('should handle Ctrl+V when clipboard has an image', async () => {
       vi.mocked(clipboardUtils.clipboardHasImage).mockResolvedValue(true);
       vi.mocked(clipboardUtils.saveClipboardImage).mockResolvedValue(
-        '/test/.pollux-clipboard/clipboard-123.png',
+        '/test/.gemini-clipboard/clipboard-123.png',
       );
 
       const { stdin, unmount } = await renderWithProviders(
@@ -871,7 +871,7 @@ describe('InputPrompt', () => {
     it('should insert image path at cursor position with proper spacing', async () => {
       const imagePath = path.join(
         'test',
-        '.pollux-clipboard',
+        '.gemini-clipboard',
         'clipboard-456.png',
       );
       vi.mocked(clipboardUtils.clipboardHasImage).mockResolvedValue(true);

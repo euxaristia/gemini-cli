@@ -15,7 +15,7 @@ import {
   coreEvents,
   CoreEvent,
   debugLogger,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 // Frames that render at least this far before or after an action are considered
 // idle frames.

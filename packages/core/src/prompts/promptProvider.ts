@@ -8,7 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import type { HierarchicalMemory } from '../config/memory.js';
-import { POLLUX_DIR } from '../utils/paths.js';
+import { GEMINI_DIR } from '../utils/paths.js';
 import { ApprovalMode } from '../policy/types.js';
 import * as snippets from './snippets.js';
 import * as legacySnippets from './snippets.legacy.js';
@@ -29,7 +29,7 @@ import {
 } from '../tools/tool-names.js';
 import { resolveModel, supportsModernFeatures } from '../config/models.js';
 import { DiscoveredMCPTool } from '../tools/mcp-tool.js';
-import { getAllPolluxMdFilenames } from '../tools/memoryTool.js';
+import { getAllGeminiMdFilenames } from '../tools/memoryTool.js';
 import type { AgentLoopContext } from '../config/agent-loop-context.js';
 
 /**
@@ -70,7 +70,7 @@ export class PromptProvider {
     );
     const isModernModel = supportsModernFeatures(desiredModel);
     const activeSnippets = isModernModel ? snippets : legacySnippets;
-    const contextFilenames = getAllPolluxMdFilenames();
+    const contextFilenames = getAllGeminiMdFilenames();
 
     let planModeToolsList = '';
     if (isPlanMode) {
@@ -89,7 +89,7 @@ export class PromptProvider {
 
     // --- Template File Override ---
     if (systemMdResolution.value && !systemMdResolution.isDisabled) {
-      let systemMdPath = path.resolve(path.join(POLLUX_DIR, 'system.md'));
+      let systemMdPath = path.resolve(path.join(GEMINI_DIR, 'system.md'));
       if (!systemMdResolution.isSwitch) {
         systemMdPath = systemMdResolution.value;
       }
@@ -249,7 +249,7 @@ export class PromptProvider {
     this.maybeWriteSystemMd(
       sanitizedPrompt,
       systemMdResolution,
-      path.resolve(path.join(POLLUX_DIR, 'system.md')),
+      path.resolve(path.join(GEMINI_DIR, 'system.md')),
     );
 
     return sanitizedPrompt;

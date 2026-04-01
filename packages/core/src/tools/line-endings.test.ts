@@ -23,7 +23,7 @@ import type { ToolRegistry } from './tool-registry.js';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
-import { PolluxClient } from '../core/client.js';
+import { GeminiClient } from '../core/client.js';
 import type { BaseLlmClient } from '../core/baseLlmClient.js';
 import { ensureCorrectFileContent } from '../utils/editCorrector.js';
 import { StandardFileSystemService } from '../services/fileSystemService.js';
@@ -33,7 +33,7 @@ import {
   getMockMessageBusInstance,
 } from '../test-utils/mock-message-bus.js';
 
-const rootDir = path.resolve(os.tmpdir(), 'pollux-cli-line-ending-test-root');
+const rootDir = path.resolve(os.tmpdir(), 'gemini-cli-line-ending-test-root');
 
 // --- MOCKS ---
 vi.mock('../core/client.js');
@@ -47,7 +47,7 @@ vi.mock('../ide/ide-client.js', () => ({
   },
 }));
 
-let mockPolluxClientInstance: Mocked<PolluxClient>;
+let mockGeminiClientInstance: Mocked<GeminiClient>;
 let mockBaseLlmClientInstance: Mocked<BaseLlmClient>;
 const mockEnsureCorrectFileContent = vi.fn<typeof ensureCorrectFileContent>();
 
@@ -57,7 +57,7 @@ const mockConfigInternal = {
   getTargetDir: () => rootDir,
   getApprovalMode: vi.fn(() => ApprovalMode.DEFAULT),
   setApprovalMode: vi.fn(),
-  getPolluxClient: vi.fn(),
+  getGeminiClient: vi.fn(),
   getBaseLlmClient: vi.fn(),
   getFileSystemService: () => fsService,
   getIdeMode: vi.fn(() => false),
@@ -74,8 +74,8 @@ const mockConfigInternal = {
   getUserAgent: () => 'test-agent',
   getUserMemory: () => '',
   setUserMemory: vi.fn(),
-  getPolluxMdFileCount: () => 0,
-  setPolluxMdFileCount: vi.fn(),
+  getGeminiMdFileCount: () => 0,
+  setGeminiMdFileCount: vi.fn(),
   getDisableLLMCorrection: vi.fn(() => false),
   getActiveModel: () => 'test-model',
   validatePathAccess: vi.fn().mockReturnValue(null),
@@ -112,10 +112,10 @@ describe('Line Ending Preservation', () => {
       fs.mkdirSync(rootDir, { recursive: true });
     }
 
-    mockPolluxClientInstance = new (vi.mocked(PolluxClient))(
+    mockGeminiClientInstance = new (vi.mocked(GeminiClient))(
       mockConfig,
-    ) as Mocked<PolluxClient>;
-    vi.mocked(PolluxClient).mockImplementation(() => mockPolluxClientInstance);
+    ) as Mocked<GeminiClient>;
+    vi.mocked(GeminiClient).mockImplementation(() => mockGeminiClientInstance);
 
     mockBaseLlmClientInstance = {
       generateJson: vi.fn(),
@@ -125,8 +125,8 @@ describe('Line Ending Preservation', () => {
       mockEnsureCorrectFileContent,
     );
 
-    mockConfigInternal.getPolluxClient.mockReturnValue(
-      mockPolluxClientInstance,
+    mockConfigInternal.getGeminiClient.mockReturnValue(
+      mockGeminiClientInstance,
     );
     mockConfigInternal.getBaseLlmClient.mockReturnValue(
       mockBaseLlmClientInstance,

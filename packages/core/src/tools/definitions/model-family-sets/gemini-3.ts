@@ -292,7 +292,7 @@ export const GEMINI_3_SET: CoreToolSet = {
         },
         [PARAM_RESPECT_GEMINI_IGNORE]: {
           description:
-            'Optional: Whether to respect .polluxignore patterns when finding files. Defaults to true.',
+            'Optional: Whether to respect .geminiignore patterns when finding files. Defaults to true.',
           type: 'boolean',
         },
       },
@@ -320,7 +320,7 @@ export const GEMINI_3_SET: CoreToolSet = {
         },
         [PARAM_FILE_FILTERING_OPTIONS]: {
           description:
-            'Optional: Whether to respect ignore patterns from .gitignore or .polluxignore',
+            'Optional: Whether to respect ignore patterns from .gitignore or .geminiignore',
           type: 'object',
           properties: {
             [PARAM_RESPECT_GIT_IGNORE]: {
@@ -330,7 +330,7 @@ export const GEMINI_3_SET: CoreToolSet = {
             },
             [PARAM_RESPECT_GEMINI_IGNORE]: {
               description:
-                'Optional: Whether to respect .polluxignore patterns when listing files. Defaults to true.',
+                'Optional: Whether to respect .geminiignore patterns when listing files. Defaults to true.',
               type: 'boolean',
             },
           },
@@ -474,7 +474,7 @@ Use this tool when the user's query implies needing the content of several files
         },
         [PARAM_FILE_FILTERING_OPTIONS]: {
           description:
-            'Whether to respect ignore patterns from .gitignore or .polluxignore',
+            'Whether to respect ignore patterns from .gitignore or .geminiignore',
           type: 'object',
           properties: {
             [PARAM_RESPECT_GIT_IGNORE]: {
@@ -484,7 +484,7 @@ Use this tool when the user's query implies needing the content of several files
             },
             [PARAM_RESPECT_GEMINI_IGNORE]: {
               description:
-                'Optional: Whether to respect .polluxignore patterns when listing files. Defaults to true.',
+                'Optional: Whether to respect .geminiignore patterns when listing files. Defaults to true.',
               type: 'boolean',
             },
           },
@@ -623,7 +623,7 @@ The agent did not use the todo list because this task could be completed by a ti
   get_internal_docs: {
     name: GET_INTERNAL_DOCS_TOOL_NAME,
     description:
-      'Returns the content of Pollux internal documentation files. If no path is provided, returns a list of all available documentation paths.',
+      'Returns the content of Gemini CLI internal documentation files. If no path is provided, returns a list of all available documentation paths.',
     parametersJsonSchema: {
       type: 'object',
       properties: {

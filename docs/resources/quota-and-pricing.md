@@ -56,7 +56,7 @@ Assist for individuals. This includes:
   Gemini CLI.
 
 Learn more at
-[Gemini Code Assist for Individuals Limits](https://developers.google.com/gemini-code-assist/resources/quotas#quotas-for-agent-mode-pollux-cli).
+[Gemini Code Assist for Individuals Limits](https://developers.google.com/gemini-code-assist/resources/quotas#quotas-for-agent-mode-gemini-cli).
 
 ### Log in with Gemini API Key (unpaid)
 
@@ -134,7 +134,7 @@ Standard/Plus and AI Expanded, are not supported._
   - Model requests will be made across the Gemini model family as determined by
     Gemini CLI.
 
-  [Learn more about Gemini Code Assist license limits](https://developers.google.com/gemini-code-assist/resources/quotas#quotas-for-agent-mode-pollux-cli).
+  [Learn more about Gemini Code Assist license limits](https://developers.google.com/gemini-code-assist/resources/quotas#quotas-for-agent-mode-gemini-cli).
 
 ## Pay as you go
 

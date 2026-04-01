@@ -6,7 +6,7 @@
 
 import path from 'node:path';
 import type { Config } from '../config/config.js';
-import { getCurrentPolluxMdFilename } from '../tools/memoryTool.js';
+import { getCurrentGeminiMdFilename } from '../tools/memoryTool.js';
 
 /**
  * Common ignore patterns used across multiple tools for basic exclusions.
@@ -160,7 +160,7 @@ export class FileExclusions {
 
     // Add dynamic patterns (like current Gemini MD filename)
     if (includeDynamicPatterns) {
-      patterns.push(`**/${getCurrentPolluxMdFilename()}`);
+      patterns.push(`**/${getCurrentGeminiMdFilename()}`);
     }
 
     // Add custom patterns from configuration

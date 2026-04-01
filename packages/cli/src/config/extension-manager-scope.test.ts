@@ -13,13 +13,13 @@ import { createTestMergedSettings } from './settings.js';
 import {
   loadAgentsFromDirectory,
   loadSkillsFromDir,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 let currentTempHome = '';
 
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     homedir: () => currentTempHome,
@@ -49,12 +49,12 @@ describe('ExtensionManager Settings Scope', () => {
     });
     vi.mocked(loadSkillsFromDir).mockResolvedValue([]);
     currentTempHome = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'pollux-cli-test-home-'),
+      path.join(os.tmpdir(), 'gemini-cli-test-home-'),
     );
     tempWorkspace = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'pollux-cli-test-workspace-'),
+      path.join(os.tmpdir(), 'gemini-cli-test-workspace-'),
     );
-    extensionsDir = path.join(currentTempHome, '.pollux', 'extensions');
+    extensionsDir = path.join(currentTempHome, '.gemini', 'extensions');
     extensionDir = path.join(extensionsDir, extensionName);
 
     fs.mkdirSync(extensionDir, { recursive: true });

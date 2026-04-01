@@ -38,9 +38,9 @@ if (fs.existsSync(sourceBundleDir)) {
 // Inherit optionalDependencies from root package.json, excluding dev-only packages.
 const rootPkg = readJson('package.json');
 const optionalDependencies = { ...(rootPkg.optionalDependencies || {}) };
-delete optionalDependencies['pollux-cli-devtools'];
+delete optionalDependencies['gemini-cli-devtools'];
 
-// Update @euxaristia/pollux-cli package.json for bundled npm release
+// Update @euxaristia/gemini-cli package.json for bundled npm release
 const cliPkgPath = 'packages/cli/package.json';
 const cliPkg = readJson(cliPkgPath);
 

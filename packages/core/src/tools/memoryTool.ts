@@ -28,35 +28,35 @@ import type { MessageBus } from '../confirmation-bus/message-bus.js';
 import { MEMORY_DEFINITION } from './definitions/coreTools.js';
 import { resolveToolDeclaration } from './definitions/resolver.js';
 
-export const DEFAULT_CONTEXT_FILENAME = 'POLLUX.md';
-export const MEMORY_SECTION_HEADER = '## Pollux Added Memories';
+export const DEFAULT_CONTEXT_FILENAME = 'GEMINI.md';
+export const MEMORY_SECTION_HEADER = '## Gemini Added Memories';
 
-// This variable will hold the currently configured filename for POLLUX.md context files.
-// It defaults to DEFAULT_CONTEXT_FILENAME but can be overridden by setPolluxMdFilename.
-let currentPolluxMdFilename: string | string[] = DEFAULT_CONTEXT_FILENAME;
+// This variable will hold the currently configured filename for GEMINI.md context files.
+// It defaults to DEFAULT_CONTEXT_FILENAME but can be overridden by setGeminiMdFilename.
+let currentGeminiMdFilename: string | string[] = DEFAULT_CONTEXT_FILENAME;
 
-export function setPolluxMdFilename(newFilename: string | string[]): void {
+export function setGeminiMdFilename(newFilename: string | string[]): void {
   if (Array.isArray(newFilename)) {
     if (newFilename.length > 0) {
-      currentPolluxMdFilename = newFilename.map((name) => name.trim());
+      currentGeminiMdFilename = newFilename.map((name) => name.trim());
     }
   } else if (newFilename && newFilename.trim() !== '') {
-    currentPolluxMdFilename = newFilename.trim();
+    currentGeminiMdFilename = newFilename.trim();
   }
 }
 
-export function getCurrentPolluxMdFilename(): string {
-  if (Array.isArray(currentPolluxMdFilename)) {
-    return currentPolluxMdFilename[0];
+export function getCurrentGeminiMdFilename(): string {
+  if (Array.isArray(currentGeminiMdFilename)) {
+    return currentGeminiMdFilename[0];
   }
-  return currentPolluxMdFilename;
+  return currentGeminiMdFilename;
 }
 
-export function getAllPolluxMdFilenames(): string[] {
-  if (Array.isArray(currentPolluxMdFilename)) {
-    return currentPolluxMdFilename;
+export function getAllGeminiMdFilenames(): string[] {
+  if (Array.isArray(currentGeminiMdFilename)) {
+    return currentGeminiMdFilename;
   }
-  return [currentPolluxMdFilename];
+  return [currentGeminiMdFilename];
 }
 
 interface SaveMemoryParams {
@@ -67,7 +67,7 @@ interface SaveMemoryParams {
 }
 
 export function getGlobalMemoryFilePath(): string {
-  return path.join(Storage.getGlobalPolluxDir(), getCurrentPolluxMdFilename());
+  return path.join(Storage.getGlobalGeminiDir(), getCurrentGeminiMdFilename());
 }
 
 export function getProjectMemoryFilePath(storage: Storage): string {

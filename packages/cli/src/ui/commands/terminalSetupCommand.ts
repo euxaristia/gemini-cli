@@ -6,7 +6,7 @@
 
 import { CommandKind, type SlashCommand } from './types.js';
 import { terminalSetup } from '../utils/terminalSetup.js';
-import { type MessageActionReturn } from '@euxaristia/pollux-cli-core';
+import { type MessageActionReturn } from '@euxaristia/gemini-cli-core';
 
 /**
  * Command to configure terminal keybindings for multiline input support.

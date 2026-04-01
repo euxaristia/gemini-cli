@@ -442,10 +442,7 @@ export class ShellToolInvocation extends BaseToolInvocation<
       } else {
         // Create a formatted error string for display, replacing the wrapper command
         // with the user-facing command.
-        const output = result.binaryDetected
-          ? '[Binary output detected. Output hidden.]'
-          : result.output || '(empty)';
-        const llmContentParts = [`Output: ${output}`];
+        const llmContentParts = [`Output: ${result.output || '(empty)'}`];
 
         if (result.error) {
           const finalError = result.error.message.replaceAll(
@@ -491,10 +488,9 @@ export class ShellToolInvocation extends BaseToolInvocation<
           }
         } else if (result.output.trim()) {
           returnDisplayMessage = result.output;
-        } else if (result.binaryDetected) {
-          returnDisplayMessage = '[Binary output detected. Output hidden.]';
         } else {
-          if (result.signal) {            returnDisplayMessage = `Command terminated by signal: ${result.signal}`;
+          if (result.signal) {
+            returnDisplayMessage = `Command terminated by signal: ${result.signal}`;
           } else if (result.error) {
             returnDisplayMessage = `Command failed: ${getErrorMessage(
               result.error,
@@ -632,7 +628,7 @@ export class ShellToolInvocation extends BaseToolInvocation<
           this.context.config,
           { model: 'summarizer-shell' },
           llmContent,
-          this.context.polluxClient,
+          this.context.geminiClient,
           signal,
         );
         return {

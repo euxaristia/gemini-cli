@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CoreToolCallStatus } from '@euxaristia/pollux-cli-core';
+import { CoreToolCallStatus } from '@euxaristia/gemini-cli-core';
 import {
   type HistoryItemWithoutId,
   type IndividualToolCallDisplay,

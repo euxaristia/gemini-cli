@@ -95,12 +95,8 @@ describe('NumericalClassifierStrategy', () => {
     expect(mockBaseLlmClient.generateJson).not.toHaveBeenCalled();
   });
 
-  it('should NOT return null if the model is not a Gemini 3 model', async () => {
+  it('should return null if the model is not a Gemini 3 model', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(DEFAULT_GEMINI_MODEL_AUTO);
-    vi.mocked(mockBaseLlmClient.generateJson).mockResolvedValue({
-      complexity_reasoning: 'Simple task',
-      complexity_score: 10,
-    });
 
     const decision = await strategy.route(
       mockContext,
@@ -109,16 +105,12 @@ describe('NumericalClassifierStrategy', () => {
       mockLocalLiteRtLmClient,
     );
 
-    expect(decision).not.toBeNull();
-    expect(mockBaseLlmClient.generateJson).toHaveBeenCalled();
+    expect(decision).toBeNull();
+    expect(mockBaseLlmClient.generateJson).not.toHaveBeenCalled();
   });
 
-  it('should NOT return null if the model is explicitly a Gemini 2 model', async () => {
+  it('should return null if the model is explicitly a Gemini 2 model', async () => {
     vi.mocked(mockConfig.getModel).mockReturnValue(DEFAULT_GEMINI_MODEL);
-    vi.mocked(mockBaseLlmClient.generateJson).mockResolvedValue({
-      complexity_reasoning: 'Simple task',
-      complexity_score: 10,
-    });
 
     const decision = await strategy.route(
       mockContext,
@@ -127,8 +119,8 @@ describe('NumericalClassifierStrategy', () => {
       mockLocalLiteRtLmClient,
     );
 
-    expect(decision).not.toBeNull();
-    expect(mockBaseLlmClient.generateJson).toHaveBeenCalled();
+    expect(decision).toBeNull();
+    expect(mockBaseLlmClient.generateJson).not.toHaveBeenCalled();
   });
 
   it('should call generateJson with the correct parameters and wrapped user content', async () => {

@@ -18,10 +18,10 @@ import {
   type Config,
   type ToolResultDisplay,
   CoreToolCallStatus,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
-vi.mock('../PolluxRespondingSpinner.js', () => ({
-  PolluxRespondingSpinner: () => null,
+vi.mock('../GeminiRespondingSpinner.js', () => ({
+  GeminiRespondingSpinner: () => null,
 }));
 
 vi.mock('./ToolResultDisplay.js', () => ({

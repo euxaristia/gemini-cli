@@ -14,7 +14,7 @@ import {
 import * as path from 'node:path';
 import { cleanupBackgroundLogs } from './logCleanup.js';
 
-vi.mock('@euxaristia/pollux-cli-core', () => ({
+vi.mock('@euxaristia/gemini-cli-core', () => ({
   ShellExecutionService: {
     getLogDir: vi.fn().mockReturnValue('/tmp/gemini/tmp/background-processes'),
   },

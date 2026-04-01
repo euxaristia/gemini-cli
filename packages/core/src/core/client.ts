@@ -89,7 +89,7 @@ type BeforeAgentHookReturn =
   | { additionalContext: string | undefined }
   | undefined;
 
-export class PolluxClient {
+export class GeminiClient {
   private chat?: GeminiChat;
   private sessionTurnCount = 0;
 

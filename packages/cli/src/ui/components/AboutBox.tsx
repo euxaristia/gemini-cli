@@ -9,7 +9,7 @@ import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
 import { GIT_COMMIT_INFO } from '../../generated/git-commit.js';
 import { useSettings } from '../contexts/SettingsContext.js';
-import { getDisplayString } from '@euxaristia/pollux-cli-core';
+import { getDisplayString } from '@euxaristia/gemini-cli-core';
 
 interface AboutBoxProps {
   cliVersion: string;

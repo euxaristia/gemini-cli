@@ -79,7 +79,7 @@ const devtoolsDest = join(
   bundleDir,
   'node_modules',
   '@google',
-  'pollux-cli-devtools',
+  'gemini-cli-devtools',
 );
 const devtoolsDistSrc = join(devtoolsSrc, 'dist');
 if (existsSync(devtoolsDistSrc)) {

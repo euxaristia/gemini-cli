@@ -6,8 +6,8 @@
 
 import { describe, it, expect, afterEach } from 'vitest';
 import { Ignore, loadIgnoreRules } from './ignore.js';
-import { createTmpDir, cleanupTmpDir } from '@euxaristia/pollux-cli-test-utils';
-import { POLLUX_IGNORE_FILE_NAME } from '../../config/constants.js';
+import { createTmpDir, cleanupTmpDir } from '@euxaristia/gemini-cli-test-utils';
+import { GEMINI_IGNORE_FILE_NAME } from '../../config/constants.js';
 import { FileDiscoveryService } from '../../services/fileDiscoveryService.js';
 
 describe('Ignore', () => {
@@ -83,7 +83,7 @@ describe('loadIgnoreRules', () => {
     });
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: true,
-      respectPolluxIgnore: false,
+      respectGeminiIgnore: false,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -91,13 +91,13 @@ describe('loadIgnoreRules', () => {
     expect(fileFilter('test.txt')).toBe(false);
   });
 
-  it('should load rules from .polluxignore', async () => {
+  it('should load rules from .geminiignore', async () => {
     tmpDir = await createTmpDir({
-      [POLLUX_IGNORE_FILE_NAME]: '*.log',
+      [GEMINI_IGNORE_FILE_NAME]: '*.log',
     });
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: false,
-      respectPolluxIgnore: true,
+      respectGeminiIgnore: true,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -105,15 +105,15 @@ describe('loadIgnoreRules', () => {
     expect(fileFilter('test.txt')).toBe(false);
   });
 
-  it('should combine rules from .gitignore and .polluxignore', async () => {
+  it('should combine rules from .gitignore and .geminiignore', async () => {
     tmpDir = await createTmpDir({
       '.git': {},
       '.gitignore': '*.log',
-      [POLLUX_IGNORE_FILE_NAME]: '*.txt',
+      [GEMINI_IGNORE_FILE_NAME]: '*.txt',
     });
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: true,
-      respectPolluxIgnore: true,
+      respectGeminiIgnore: true,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -126,7 +126,7 @@ describe('loadIgnoreRules', () => {
     tmpDir = await createTmpDir({});
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: false,
-      respectPolluxIgnore: false,
+      respectGeminiIgnore: false,
     });
     const ignore = loadIgnoreRules(service, ['logs/']);
     const dirFilter = ignore.getDirectoryFilter();
@@ -138,7 +138,7 @@ describe('loadIgnoreRules', () => {
     tmpDir = await createTmpDir({});
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: true,
-      respectPolluxIgnore: true,
+      respectGeminiIgnore: true,
     });
     const ignore = loadIgnoreRules(service, []);
     const fileFilter = ignore.getFileFilter();
@@ -149,7 +149,7 @@ describe('loadIgnoreRules', () => {
     tmpDir = await createTmpDir({});
     const service = new FileDiscoveryService(tmpDir, {
       respectGitIgnore: false,
-      respectPolluxIgnore: false,
+      respectGeminiIgnore: false,
     });
     const ignore = loadIgnoreRules(service, []);
     const dirFilter = ignore.getDirectoryFilter();

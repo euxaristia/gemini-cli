@@ -18,7 +18,7 @@ import { StandardFileSystemService } from '../services/fileSystemService.js';
 import { createMockWorkspaceContext } from '../test-utils/mockWorkspaceContext.js';
 import { WorkspaceContext } from '../utils/workspaceContext.js';
 import { createMockMessageBus } from '../test-utils/mock-message-bus.js';
-import { POLLUX_IGNORE_FILE_NAME } from '../config/constants.js';
+import { GEMINI_IGNORE_FILE_NAME } from '../config/constants.js';
 
 vi.mock('../telemetry/loggers.js', () => ({
   logFileOperation: vi.fn(),
@@ -58,7 +58,7 @@ describe('ReadFileTool', () => {
       getWorkspaceContext: () => createMockWorkspaceContext(tempRootDir),
       getFileFilteringOptions: () => ({
         respectGitIgnore: true,
-        respectPolluxIgnore: true,
+        respectGeminiIgnore: true,
       }),
       storage: {
         getProjectTempDir: () => path.join(tempRootDir, '.temp'),
@@ -459,10 +459,10 @@ describe('ReadFileTool', () => {
       expect(result.returnDisplay).toBe('');
     });
 
-    describe('with .polluxignore', () => {
+    describe('with .geminiignore', () => {
       beforeEach(async () => {
         await fsp.writeFile(
-          path.join(tempRootDir, POLLUX_IGNORE_FILE_NAME),
+          path.join(tempRootDir, GEMINI_IGNORE_FILE_NAME),
           ['foo.*', 'ignored/'].join('\n'),
         );
         const mockConfigInstance = {
@@ -472,7 +472,7 @@ describe('ReadFileTool', () => {
           getWorkspaceContext: () => new WorkspaceContext(tempRootDir),
           getFileFilteringOptions: () => ({
             respectGitIgnore: true,
-            respectPolluxIgnore: true,
+            respectGeminiIgnore: true,
           }),
           storage: {
             getProjectTempDir: () => path.join(tempRootDir, '.temp'),
@@ -502,7 +502,7 @@ describe('ReadFileTool', () => {
         tool = new ReadFileTool(mockConfigInstance, createMockMessageBus());
       });
 
-      it('should throw error if path is ignored by a .polluxignore pattern', async () => {
+      it('should throw error if path is ignored by a .geminiignore pattern', async () => {
         const ignoredFilePath = path.join(tempRootDir, 'foo.bar');
         await fsp.writeFile(ignoredFilePath, 'content', 'utf-8');
         const params: ReadFileToolParams = {
@@ -534,7 +534,7 @@ describe('ReadFileTool', () => {
         expect(typeof invocation).not.toBe('string');
       });
 
-      it('should allow reading ignored files if respectPolluxIgnore is false', async () => {
+      it('should allow reading ignored files if respectGeminiIgnore is false', async () => {
         const ignoredFilePath = path.join(tempRootDir, 'foo.bar');
         await fsp.writeFile(ignoredFilePath, 'content', 'utf-8');
 
@@ -545,7 +545,7 @@ describe('ReadFileTool', () => {
           getWorkspaceContext: () => new WorkspaceContext(tempRootDir),
           getFileFilteringOptions: () => ({
             respectGitIgnore: true,
-            respectPolluxIgnore: false,
+            respectGeminiIgnore: false,
           }),
           storage: {
             getProjectTempDir: () => path.join(tempRootDir, '.temp'),

@@ -6,8 +6,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { main } from './src/pollux.js';
-import { FatalError, writeToStderr } from '@euxaristia/pollux-cli-core';
+import { main } from './src/gemini.js';
+import { FatalError, writeToStderr } from '@euxaristia/gemini-cli-core';
 import { runExitCleanup } from './src/utils/cleanup.js';
 
 // --- Global Entry Point ---

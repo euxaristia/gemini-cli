@@ -17,12 +17,12 @@ import {
   refreshServerHierarchicalMemory,
 } from './memoryDiscovery.js';
 import {
-  setPolluxMdFilename,
+  setGeminiMdFilename,
   DEFAULT_CONTEXT_FILENAME,
 } from '../tools/memoryTool.js';
 import { flattenMemory, type HierarchicalMemory } from '../config/memory.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
-import { POLLUX_DIR, normalizePath, homedir as pathsHomedir } from './paths.js';
+import { GEMINI_DIR, normalizePath, homedir as pathsHomedir } from './paths.js';
 
 function flattenResult(result: {
   memoryContent: HierarchicalMemory;
@@ -103,7 +103,7 @@ describe('memoryDiscovery', () => {
   afterEach(async () => {
     vi.unstubAllEnvs();
     // Some tests set this to a different value.
-    setPolluxMdFilename(DEFAULT_CONTEXT_FILENAME);
+    setGeminiMdFilename(DEFAULT_CONTEXT_FILENAME);
     // Clean up the temporary directory to prevent resource leaks.
     // Use maxRetries option for robust cleanup without race conditions
     await fsPromises.rm(testRootDir, {
@@ -153,7 +153,7 @@ describe('memoryDiscovery', () => {
 
       const filepathInput = path.join(
         homedir,
-        POLLUX_DIR,
+        GEMINI_DIR,
         DEFAULT_CONTEXT_FILENAME,
       );
       const filepath = await createTestFile(
@@ -196,7 +196,7 @@ describe('memoryDiscovery', () => {
 
   it('should load only the global context file if present and others are not (default filename)', async () => {
     const defaultContextFile = await createTestFile(
-      path.join(homedir, POLLUX_DIR, DEFAULT_CONTEXT_FILENAME),
+      path.join(homedir, GEMINI_DIR, DEFAULT_CONTEXT_FILENAME),
       'default context content',
     );
 
@@ -225,10 +225,10 @@ default context content
 
   it('should load only the global custom context file if present and filename is changed', async () => {
     const customFilename = 'CUSTOM_AGENTS.md';
-    setPolluxMdFilename(customFilename);
+    setGeminiMdFilename(customFilename);
 
     const customContextFile = await createTestFile(
-      path.join(homedir, POLLUX_DIR, customFilename),
+      path.join(homedir, GEMINI_DIR, customFilename),
       'custom context content',
     );
 
@@ -254,7 +254,7 @@ custom context content
 
   it('should load context files by upward traversal with custom filename', async () => {
     const customFilename = 'PROJECT_CONTEXT.md';
-    setPolluxMdFilename(customFilename);
+    setGeminiMdFilename(customFilename);
 
     const projectContextFile = await createTestFile(
       path.join(projectRoot, customFilename),
@@ -291,7 +291,7 @@ cwd context content
 
   it('should load context files by downward traversal with custom filename', async () => {
     const customFilename = 'LOCAL_CONTEXT.md';
-    setPolluxMdFilename(customFilename);
+    setGeminiMdFilename(customFilename);
 
     const subdirCustomFile = await createTestFile(
       path.join(cwd, 'subdir', customFilename),
@@ -396,7 +396,7 @@ Subdir memory
 
   it('should load and correctly order global, upward, and downward ORIGINAL_GEMINI_MD_FILENAME files', async () => {
     const defaultContextFile = await createTestFile(
-      path.join(homedir, POLLUX_DIR, DEFAULT_CONTEXT_FILENAME),
+      path.join(homedir, GEMINI_DIR, DEFAULT_CONTEXT_FILENAME),
       'default context content',
     );
     const rootGeminiFile = await createTestFile(
@@ -482,7 +482,7 @@ Subdir memory
         'tree',
         {
           respectGitIgnore: true,
-          respectPolluxIgnore: true,
+          respectGeminiIgnore: true,
           customIgnoreFilePaths: [],
         },
         200, // maxDirs parameter
@@ -516,7 +516,7 @@ My code memory
       'tree', // importFormat
       {
         respectGitIgnore: true,
-        respectPolluxIgnore: true,
+        respectGeminiIgnore: true,
         customIgnoreFilePaths: [],
       },
       1, // maxDirs
@@ -544,7 +544,7 @@ My code memory
 
   it('should load extension context file paths', async () => {
     const extensionFilePath = await createTestFile(
-      path.join(testRootDir, 'extensions/ext1/POLLUX.md'),
+      path.join(testRootDir, 'extensions/ext1/GEMINI.md'),
       'Extension memory content',
     );
 
@@ -603,7 +603,7 @@ included directory memory
   });
 
   it('should handle multiple directories and files in parallel correctly', async () => {
-    // Create multiple test directories with POLLUX.md files
+    // Create multiple test directories with GEMINI.md files
     const numDirs = 5;
     const createdFiles: string[] = [];
 
@@ -685,7 +685,7 @@ included directory memory
   describe('getGlobalMemoryPaths', () => {
     it('should find global memory file if it exists', async () => {
       const globalMemoryFile = await createTestFile(
-        path.join(homedir, POLLUX_DIR, DEFAULT_CONTEXT_FILENAME),
+        path.join(homedir, GEMINI_DIR, DEFAULT_CONTEXT_FILENAME),
         'Global memory content',
       );
 
@@ -705,7 +705,7 @@ included directory memory
   describe('getExtensionMemoryPaths', () => {
     it('should return active extension context files', async () => {
       const extFile = await createTestFile(
-        path.join(testRootDir, 'ext', 'POLLUX.md'),
+        path.join(testRootDir, 'ext', 'GEMINI.md'),
         'Extension content',
       );
       const loader = new SimpleExtensionLoader([
@@ -723,7 +723,7 @@ included directory memory
 
     it('should ignore inactive extensions', async () => {
       const extFile = await createTestFile(
-        path.join(testRootDir, 'ext', 'POLLUX.md'),
+        path.join(testRootDir, 'ext', 'GEMINI.md'),
         'Extension content',
       );
       const loader = new SimpleExtensionLoader([
@@ -840,7 +840,7 @@ included directory memory
 
     it('should keep multiple memory files from the same directory adjacent and in order', async () => {
       // Configure multiple memory filenames
-      setPolluxMdFilename(['PRIMARY.md', 'SECONDARY.md']);
+      setGeminiMdFilename(['PRIMARY.md', 'SECONDARY.md']);
 
       const dir = await createEmptyDir(
         path.join(testRootDir, 'multi_file_dir'),
@@ -875,7 +875,7 @@ included directory memory
       );
 
       // create hard link to simulate case-insensitive filesystem behavior
-      const geminiFileLink = path.join(projectRoot, 'POLLUX.md');
+      const geminiFileLink = path.join(projectRoot, 'GEMINI.md');
       try {
         await fsPromises.link(geminiFile, geminiFileLink);
       } catch (error) {
@@ -896,7 +896,7 @@ included directory memory
       expect(stats1.ino).toBe(stats2.ino);
       expect(stats1.dev).toBe(stats2.dev);
 
-      setPolluxMdFilename(['POLLUX.md', 'gemini.md']);
+      setGeminiMdFilename(['GEMINI.md', 'gemini.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -927,7 +927,7 @@ included directory memory
         'Lowercase file content',
       );
       const geminiFileUpper = await createTestFile(
-        path.join(projectRoot, 'POLLUX.md'),
+        path.join(projectRoot, 'GEMINI.md'),
         'Uppercase file content',
       );
 
@@ -935,7 +935,7 @@ included directory memory
       const stats2 = await fsPromises.lstat(geminiFileUpper);
 
       if (stats1.ino !== stats2.ino || stats1.dev !== stats2.dev) {
-        setPolluxMdFilename(['POLLUX.md', 'gemini.md']);
+        setGeminiMdFilename(['GEMINI.md', 'gemini.md']);
 
         const result = flattenResult(
           await loadServerHierarchicalMemory(
@@ -960,7 +960,7 @@ included directory memory
         'Valid file content',
       );
 
-      setPolluxMdFilename(['gemini.md', 'missing.md']);
+      setGeminiMdFilename(['gemini.md', 'missing.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -982,7 +982,7 @@ included directory memory
         'Project root memory',
       );
 
-      const link1 = path.join(projectRoot, 'POLLUX.md');
+      const link1 = path.join(projectRoot, 'GEMINI.md');
       const link2 = path.join(projectRoot, 'Gemini.md');
 
       try {
@@ -1007,7 +1007,7 @@ included directory memory
       expect(stats1.ino).toBe(stats2.ino);
       expect(stats1.ino).toBe(stats3.ino);
 
-      setPolluxMdFilename(['gemini.md', 'POLLUX.md', 'Gemini.md']);
+      setGeminiMdFilename(['gemini.md', 'GEMINI.md', 'Gemini.md']);
 
       const result = flattenResult(
         await loadServerHierarchicalMemory(
@@ -1120,7 +1120,7 @@ included directory memory
         'JIT memory content',
       );
 
-      const geminiFileLink = path.join(subDir, 'POLLUX.md');
+      const geminiFileLink = path.join(subDir, 'GEMINI.md');
       try {
         await fsPromises.link(geminiFile, geminiFileLink);
       } catch (error) {
@@ -1140,7 +1140,7 @@ included directory memory
       const stats2 = await fsPromises.lstat(geminiFileLink);
       expect(stats1.ino).toBe(stats2.ino);
 
-      setPolluxMdFilename(['gemini.md', 'POLLUX.md']);
+      setGeminiMdFilename(['gemini.md', 'GEMINI.md']);
 
       const result = await loadJitSubdirectoryMemory(
         targetFile,
@@ -1404,14 +1404,14 @@ included directory memory
     coreEvents.on(CoreEvent.MemoryChanged, mockEventListener);
     const refreshResult = await refreshServerHierarchicalMemory(config);
     expect(refreshResult.fileCount).equals(1);
-    expect(config.getPolluxMdFileCount()).equals(refreshResult.fileCount);
+    expect(config.getGeminiMdFileCount()).equals(refreshResult.fileCount);
     const flattenedMemory = flattenMemory(refreshResult.memoryContent);
     expect(flattenedMemory).toContain('Really cool custom context!');
     expect(config.getUserMemory()).toStrictEqual(refreshResult.memoryContent);
     expect(refreshResult.filePaths[0]).toContain(
       normMarker(path.join(extensionPath, 'CustomContext.md')),
     );
-    expect(config.getPolluxMdFilePaths()).equals(refreshResult.filePaths);
+    expect(config.getGeminiMdFilePaths()).equals(refreshResult.filePaths);
     expect(mockEventListener).toHaveBeenCalledExactlyOnceWith({
       fileCount: refreshResult.fileCount,
     });
@@ -1433,8 +1433,8 @@ included directory memory
       getDiscoveryMaxDirs: vi.fn().mockReturnValue(200),
       getMemoryBoundaryMarkers: vi.fn().mockReturnValue(['.git']),
       setUserMemory: vi.fn(),
-      setPolluxMdFileCount: vi.fn(),
-      setPolluxMdFilePaths: vi.fn(),
+      setGeminiMdFileCount: vi.fn(),
+      setGeminiMdFilePaths: vi.fn(),
       getMcpClientManager: vi.fn().mockReturnValue({
         getMcpInstructions: vi
           .fn()

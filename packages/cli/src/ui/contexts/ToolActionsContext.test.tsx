@@ -15,13 +15,13 @@ import {
   IdeClient,
   CoreToolCallStatus,
   type SerializableConfirmationDetails,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { type IndividualToolCallDisplay } from '../types.js';
 
 // Mock IdeClient
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     IdeClient: {

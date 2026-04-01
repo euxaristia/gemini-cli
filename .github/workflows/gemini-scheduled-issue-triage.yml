@@ -25,7 +25,7 @@ jobs:
   triage-issues:
     timeout-minutes: 10
     if: |-
-      ${{ github.repository == 'google-gemini/pollux-cli' }}
+      ${{ github.repository == 'google-gemini/gemini-cli' }}
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Checkout'
@@ -101,7 +101,7 @@ jobs:
         if: |-
           (steps.get_issue_from_event.outputs.issues_to_triage != '' && steps.get_issue_from_event.outputs.issues_to_triage != '[]') ||
           (steps.find_issues.outputs.issues_to_triage != '' && steps.find_issues.outputs.issues_to_triage != '[]')
-        uses: 'google-github-actions/run-pollux-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-pollux-cli@v0
+        uses: 'google-github-actions/run-gemini-cli@a3bf79042542528e91937b3a3a6fbc4967ee3c31' # ratchet:google-github-actions/run-gemini-cli@v0
         id: 'gemini_issue_analysis'
         env:
           GITHUB_TOKEN: '' # Do not pass any auth token here since this runs on untrusted inputs
@@ -218,11 +218,11 @@ jobs:
 
       - name: 'Apply Labels to Issues'
         if: |-
-          ${{ steps.pollux_issue_analysis.outcome == 'success' &&
-              steps.pollux_issue_analysis.outputs.summary != '[]' }}
+          ${{ steps.gemini_issue_analysis.outcome == 'success' &&
+              steps.gemini_issue_analysis.outputs.summary != '[]' }}
         env:
           REPOSITORY: '${{ github.repository }}'
-          LABELS_OUTPUT: '${{ steps.pollux_issue_analysis.outputs.summary }}'
+          LABELS_OUTPUT: '${{ steps.gemini_issue_analysis.outputs.summary }}'
         uses: 'actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea'
         with:
           github-token: '${{ steps.generate_token.outputs.token }}'

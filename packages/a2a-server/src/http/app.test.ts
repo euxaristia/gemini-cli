@@ -9,7 +9,7 @@ import {
   ApprovalMode,
   type Config,
   type ToolCallConfirmationDetails,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import type {
   TaskStatusUpdateEvent,
   SendStreamingMessageSuccessResponse,
@@ -36,7 +36,7 @@ import {
   createMockConfig,
 } from '../utils/testing_utils.js';
 // Import MockTool from specific path to avoid vitest dependency in main core bundle
-import { MockTool } from '@euxaristia/pollux-cli-core/src/test-utils/mock-tool.js';
+import { MockTool } from '@euxaristia/gemini-cli-core/src/test-utils/mock-tool.js';
 import type { Command, CommandContext } from '../commands/types.js';
 
 const mockToolConfirmationFn = async () =>
@@ -92,13 +92,13 @@ vi.mock('../config/config.js', async () => {
   };
 });
 
-// Mock the PolluxClient to avoid actual API calls
+// Mock the GeminiClient to avoid actual API calls
 const sendMessageStreamSpy = vi.fn();
-vi.mock('@euxaristia/pollux-cli-core', async () => {
-  const actual = await vi.importActual('@euxaristia/pollux-cli-core');
+vi.mock('@euxaristia/gemini-cli-core', async () => {
+  const actual = await vi.importActual('@euxaristia/gemini-cli-core');
   return {
     ...actual,
-    PolluxClient: vi.fn().mockImplementation(() => ({
+    GeminiClient: vi.fn().mockImplementation(() => ({
       sendMessageStream: sendMessageStreamSpy,
       getUserTier: vi.fn().mockReturnValue('free'),
       initialize: vi.fn(),

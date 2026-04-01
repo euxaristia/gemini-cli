@@ -15,24 +15,24 @@ import {
 } from 'vitest';
 import { WebSearchTool, type WebSearchToolParams } from './web-search.js';
 import type { Config } from '../config/config.js';
-import { PolluxClient } from '../core/client.js';
+import { GeminiClient } from '../core/client.js';
 import { ToolErrorType } from './tool-error.js';
 import { createMockMessageBus } from '../test-utils/mock-message-bus.js';
 
-// Mock PolluxClient and Config constructor
+// Mock GeminiClient and Config constructor
 vi.mock('../core/client.js');
 vi.mock('../config/config.js');
 
 describe('WebSearchTool', () => {
   const abortSignal = new AbortController().signal;
-  let mockPolluxClient: PolluxClient;
+  let mockGeminiClient: GeminiClient;
   let tool: WebSearchTool;
 
   beforeEach(() => {
     const mockConfigInstance = {
-      getPolluxClient: () => mockPolluxClient,
-      get polluxClient() {
-        return mockPolluxClient;
+      getGeminiClient: () => mockGeminiClient,
+      get geminiClient() {
+        return mockGeminiClient;
       },
       getProxy: () => undefined,
       generationConfigService: {
@@ -48,7 +48,7 @@ describe('WebSearchTool', () => {
     (
       mockConfigInstance as unknown as { config: Config; promptId: string }
     ).promptId = 'test-prompt-id';
-    mockPolluxClient = new PolluxClient(mockConfigInstance);
+    mockGeminiClient = new GeminiClient(mockConfigInstance);
     tool = new WebSearchTool(mockConfigInstance, createMockMessageBus());
   });
 
@@ -92,7 +92,7 @@ describe('WebSearchTool', () => {
   describe('execute', () => {
     it('should return search results for a successful query', async () => {
       const params: WebSearchToolParams = { query: 'successful query' };
-      (mockPolluxClient.generateContent as Mock).mockResolvedValue({
+      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
@@ -117,7 +117,7 @@ describe('WebSearchTool', () => {
 
     it('should handle no search results found', async () => {
       const params: WebSearchToolParams = { query: 'no results query' };
-      (mockPolluxClient.generateContent as Mock).mockResolvedValue({
+      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
@@ -140,7 +140,7 @@ describe('WebSearchTool', () => {
     it('should return a WEB_SEARCH_FAILED error on failure', async () => {
       const params: WebSearchToolParams = { query: 'error query' };
       const testError = new Error('API Failure');
-      (mockPolluxClient.generateContent as Mock).mockRejectedValue(testError);
+      (mockGeminiClient.generateContent as Mock).mockRejectedValue(testError);
 
       const invocation = tool.build(params);
       const result = await invocation.execute(abortSignal);
@@ -153,7 +153,7 @@ describe('WebSearchTool', () => {
 
     it('should correctly format results with sources and citations', async () => {
       const params: WebSearchToolParams = { query: 'grounding query' };
-      (mockPolluxClient.generateContent as Mock).mockResolvedValue({
+      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
@@ -200,12 +200,12 @@ Sources:
 
     it('should insert markers at correct byte positions for multibyte text', async () => {
       const params: WebSearchToolParams = { query: 'multibyte query' };
-      (mockPolluxClient.generateContent as Mock).mockResolvedValue({
+      (mockGeminiClient.generateContent as Mock).mockResolvedValue({
         candidates: [
           {
             content: {
               role: 'model',
-              parts: [{ text: 'こんにちは! Pollux✨️' }],
+              parts: [{ text: 'こんにちは! Gemini CLI✨️' }],
             },
             groundingMetadata: {
               groundingChunks: [
@@ -217,14 +217,14 @@ Sources:
                 },
                 {
                   web: {
-                    title: 'google-gemini/pollux-cli',
-                    uri: 'https://github.com/google-gemini/pollux-cli',
+                    title: 'google-gemini/gemini-cli',
+                    uri: 'https://github.com/google-gemini/gemini-cli',
                   },
                 },
                 {
                   web: {
-                    title: 'Pollux: your open-source AI agent',
-                    uri: 'https://blog.google/technology/developers/introducing-pollux-cli-open-source-ai-agent/',
+                    title: 'Gemini CLI: your open-source AI agent',
+                    uri: 'https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/',
                   },
                 },
               ],
@@ -239,7 +239,7 @@ Sources:
                 },
                 {
                   segment: {
-                    // Byte range of "Pollux✨️" (utf-8 encoded)
+                    // Byte range of "Gemini CLI✨️" (utf-8 encoded)
                     startIndex: 17,
                     endIndex: 33,
                   },
@@ -256,12 +256,12 @@ Sources:
 
       const expectedLlmContent = `Web search results for "multibyte query":
 
-こんにちは![1] Pollux✨️[2][3]
+こんにちは![1] Gemini CLI✨️[2][3]
 
 Sources:
 [1] Japanese Greeting (https://example.test/japanese-greeting)
-[2] google-gemini/pollux-cli (https://github.com/google-gemini/pollux-cli)
-[3] Pollux: your open-source AI agent (https://blog.google/technology/developers/introducing-pollux-cli-open-source-ai-agent/)`;
+[2] google-gemini/gemini-cli (https://github.com/google-gemini/gemini-cli)
+[3] Gemini CLI: your open-source AI agent (https://blog.google/technology/developers/introducing-gemini-cli-open-source-ai-agent/)`;
 
       expect(result.llmContent).toBe(expectedLlmContent);
       expect(result.returnDisplay).toBe(

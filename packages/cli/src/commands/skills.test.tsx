@@ -15,7 +15,7 @@ vi.mock('./skills/disable.js', () => ({
   disableCommand: { command: 'disable <name>' },
 }));
 
-vi.mock('../pollux.js', () => ({
+vi.mock('../gemini.js', () => ({
   initializeOutputListenersAndFlush: vi.fn(),
 }));
 

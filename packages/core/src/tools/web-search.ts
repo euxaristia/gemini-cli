@@ -85,10 +85,10 @@ class WebSearchToolInvocation extends BaseToolInvocation<
   }
 
   async execute(signal: AbortSignal): Promise<WebSearchToolResult> {
-    const polluxClient = this.context.polluxClient;
+    const geminiClient = this.context.geminiClient;
 
     try {
-      const response = await polluxClient.generateContent(
+      const response = await geminiClient.generateContent(
         { model: 'web-search' },
         [{ role: 'user', parts: [{ text: this.params.query }] }],
         signal,

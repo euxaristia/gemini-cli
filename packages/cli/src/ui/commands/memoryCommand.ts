@@ -9,7 +9,7 @@ import {
   listMemoryFiles,
   refreshMemory,
   showMemory,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { MessageType } from '../types.js';
 import {
   CommandKind,
@@ -107,7 +107,7 @@ export const memoryCommand: SlashCommand = {
     },
     {
       name: 'list',
-      description: 'Lists the paths of the POLLUX.md files in use',
+      description: 'Lists the paths of the GEMINI.md files in use',
       kind: CommandKind.BUILT_IN,
       autoExecute: true,
       action: async (context) => {

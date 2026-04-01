@@ -9,13 +9,13 @@ import * as path from 'node:path';
 import {
   ShellExecutionService,
   debugLogger,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 const RETENTION_PERIOD_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 /**
  * Cleans up background process log files older than 7 days.
- * Scans ~/.pollux/tmp/background-processes/ for .log files.
+ * Scans ~/.gemini/tmp/background-processes/ for .log files.
  *
  * @param debugMode Whether to log detailed debug information.
  */

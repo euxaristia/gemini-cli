@@ -14,7 +14,7 @@ import { env } from 'node:process';
 import * as acp from '@agentclientprotocol/sdk';
 
 // Skip in sandbox mode - test spawns CLI directly which behaves differently in containers
-const sandboxEnv = env['POLLUX_SANDBOX'];
+const sandboxEnv = env['GEMINI_SANDBOX'];
 const itMaybe = sandboxEnv && sandboxEnv !== 'false' ? it.skip : it;
 
 // Reuse existing fake responses that return a simple "Hello" response
@@ -68,7 +68,7 @@ describe('ACP telemetry', () => {
         env: {
           ...process.env,
           GEMINI_API_KEY: 'fake-key',
-          POLLUX_CLI_HOME: rig.homeDir!,
+          GEMINI_CLI_HOME: rig.homeDir!,
           GEMINI_TELEMETRY_ENABLED: 'true',
           GEMINI_TELEMETRY_TARGET: 'local',
           GEMINI_TELEMETRY_OUTFILE: telemetryPath,

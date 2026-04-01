@@ -13,18 +13,18 @@ import type {
   ResumedSessionData,
   ConversationRecord,
   MessageRecord,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import type { HistoryItemWithoutId } from '../types.js';
 
 describe('useSessionResume', () => {
   // Mock dependencies
-  const mockPolluxClient = {
+  const mockGeminiClient = {
     resumeChat: vi.fn(),
   };
 
   const mockConfig = {
-    getPolluxClient: vi.fn().mockReturnValue(mockPolluxClient),
+    getGeminiClient: vi.fn().mockReturnValue(mockGeminiClient),
   };
 
   const createMockHistoryManager = (): UseHistoryManagerReturn => ({
@@ -44,7 +44,7 @@ describe('useSessionResume', () => {
     config: mockConfig as unknown as Config,
     historyManager: mockHistoryManager,
     refreshStatic: mockRefreshStatic,
-    isPolluxClientInitialized: true,
+    isGeminiClientInitialized: true,
     setQuittingMessages: mockSetQuittingMessages,
     resumedSessionData: undefined,
     isAuthenticating: false,
@@ -114,7 +114,7 @@ describe('useSessionResume', () => {
         true,
       );
       expect(mockRefreshStatic).toHaveBeenCalledTimes(1);
-      expect(mockPolluxClient.resumeChat).toHaveBeenCalledWith(
+      expect(mockGeminiClient.resumeChat).toHaveBeenCalledWith(
         clientHistory,
         resumedData,
       );
@@ -124,7 +124,7 @@ describe('useSessionResume', () => {
       const { result } = await renderHook(() =>
         useSessionResume({
           ...getDefaultProps(),
-          isPolluxClientInitialized: false,
+          isGeminiClientInitialized: false,
         }),
       );
 
@@ -155,7 +155,7 @@ describe('useSessionResume', () => {
 
       expect(mockHistoryManager.clearItems).not.toHaveBeenCalled();
       expect(mockHistoryManager.addItem).not.toHaveBeenCalled();
-      expect(mockPolluxClient.resumeChat).not.toHaveBeenCalled();
+      expect(mockGeminiClient.resumeChat).not.toHaveBeenCalled();
     });
 
     it('should handle empty history arrays', async () => {
@@ -181,7 +181,7 @@ describe('useSessionResume', () => {
       expect(mockHistoryManager.clearItems).toHaveBeenCalled();
       expect(mockHistoryManager.addItem).not.toHaveBeenCalled();
       expect(mockRefreshStatic).toHaveBeenCalledTimes(1);
-      expect(mockPolluxClient.resumeChat).toHaveBeenCalledWith([], resumedData);
+      expect(mockGeminiClient.resumeChat).toHaveBeenCalledWith([], resumedData);
     });
 
     it('should restore directories from resumed session data', async () => {
@@ -291,7 +291,7 @@ describe('useSessionResume', () => {
       const initialCallback = result.current.loadHistoryForResume;
 
       const newMockConfig = {
-        getPolluxClient: vi.fn().mockReturnValue(mockPolluxClient),
+        getGeminiClient: vi.fn().mockReturnValue(mockGeminiClient),
       };
 
       rerender({ config: newMockConfig as unknown as Config });
@@ -306,7 +306,7 @@ describe('useSessionResume', () => {
 
       expect(mockHistoryManager.clearItems).not.toHaveBeenCalled();
       expect(mockHistoryManager.addItem).not.toHaveBeenCalled();
-      expect(mockPolluxClient.resumeChat).not.toHaveBeenCalled();
+      expect(mockGeminiClient.resumeChat).not.toHaveBeenCalled();
     });
 
     it('should not resume when user is authenticating', async () => {
@@ -338,7 +338,7 @@ describe('useSessionResume', () => {
 
       expect(mockHistoryManager.clearItems).not.toHaveBeenCalled();
       expect(mockHistoryManager.addItem).not.toHaveBeenCalled();
-      expect(mockPolluxClient.resumeChat).not.toHaveBeenCalled();
+      expect(mockGeminiClient.resumeChat).not.toHaveBeenCalled();
     });
 
     it('should not resume when Gemini client is not initialized', async () => {
@@ -364,13 +364,13 @@ describe('useSessionResume', () => {
             conversation,
             filePath: '/path/to/session.json',
           },
-          isPolluxClientInitialized: false,
+          isGeminiClientInitialized: false,
         }),
       );
 
       expect(mockHistoryManager.clearItems).not.toHaveBeenCalled();
       expect(mockHistoryManager.addItem).not.toHaveBeenCalled();
-      expect(mockPolluxClient.resumeChat).not.toHaveBeenCalled();
+      expect(mockGeminiClient.resumeChat).not.toHaveBeenCalled();
     });
 
     it('should automatically resume session when resumedSessionData is provided', async () => {
@@ -425,7 +425,7 @@ describe('useSessionResume', () => {
         true,
       );
       expect(mockRefreshStatic).toHaveBeenCalledTimes(1);
-      expect(mockPolluxClient.resumeChat).toHaveBeenCalled();
+      expect(mockGeminiClient.resumeChat).toHaveBeenCalled();
     });
 
     it('should only resume once even if props change', async () => {
@@ -518,12 +518,12 @@ describe('useSessionResume', () => {
       });
 
       await waitFor(() => {
-        expect(mockPolluxClient.resumeChat).toHaveBeenCalled();
+        expect(mockGeminiClient.resumeChat).toHaveBeenCalled();
       });
 
       // Check that the client history was called with filtered messages
       // (slash commands should be filtered out)
-      const clientHistory = mockPolluxClient.resumeChat.mock.calls[0][0];
+      const clientHistory = mockGeminiClient.resumeChat.mock.calls[0][0];
 
       // Should only have the non-slash-command message
       expect(clientHistory).toHaveLength(1);

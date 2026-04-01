@@ -6,7 +6,7 @@
 
 import { render, cleanup } from '../../../test-utils/render.js';
 import { SubagentProgressDisplay } from './SubagentProgressDisplay.js';
-import type { SubagentProgress } from '@euxaristia/pollux-cli-core';
+import type { SubagentProgress } from '@euxaristia/gemini-cli-core';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 
 describe('<SubagentProgressDisplay />', () => {

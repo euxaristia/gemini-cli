@@ -13,7 +13,7 @@ import {
   type Theme,
 } from './theme.js';
 import { themeManager } from './theme-manager.js';
-import type { CustomTheme } from '@euxaristia/pollux-cli-core';
+import type { CustomTheme } from '@euxaristia/gemini-cli-core';
 
 describe('createCustomTheme', () => {
   const baseTheme: CustomTheme = {

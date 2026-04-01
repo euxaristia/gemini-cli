@@ -21,8 +21,8 @@ import {
   ApprovalMode,
   tokenLimit,
   CoreToolCallStatus,
-} from '@euxaristia/pollux-cli-core';
-import type { Config } from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
+import type { Config } from '@euxaristia/gemini-cli-core';
 import { StreamingState } from '../types.js';
 import { TransientMessageType } from '../../utils/events.js';
 import type { LoadedSettings } from '../../config/settings.js';
@@ -180,7 +180,7 @@ const createMockUIState = (overrides: Partial<UIState> = {}): UIState =>
     shortcutsHelpVisible: false,
     cleanUiDetailsVisible: true,
     ideContextState: null,
-    polluxMdFileCount: 0,
+    geminiMdFileCount: 0,
     renderMarkdown: true,
     history: [],
     sessionStats: {

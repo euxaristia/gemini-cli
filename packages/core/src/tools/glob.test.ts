@@ -24,7 +24,7 @@ import * as glob from 'glob';
 import { createMockMessageBus } from '../test-utils/mock-message-bus.js';
 import {
   DEFAULT_FILE_FILTERING_OPTIONS,
-  POLLUX_IGNORE_FILE_NAME,
+  GEMINI_IGNORE_FILE_NAME,
 } from '../config/constants.js';
 
 vi.mock('glob', { spy: true });
@@ -390,9 +390,9 @@ describe('GlobTool', () => {
       expect(result.llmContent).not.toContain('ignored_test.txt');
     }, 30000);
 
-    it('should respect .polluxignore files by default', async () => {
+    it('should respect .geminiignore files by default', async () => {
       await fs.writeFile(
-        path.join(tempRootDir, POLLUX_IGNORE_FILE_NAME),
+        path.join(tempRootDir, GEMINI_IGNORE_FILE_NAME),
         'gemini-ignored_test.txt',
       );
       await fs.writeFile(
@@ -428,9 +428,9 @@ describe('GlobTool', () => {
       expect(result.llmContent).toContain('ignored_test.txt');
     }, 30000);
 
-    it('should not respect .polluxignore when respect_gemini_ignore is false', async () => {
+    it('should not respect .geminiignore when respect_gemini_ignore is false', async () => {
       await fs.writeFile(
-        path.join(tempRootDir, POLLUX_IGNORE_FILE_NAME),
+        path.join(tempRootDir, GEMINI_IGNORE_FILE_NAME),
         'gemini-ignored_test.txt',
       );
       await fs.writeFile(

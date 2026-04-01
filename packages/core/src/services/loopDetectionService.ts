@@ -542,7 +542,7 @@ export class LoopDetectionService {
     analysis?: string;
     confirmedByModel?: string;
   }> {
-    const recentHistory = this.context.polluxClient
+    const recentHistory = this.context.geminiClient
       .getHistory()
       .slice(-LLM_LOOP_CHECK_HISTORY_COUNT);
 

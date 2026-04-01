@@ -8,7 +8,7 @@ import {
   ACTIVE_SHELL_MAX_LINES,
   COMPLETED_SHELL_MAX_LINES,
 } from '../constants.js';
-import { CoreToolCallStatus } from '@euxaristia/pollux-cli-core';
+import { CoreToolCallStatus } from '@euxaristia/gemini-cli-core';
 
 /**
  * Constants used for calculating available height for tool results.

@@ -124,9 +124,9 @@ through `node_modules`, build artifacts, or other ignored paths.
 
 If you have sensitive files (like `.env`) or large assets that you want to keep
 hidden from the AI _without_ ignoring them in Git, you can create a
-`.polluxignore` file in your project root.
+`.geminiignore` file in your project root.
 
-**Example `.polluxignore`:**
+**Example `.geminiignore`:**
 
 ```text
 .env

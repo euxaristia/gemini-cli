@@ -20,7 +20,7 @@ import {
   AuthType,
   type Config,
   debugLogger,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import type { LoadedSettings } from '../../config/settings.js';
 import { AuthState } from '../types.js';
 import { RadioButtonSelect } from '../components/shared/RadioButtonSelect.js';
@@ -31,9 +31,9 @@ import { Text } from 'ink';
 import { RELAUNCH_EXIT_CODE } from '../../utils/processUtils.js';
 
 // Mocks
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     clearCachedCredentialFile: vi.fn(),
@@ -82,7 +82,7 @@ describe('AuthDialog', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.stubEnv('CLOUD_SHELL', undefined as unknown as string);
-    vi.stubEnv('POLLUX_CLI_USE_COMPUTE_ADC', undefined as unknown as string);
+    vi.stubEnv('GEMINI_CLI_USE_COMPUTE_ADC', undefined as unknown as string);
     vi.stubEnv('GEMINI_DEFAULT_AUTH_TYPE', undefined as unknown as string);
     vi.stubEnv('GEMINI_API_KEY', undefined as unknown as string);
 
@@ -127,10 +127,10 @@ describe('AuthDialog', () => {
         desc: 'in Cloud Shell',
       },
       {
-        env: { POLLUX_CLI_USE_COMPUTE_ADC: 'true' },
+        env: { GEMINI_CLI_USE_COMPUTE_ADC: 'true' },
         shouldContain: [computeAdcItem(metadataServerLabel)],
         shouldNotContain: [computeAdcItem(cloudShellLabel)],
-        desc: 'with POLLUX_CLI_USE_COMPUTE_ADC',
+        desc: 'with GEMINI_CLI_USE_COMPUTE_ADC',
       },
       {
         env: {},

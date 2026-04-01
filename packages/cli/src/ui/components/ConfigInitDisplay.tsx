@@ -11,8 +11,8 @@ import {
   coreEvents,
   type McpClient,
   MCPServerStatus,
-} from '@euxaristia/pollux-cli-core';
-import { PolluxSpinner } from './PolluxSpinner.js';
+} from '@euxaristia/gemini-cli-core';
+import { GeminiSpinner } from './GeminiSpinner.js';
 import { theme } from '../semantic-colors.js';
 
 export const ConfigInitDisplay = ({
@@ -68,7 +68,7 @@ export const ConfigInitDisplay = ({
   return (
     <Box marginTop={1}>
       <Text>
-        <PolluxSpinner /> <Text color={theme.text.primary}>{message}</Text>
+        <GeminiSpinner /> <Text color={theme.text.primary}>{message}</Text>
       </Text>
     </Box>
   );

@@ -19,12 +19,12 @@ import {
 vi.mock('node:os');
 vi.mock('node:fs');
 vi.mock('node:fs/promises');
-vi.mock('@euxaristia/pollux-cli-core', () => ({
+vi.mock('@euxaristia/gemini-cli-core', () => ({
   debugLogger: {
     log: vi.fn(),
     warn: vi.fn(),
   },
-  POLLUX_DIR: '.pollux',
+  GEMINI_DIR: '.gemini',
 }));
 
 describe('sandboxUtils', () => {
@@ -109,7 +109,7 @@ describe('sandboxUtils', () => {
     it('should source sandbox.bashrc if exists', () => {
       vi.mocked(fs.existsSync).mockReturnValue(true);
       const args = entrypoint('/work', ['node', 'gemini', 'arg1']);
-      expect(args[2]).toContain('source .pollux/sandbox.bashrc');
+      expect(args[2]).toContain('source .gemini/sandbox.bashrc');
     });
 
     it('should include socat commands for ports', () => {

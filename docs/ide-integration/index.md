@@ -73,10 +73,10 @@ This will find the correct extension for your IDE and install it.
 You can also install the extension directly from a marketplace.
 
 - **For Visual Studio Code:** Install from the
-  [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=google.pollux-cli-vscode-ide-companion).
+  [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=google.gemini-cli-vscode-ide-companion).
 - **For VS Code forks:** To support forks of VS Code, the extension is also
   published on the
-  [Open VSX Registry](https://open-vsx.org/extension/google/pollux-cli-vscode-ide-companion).
+  [Open VSX Registry](https://open-vsx.org/extension/google/gemini-cli-vscode-ide-companion).
   Follow your editor's instructions for installing extensions from this
   registry.
 
@@ -229,7 +229,7 @@ If you are using Gemini CLI within a sandbox, please be aware of the following:
 - **Message:**
   `🔴 Disconnected: Failed to connect to IDE companion extension in [IDE Name]. Please ensure the extension is running. To install the extension, run /ide install.`
   - **Cause:** Gemini CLI could not find the necessary environment variables
-    (`POLLUX_CLI_IDE_WORKSPACE_PATH` or `POLLUX_CLI_IDE_SERVER_PORT`) to connect
+    (`GEMINI_CLI_IDE_WORKSPACE_PATH` or `GEMINI_CLI_IDE_SERVER_PORT`) to connect
     to the IDE. This usually means the IDE companion extension is not running or
     did not initialize correctly.
   - **Solution:**
@@ -248,19 +248,19 @@ If you are using Gemini CLI within a sandbox, please be aware of the following:
 
 If automatic IDE detection fails, or if you are running Gemini CLI in a
 standalone terminal and want to manually associate it with a specific IDE
-instance, you can set the `POLLUX_CLI_IDE_PID` environment variable to the
+instance, you can set the `GEMINI_CLI_IDE_PID` environment variable to the
 process ID (PID) of your IDE.
 
 **macOS/Linux**
 
 ```bash
-export POLLUX_CLI_IDE_PID=12345
+export GEMINI_CLI_IDE_PID=12345
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-$env:POLLUX_CLI_IDE_PID=12345
+$env:GEMINI_CLI_IDE_PID=12345
 ```
 
 When this variable is set, Gemini CLI will skip automatic detection and attempt

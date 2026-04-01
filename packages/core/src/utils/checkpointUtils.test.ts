@@ -15,7 +15,7 @@ import {
   getCheckpointInfoList,
 } from './checkpointUtils.js';
 import type { GitService } from '../services/gitService.js';
-import type { PolluxClient } from '../core/client.js';
+import type { GeminiClient } from '../core/client.js';
 import type { ToolCallRequestInfo } from '../scheduler/types.js';
 
 describe('checkpoint utils', () => {
@@ -129,9 +129,9 @@ describe('checkpoint utils', () => {
       getCurrentCommitHash: vi.fn(),
     } as unknown as GitService;
 
-    const mockPolluxClient = {
+    const mockGeminiClient = {
       getHistory: vi.fn(),
-    } as unknown as PolluxClient;
+    } as unknown as GeminiClient;
 
     beforeEach(() => {
       vi.clearAllMocks();
@@ -149,7 +149,7 @@ describe('checkpoint utils', () => {
       ] as ToolCallRequestInfo[];
 
       (mockGitService.createFileSnapshot as Mock).mockResolvedValue('hash123');
-      (mockPolluxClient.getHistory as Mock).mockReturnValue([
+      (mockGeminiClient.getHistory as Mock).mockReturnValue([
         { role: 'user', parts: [] },
       ]);
 
@@ -157,7 +157,7 @@ describe('checkpoint utils', () => {
         await processRestorableToolCalls(
           toolCalls,
           mockGitService,
-          mockPolluxClient,
+          mockGeminiClient,
           'history-data',
         );
 
@@ -197,7 +197,7 @@ describe('checkpoint utils', () => {
       const { checkpointsToWrite, errors } = await processRestorableToolCalls(
         toolCalls,
         mockGitService,
-        mockPolluxClient,
+        mockGeminiClient,
       );
 
       expect(errors).toHaveLength(1);
@@ -224,7 +224,7 @@ describe('checkpoint utils', () => {
       const { checkpointsToWrite, errors } = await processRestorableToolCalls(
         toolCalls,
         mockGitService,
-        mockPolluxClient,
+        mockGeminiClient,
       );
 
       expect(errors).toHaveLength(1);
@@ -254,7 +254,7 @@ describe('checkpoint utils', () => {
       const { checkpointsToWrite, errors } = await processRestorableToolCalls(
         toolCalls,
         mockGitService,
-        mockPolluxClient,
+        mockGeminiClient,
       );
 
       expect(errors).toHaveLength(2);

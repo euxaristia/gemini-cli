@@ -8,11 +8,11 @@ import { Box, Newline, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
 import { useKeypress } from '../hooks/useKeypress.js';
 
-interface PolluxPrivacyNoticeProps {
+interface GeminiPrivacyNoticeProps {
   onExit: () => void;
 }
 
-export const PolluxPrivacyNotice = ({ onExit }: PolluxPrivacyNoticeProps) => {
+export const GeminiPrivacyNotice = ({ onExit }: GeminiPrivacyNoticeProps) => {
   useKeypress(
     (key) => {
       if (key.name === 'escape') {

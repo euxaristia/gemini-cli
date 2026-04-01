@@ -72,7 +72,7 @@ describe('<Header />', () => {
     const versionText = Array.isArray(textCalls[1][0].children)
       ? textCalls[1][0].children.join('')
       : textCalls[1][0].children;
-    expect(versionText).toBe('1.0.0');
+    expect(versionText).toBe('v1.0.0');
   });
 
   it('does not display the version number when nightly is false', async () => {

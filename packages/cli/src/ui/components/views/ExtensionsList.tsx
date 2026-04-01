@@ -11,7 +11,7 @@ import { ExtensionUpdateState } from '../../state/extensions.js';
 import {
   debugLogger,
   type GeminiCLIExtension,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { getFormattedSettingValue } from '../../../commands/extensions/utils.js';
 
 interface ExtensionsList {

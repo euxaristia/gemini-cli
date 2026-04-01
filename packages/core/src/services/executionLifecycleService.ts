@@ -26,7 +26,6 @@ export interface ExecutionResult {
   pid: number | undefined;
   executionMethod: ExecutionMethod;
   backgrounded?: boolean;
-  binaryDetected?: boolean;
 }
 
 export interface ExecutionHandle {

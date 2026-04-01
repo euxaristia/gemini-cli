@@ -7,7 +7,7 @@
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import type { PartListUnion, PartUnion } from '@google/genai';
-import type { AnyToolInvocation, Config } from '@euxaristia/pollux-cli-core';
+import type { AnyToolInvocation, Config } from '@euxaristia/gemini-cli-core';
 import {
   debugLogger,
   getErrorMessage,
@@ -19,7 +19,7 @@ import {
   REFERENCE_CONTENT_START,
   REFERENCE_CONTENT_END,
   CoreToolCallStatus,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { Buffer } from 'node:buffer';
 import type {
   HistoryItemToolGroup,
@@ -242,18 +242,18 @@ async function resolveFilePaths(
       respectFileIgnore.respectGitIgnore &&
       fileDiscovery.shouldIgnoreFile(pathName, {
         respectGitIgnore: true,
-        respectPolluxIgnore: false,
+        respectGeminiIgnore: false,
       });
-    const polluxIgnored =
-      respectFileIgnore.respectPolluxIgnore &&
+    const geminiIgnored =
+      respectFileIgnore.respectGeminiIgnore &&
       fileDiscovery.shouldIgnoreFile(pathName, {
         respectGitIgnore: false,
-        respectPolluxIgnore: true,
+        respectGeminiIgnore: true,
       });
 
-    if (gitIgnored || polluxIgnored) {
+    if (gitIgnored || geminiIgnored) {
       const reason =
-        gitIgnored && polluxIgnored ? 'both' : gitIgnored ? 'git' : 'gemini';
+        gitIgnored && geminiIgnored ? 'both' : gitIgnored ? 'git' : 'gemini';
       ignoredFiles.push({ path: pathName, reason });
       const reasonText =
         reason === 'both'
@@ -526,7 +526,7 @@ async function readLocalFiles(
     include: pathSpecsToRead,
     file_filtering_options: {
       respect_git_ignore: respectFileIgnore.respectGitIgnore,
-      respect_gemini_ignore: respectFileIgnore.respectPolluxIgnore,
+      respect_gemini_ignore: respectFileIgnore.respectGeminiIgnore,
     },
   };
 

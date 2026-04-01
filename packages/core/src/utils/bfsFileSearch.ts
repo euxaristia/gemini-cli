@@ -189,7 +189,7 @@ function processDirEntries(
     if (
       options.fileService?.shouldIgnoreFile(fullPath, {
         respectGitIgnore: options.fileFilteringOptions?.respectGitIgnore,
-        respectPolluxIgnore: options.fileFilteringOptions?.respectPolluxIgnore,
+        respectGeminiIgnore: options.fileFilteringOptions?.respectGeminiIgnore,
       })
     ) {
       continue;

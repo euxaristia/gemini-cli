@@ -14,8 +14,8 @@ import { extensionsCommand } from '../commands/extensions.js';
 import { skillsCommand } from '../commands/skills.js';
 import { hooksCommand } from '../commands/hooks.js';
 import {
-  setPolluxMdFilename as setServerPolluxMdFilename,
-  getCurrentPolluxMdFilename,
+  setGeminiMdFilename as setServerGeminiMdFilename,
+  getCurrentGeminiMdFilename,
   ApprovalMode,
   DEFAULT_GEMINI_EMBEDDING_MODEL,
   DEFAULT_FILE_FILTERING_OPTIONS,
@@ -46,7 +46,7 @@ import {
   type HookEventName,
   type OutputFormat,
   detectIdeFromEnv,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import {
   type Settings,
   type MergedSettings,
@@ -67,7 +67,7 @@ import {
 } from './policy.js';
 import { ExtensionManager } from './extension-manager.js';
 import { McpServerEnablementManager } from './mcp/mcpServerEnablement.js';
-import type { ExtensionEvents } from '@euxaristia/pollux-cli-core/src/utils/extensionLoader.js';
+import type { ExtensionEvents } from '@euxaristia/gemini-cli-core/src/utils/extensionLoader.js';
 import { requestConsentNonInteractive } from './extensions/consent.js';
 import { promptForSetting } from './extensions/extensionSettings.js';
 import type { EventEmitter } from 'node:stream';
@@ -529,7 +529,7 @@ export async function loadCliConfig(
     options.worktreeSettings ?? (await resolveWorktreeSettings(cwd));
 
   if (argv.sandbox) {
-    process.env['POLLUX_SANDBOX'] = 'true';
+    process.env['GEMINI_SANDBOX'] = 'true';
   }
 
   const memoryImportFormat = settings.context?.importFormat || 'tree';
@@ -538,7 +538,7 @@ export async function loadCliConfig(
   const ideMode = settings.ide?.enabled ?? false;
 
   const folderTrust =
-    process.env['POLLUX_CLI_INTEGRATION_TEST'] === 'true' ||
+    process.env['GEMINI_CLI_INTEGRATION_TEST'] === 'true' ||
     process.env['VITEST'] === 'true'
       ? false
       : (settings.security?.folderTrust?.enabled ?? false);
@@ -550,13 +550,13 @@ export async function loadCliConfig(
 
   // Set the context filename in the server's memoryTool module BEFORE loading memory
   // TODO(b/343434939): This is a bit of a hack. The contextFileName should ideally be passed
-  // directly to the Config constructor in core, and have core handle setPolluxMdFilename.
+  // directly to the Config constructor in core, and have core handle setGeminiMdFilename.
   // However, loadHierarchicalGeminiMemory is called *before* createServerConfig.
   if (settings.context?.fileName) {
-    setServerPolluxMdFilename(settings.context.fileName);
+    setServerGeminiMdFilename(settings.context.fileName);
   } else {
     // Reset to default if not provided in settings.
-    setServerPolluxMdFilename(getCurrentPolluxMdFilename());
+    setServerGeminiMdFilename(getCurrentGeminiMdFilename());
   }
 
   const fileService = new FileDiscoveryService(cwd);
@@ -617,7 +617,7 @@ export async function loadCliConfig(
   const experimentalJitContext = settings.experimental.jitContext;
 
   let extensionRegistryURI =
-    process.env['POLLUX_CLI_EXTENSION_REGISTRY_URI'] ??
+    process.env['GEMINI_CLI_EXTENSION_REGISTRY_URI'] ??
     (trustedFolder ? settings.experimental?.extensionRegistryURI : undefined);
 
   if (extensionRegistryURI && !extensionRegistryURI.startsWith('http')) {
@@ -931,8 +931,8 @@ export async function loadCliConfig(
     enableEnvironmentVariableRedaction:
       settings.security?.environmentVariableRedaction?.enabled,
     userMemory: memoryContent,
-    polluxMdFileCount: fileCount,
-    polluxMdFilePaths: filePaths,
+    geminiMdFileCount: fileCount,
+    geminiMdFilePaths: filePaths,
     approvalMode,
     disableYoloMode:
       settings.security?.disableYoloMode || settings.admin?.secureModeEnabled,

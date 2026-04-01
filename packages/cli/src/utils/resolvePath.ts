@@ -5,7 +5,7 @@
  */
 
 import * as path from 'node:path';
-import { homedir } from '@euxaristia/pollux-cli-core';
+import { homedir } from '@euxaristia/gemini-cli-core';
 
 export function resolvePath(p: string): string {
   if (!p) {

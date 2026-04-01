@@ -98,7 +98,7 @@ describe('ShellTool', () => {
       get config() {
         return this;
       },
-      polluxClient: {
+      geminiClient: {
         stripThoughtsFromHistory: vi.fn(),
       },
 
@@ -133,7 +133,7 @@ describe('ShellTool', () => {
         const projectTempDir = this.storage.getProjectTempDir();
         return `Path not in workspace: Attempted path "${absolutePath}" resolves outside the allowed workspace directories: ${workspaceDirs.join(', ')} or the project temp directory: ${projectTempDir}`;
       },
-      getPolluxClient: vi.fn().mockReturnValue({}),
+      getGeminiClient: vi.fn().mockReturnValue({}),
       getShellToolInactivityTimeout: vi.fn().mockReturnValue(1000),
       getEnableInteractiveShell: vi.fn().mockReturnValue(false),
       getShellBackgroundCompletionBehavior: vi.fn().mockReturnValue('silent'),
@@ -435,34 +435,6 @@ describe('ShellTool', () => {
       20000,
     );
 
-    it('should report binary detection in llmContent and returnDisplay', async () => {
-      const invocation = shellTool.build(
-        { command: 'printf "hello\\x00world"' },
-      );
-
-      const promise = invocation.execute(new AbortController().signal);
-
-      resolveShellExecution({
-        binaryDetected: true,
-        exitCode: 0,
-        output: '',
-        rawOutput: Buffer.from('hello\x00world'),
-        signal: null,
-        aborted: false,
-        pid: 12345,
-        executionMethod: 'child_process',
-      });
-
-      const result = await promise;
-
-      expect(result.llmContent).toContain(
-        'Output: [Binary output detected. Output hidden.]',
-      );
-      expect(result.returnDisplay).toBe(
-        '[Binary output detected. Output hidden.]',
-      );
-    });
-
     it('should format error messages correctly', async () => {
       const error = new Error('wrapped command failed');
       const invocation = shellTool.build({ command: 'user-command' });
@@ -532,7 +504,7 @@ describe('ShellTool', () => {
         mockConfig,
         { model: 'summarizer-shell' },
         expect.any(String),
-        mockConfig.polluxClient,
+        mockConfig.geminiClient,
         mockAbortSignal,
       );
       expect(result.llmContent).toBe('summarized output');

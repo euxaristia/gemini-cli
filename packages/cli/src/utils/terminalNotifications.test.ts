@@ -18,7 +18,7 @@ const debugLogger = vi.hoisted(() => ({
   debug: vi.fn(),
 }));
 
-vi.mock('@euxaristia/pollux-cli-core', () => ({
+vi.mock('@euxaristia/gemini-cli-core', () => ({
   writeToStdout,
   debugLogger,
 }));

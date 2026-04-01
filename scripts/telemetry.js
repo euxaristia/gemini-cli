@@ -9,16 +9,16 @@
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
-import { POLLUX_DIR } from '@euxaristia/pollux-cli-core';
+import { GEMINI_DIR } from '@euxaristia/gemini-cli-core';
 
 const projectRoot = join(import.meta.dirname, '..');
 
 const USER_SETTINGS_DIR = join(
   process.env.HOME || process.env.USERPROFILE || process.env.HOMEPATH || '',
-  POLLUX_DIR,
+  GEMINI_DIR,
 );
 const USER_SETTINGS_PATH = join(USER_SETTINGS_DIR, 'settings.json');
-const WORKSPACE_SETTINGS_PATH = join(projectRoot, POLLUX_DIR, 'settings.json');
+const WORKSPACE_SETTINGS_PATH = join(projectRoot, GEMINI_DIR, 'settings.json');
 
 let telemetrySettings = undefined;
 

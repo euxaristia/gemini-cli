@@ -43,15 +43,15 @@ export function createMockDebugLogger(options: { stripAnsi?: boolean } = {}) {
 }
 
 /**
- * A helper specifically designed for `vi.mock('@euxaristia/pollux-cli-core', ...)` to easily
+ * A helper specifically designed for `vi.mock('@euxaristia/gemini-cli-core', ...)` to easily
  * mock both `debugLogger` and `coreEvents.emitConsoleLog`.
  *
  * Example:
  * ```typescript
- * vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+ * vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
  *   const { mockCoreDebugLogger } = await import('../../test-utils/mockDebugLogger.js');
  *   return mockCoreDebugLogger(
- *     await importOriginal<typeof import('@euxaristia/pollux-cli-core')>(),
+ *     await importOriginal<typeof import('@euxaristia/gemini-cli-core')>(),
  *     { stripAnsi: true }
  *   );
  * });

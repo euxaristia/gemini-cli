@@ -9,7 +9,6 @@ import * as path from 'node:path';
 import * as os from 'node:os';
 import { lock } from 'proper-lockfile';
 import { debugLogger } from '../utils/debugLogger.js';
-import { writeFileAtomic } from '../utils/fileUtils.js';
 
 export interface RegistryData {
   projects: Record<string, string>;
@@ -78,9 +77,16 @@ export class ProjectRegistry {
   }
 
   private async save(data: RegistryData): Promise<void> {
+    const dir = path.dirname(this.registryPath);
+    if (!fs.existsSync(dir)) {
+      await fs.promises.mkdir(dir, { recursive: true });
+    }
+
     try {
       const content = JSON.stringify(data, null, 2);
-      await writeFileAtomic(this.registryPath, content, 'utf8');
+      const tmpPath = `${this.registryPath}.tmp`;
+      await fs.promises.writeFile(tmpPath, content, 'utf8');
+      await fs.promises.rename(tmpPath, this.registryPath);
     } catch (error) {
       debugLogger.error(
         `Failed to save project registry to ${this.registryPath}:`,

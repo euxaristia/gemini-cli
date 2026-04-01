@@ -16,9 +16,9 @@ vi.mock('./storage.js');
 
 import {
   coreEvents,
-  POLLUX_DIR,
+  GEMINI_DIR,
   type GeminiCLIExtension,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 vi.mock('node:os', () => ({
   homedir: vi.fn().mockReturnValue('/virtual-home'),
@@ -90,7 +90,7 @@ describe('ExtensionEnablementManager', () => {
 
     testDir = createTestDir();
     vi.mocked(ExtensionStorage.getUserExtensionsDir).mockReturnValue(
-      path.join(testDir.path, POLLUX_DIR),
+      path.join(testDir.path, GEMINI_DIR),
     );
     manager = new ExtensionEnablementManager();
   });
@@ -178,7 +178,7 @@ describe('ExtensionEnablementManager', () => {
     it('should return an empty object if the config file is corrupted', () => {
       const configPath = path.join(
         testDir.path,
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extension-enablement.json',
       );
       fs.mkdirSync(path.dirname(configPath), { recursive: true });
@@ -317,16 +317,16 @@ describe('ExtensionEnablementManager', () => {
 
   it('should correctly prioritize more specific enable rules', () => {
     manager.disable('ext-test', true, '/Users/chrstn');
-    manager.enable('ext-test', true, '/Users/chrstn/pollux-cli');
+    manager.enable('ext-test', true, '/Users/chrstn/gemini-cli');
 
-    expect(manager.isEnabled('ext-test', '/Users/chrstn/pollux-cli')).toBe(
+    expect(manager.isEnabled('ext-test', '/Users/chrstn/gemini-cli')).toBe(
       true,
     );
   });
 
   it('should not disable subdirectories if includeSubdirs is false', () => {
     manager.disable('ext-test', false, '/Users/chrstn');
-    expect(manager.isEnabled('ext-test', '/Users/chrstn/pollux-cli')).toBe(
+    expect(manager.isEnabled('ext-test', '/Users/chrstn/gemini-cli')).toBe(
       true,
     );
   });

@@ -81,8 +81,8 @@ import {
 } from '../services/environmentSanitization.js';
 import { expandEnvVars } from '../utils/envExpansion.js';
 import {
-  POLLUX_CLI_IDENTIFICATION_ENV_VAR,
-  POLLUX_CLI_IDENTIFICATION_ENV_VAR_VALUE,
+  GEMINI_CLI_IDENTIFICATION_ENV_VAR,
+  GEMINI_CLI_IDENTIFICATION_ENV_VAR_VALUE,
 } from '../services/shellExecutionService.js';
 
 export const MCP_DEFAULT_TIMEOUT_MSEC = 10 * 60 * 1000; // default to 10 minutes
@@ -1783,7 +1783,7 @@ export async function connectToMcpServer(
 ): Promise<Client> {
   const mcpClient = new Client(
     {
-      name: 'pollux-cli-mcp-client',
+      name: 'gemini-cli-mcp-client',
       version: clientVersion,
     },
     {
@@ -2258,8 +2258,8 @@ export async function createTransport(
     });
 
     const finalEnv: Record<string, string> = {
-      [POLLUX_CLI_IDENTIFICATION_ENV_VAR]:
-        POLLUX_CLI_IDENTIFICATION_ENV_VAR_VALUE,
+      [GEMINI_CLI_IDENTIFICATION_ENV_VAR]:
+        GEMINI_CLI_IDENTIFICATION_ENV_VAR_VALUE,
       ...extensionEnv,
     };
     for (const [key, value] of Object.entries(sanitizedEnv)) {

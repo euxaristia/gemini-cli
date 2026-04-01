@@ -5,7 +5,7 @@
  */
 
 import type { ExtensionUpdateInfo } from '../../config/extension.js';
-import { checkExhaustive } from '@euxaristia/pollux-cli-core';
+import { checkExhaustive } from '@euxaristia/gemini-cli-core';
 
 export enum ExtensionUpdateState {
   CHECKING_FOR_UPDATES = 'checking for updates',

@@ -9,7 +9,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
 import { loadSettings, USER_SETTINGS_PATH } from './settings.js';
-import { debugLogger } from '@euxaristia/pollux-cli-core';
+import { debugLogger } from '@euxaristia/gemini-cli-core';
 
 const mocks = vi.hoisted(() => {
   const suffix = Math.random().toString(36).slice(2);
@@ -27,14 +27,14 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   const path = await import('node:path');
   const os = await import('node:os');
   return {
     ...actual,
-    POLLUX_DIR: '.pollux',
+    GEMINI_DIR: '.gemini',
     debugLogger: {
       error: vi.fn(),
     },
@@ -49,8 +49,8 @@ describe('loadSettings', () => {
     os.tmpdir(),
     `gemini-workspace-${mocks.suffix}`,
   );
-  const mockGeminiHomeDir = path.join(mockHomeDir, '.pollux');
-  const mockGeminiWorkspaceDir = path.join(mockWorkspaceDir, '.pollux');
+  const mockGeminiHomeDir = path.join(mockHomeDir, '.gemini');
+  const mockGeminiWorkspaceDir = path.join(mockWorkspaceDir, '.gemini');
 
   beforeEach(() => {
     vi.clearAllMocks();

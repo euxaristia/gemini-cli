@@ -7,7 +7,7 @@
 import {
   type Config,
   ACTIVATE_SKILL_TOOL_NAME,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { CommandKind, type SlashCommand } from '../ui/commands/types.js';
 import { type ICommandLoader } from './types.js';
 

@@ -15,7 +15,7 @@ import { StreamingState } from './types.js';
 import {
   makeFakeConfig,
   CoreToolCallStatus,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 vi.mock('ink', async (importOriginal) => {
   const original = await importOriginal<typeof import('ink')>();

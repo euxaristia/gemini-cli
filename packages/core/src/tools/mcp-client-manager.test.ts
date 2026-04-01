@@ -57,7 +57,7 @@ describe('McpClientManager', () => {
       getExcludedMcpServers: vi.fn().mockReturnValue([]),
       getMcpServerCommand: vi.fn().mockReturnValue(''),
       getMcpEnablementCallbacks: vi.fn().mockReturnValue(undefined),
-      getPolluxClient: vi.fn().mockReturnValue({
+      getGeminiClient: vi.fn().mockReturnValue({
         isInitialized: vi.fn(),
       }),
       refreshMcpContext: vi.fn(),

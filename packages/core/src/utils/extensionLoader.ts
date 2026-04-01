@@ -140,9 +140,9 @@ export abstract class ExtensionLoader {
     extension: GeminiCLIExtension,
   ): Promise<void> {
     if (extension.excludeTools && extension.excludeTools.length > 0) {
-      const polluxClient = this.config?.polluxClient;
-      if (polluxClient?.isInitialized()) {
-        await polluxClient.setTools();
+      const geminiClient = this.config?.geminiClient;
+      if (geminiClient?.isInitialized()) {
+        await geminiClient.setTools();
       }
     }
   }

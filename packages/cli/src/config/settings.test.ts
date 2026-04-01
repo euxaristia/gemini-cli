@@ -80,10 +80,10 @@ import {
 } from './settings.js';
 import {
   FatalConfigError,
-  POLLUX_DIR,
+  GEMINI_DIR,
   Storage,
   type MCPServerConfig,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { updateSettingsFilePreservingFormat } from '../utils/commentJson.js';
 import {
   getSettingsSchema,
@@ -93,10 +93,10 @@ import {
 import { createMockSettings } from '../test-utils/settings.js';
 
 const MOCK_WORKSPACE_DIR = path.resolve(path.resolve('/mock/workspace'));
-// Use the (mocked) POLLUX_DIR for consistency
+// Use the (mocked) GEMINI_DIR for consistency
 const MOCK_WORKSPACE_SETTINGS_PATH = path.join(
   MOCK_WORKSPACE_DIR,
-  POLLUX_DIR,
+  GEMINI_DIR,
   'settings.json',
 );
 
@@ -129,9 +129,9 @@ const mockCoreEvents = vi.hoisted(() => ({
   emitSettingsChanged: vi.fn(),
 }));
 
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   const os = await import('node:os');
   const pathMod = await import('node:path');
   const fsMod = await import('node:fs');
@@ -150,7 +150,7 @@ vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
   // Create a smarter mock for isWorkspaceHomeDir
   vi.spyOn(actual.Storage.prototype, 'isWorkspaceHomeDir').mockImplementation(
     function (this: Storage) {
-      const target = testResolve(pathMod.dirname(this.getPolluxDir()));
+      const target = testResolve(pathMod.dirname(this.getGeminiDir()));
       // Pick up the mocked home directory specifically from the 'os' mock
       const home = testResolve(os.homedir());
       return actual.normalizePath(target) === actual.normalizePath(home);
@@ -1494,18 +1494,18 @@ describe('Settings Loading and Merging', () => {
       delete process.env['TEST_PORT'];
     });
 
-    describe('when POLLUX_CLI_SYSTEM_SETTINGS_PATH is set', () => {
+    describe('when GEMINI_CLI_SYSTEM_SETTINGS_PATH is set', () => {
       const MOCK_ENV_SYSTEM_SETTINGS_PATH = path.resolve(
         '/mock/env/system/settings.json',
       );
 
       beforeEach(() => {
-        process.env['POLLUX_CLI_SYSTEM_SETTINGS_PATH'] =
+        process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH'] =
           MOCK_ENV_SYSTEM_SETTINGS_PATH;
       });
 
       afterEach(() => {
-        delete process.env['POLLUX_CLI_SYSTEM_SETTINGS_PATH'];
+        delete process.env['GEMINI_CLI_SYSTEM_SETTINGS_PATH'];
       });
 
       it('should load system settings from the path specified in the environment variable', () => {
@@ -1543,7 +1543,7 @@ describe('Settings Loading and Merging', () => {
       const mockSymlinkDir = path.resolve('/mock/symlink/to/home');
       const mockWorkspaceSettingsPath = path.join(
         mockSymlinkDir,
-        POLLUX_DIR,
+        GEMINI_DIR,
         'settings.json',
       );
 
@@ -1910,7 +1910,7 @@ describe('Settings Loading and Merging', () => {
       delete process.env['GEMINI_API_KEY']; // reset
       delete process.env['TESTTEST']; // reset
       const geminiEnvPath = path.resolve(
-        path.join(MOCK_WORKSPACE_DIR, POLLUX_DIR, '.env'),
+        path.join(MOCK_WORKSPACE_DIR, GEMINI_DIR, '.env'),
       );
 
       vi.spyOn(trustedFolders, 'isWorkspaceTrusted').mockReturnValue({

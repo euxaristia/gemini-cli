@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { tokenLimit } from '@euxaristia/pollux-cli-core';
+import { tokenLimit } from '@euxaristia/gemini-cli-core';
 
 export function getContextUsagePercentage(
   promptTokenCount: number,

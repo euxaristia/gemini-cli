@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { Config as CoreConfig } from '@euxaristia/pollux-cli-core';
+import type { Config as CoreConfig } from '@euxaristia/gemini-cli-core';
 import type { AgentFilesystem } from './types.js';
 import fs from 'node:fs/promises';
 

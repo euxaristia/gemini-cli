@@ -10,7 +10,7 @@ import * as path from 'node:path';
 import { initCommand } from './initCommand.js';
 import { createMockCommandContext } from '../../test-utils/mockCommandContext.js';
 import type { CommandContext } from './types.js';
-import type { SubmitPromptActionReturn } from '@euxaristia/pollux-cli-core';
+import type { SubmitPromptActionReturn } from '@euxaristia/gemini-cli-core';
 
 // Mock the 'fs' module
 vi.mock('fs', async (importOriginal) => {
@@ -25,7 +25,7 @@ vi.mock('fs', async (importOriginal) => {
 describe('initCommand', () => {
   let mockContext: CommandContext;
   const targetDir = '/test/dir';
-  const polluxMdPath = path.join(targetDir, 'POLLUX.md');
+  const geminiMdPath = path.join(targetDir, 'GEMINI.md');
 
   beforeEach(() => {
     // Create a fresh mock context for each test
@@ -45,7 +45,7 @@ describe('initCommand', () => {
     vi.clearAllMocks();
   });
 
-  it('should inform the user if POLLUX.md already exists', async () => {
+  it('should inform the user if GEMINI.md already exists', async () => {
     // Arrange: Simulate that the file exists
     vi.mocked(fs.existsSync).mockReturnValue(true);
 
@@ -57,13 +57,13 @@ describe('initCommand', () => {
       type: 'message',
       messageType: 'info',
       content:
-        'A POLLUX.md file already exists in this directory. No changes were made.',
+        'A GEMINI.md file already exists in this directory. No changes were made.',
     });
     // Assert: Ensure no file was written
     expect(fs.writeFileSync).not.toHaveBeenCalled();
   });
 
-  it('should create POLLUX.md and submit a prompt if it does not exist', async () => {
+  it('should create GEMINI.md and submit a prompt if it does not exist', async () => {
     // Arrange: Simulate that the file does not exist
     vi.mocked(fs.existsSync).mockReturnValue(false);
 
@@ -74,13 +74,13 @@ describe('initCommand', () => {
     )) as SubmitPromptActionReturn;
 
     // Assert: Check that writeFileSync was called correctly
-    expect(fs.writeFileSync).toHaveBeenCalledWith(polluxMdPath, '', 'utf8');
+    expect(fs.writeFileSync).toHaveBeenCalledWith(geminiMdPath, '', 'utf8');
 
     // Assert: Check that an informational message was added to the UI
     expect(mockContext.ui.addItem).toHaveBeenCalledWith(
       {
         type: 'info',
-        text: 'Empty POLLUX.md created. Now analyzing the project to populate it.',
+        text: 'Empty GEMINI.md created. Now analyzing the project to populate it.',
       },
       expect.any(Number),
     );

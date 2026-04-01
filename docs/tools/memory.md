@@ -5,8 +5,8 @@ preferences, and project details across sessions.
 
 ## Technical reference
 
-This tool appends information to the `## Pollux Added Memories` section of your
-global `POLLUX.md` file (typically located at `~/.pollux/POLLUX.md`).
+This tool appends information to the `## Gemini Added Memories` section of your
+global `GEMINI.md` file (typically located at `~/.gemini/GEMINI.md`).
 
 ### Arguments
 
@@ -31,5 +31,5 @@ global `POLLUX.md` file (typically located at `~/.pollux/POLLUX.md`).
 
 - Follow the [Memory management guide](../cli/tutorials/memory-management.md)
   for practical examples.
-- Learn how the [Project context (POLLUX.md)](../cli/gemini-md.md) system loads
+- Learn how the [Project context (GEMINI.md)](../cli/gemini-md.md) system loads
   this information.

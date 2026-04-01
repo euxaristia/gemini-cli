@@ -18,8 +18,8 @@ import type {
   SessionMetrics,
   ModelMetrics,
   ToolCallStats,
-} from '@euxaristia/pollux-cli-core';
-import { uiTelemetryService, sessionId } from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
+import { uiTelemetryService, sessionId } from '@euxaristia/gemini-cli-core';
 
 export enum ToolCallDecision {
   ACCEPT = 'accept',

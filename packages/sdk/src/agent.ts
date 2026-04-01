@@ -10,7 +10,7 @@ import {
   createSessionId,
   type ResumedSessionData,
   type ConversationRecord,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 import { GeminiCliSession } from './session.js';
 import type { GeminiCliAgentOptions } from './types.js';

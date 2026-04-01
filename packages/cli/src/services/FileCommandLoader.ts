@@ -9,7 +9,7 @@ import path from 'node:path';
 import toml from '@iarna/toml';
 import { glob } from 'glob';
 import * as z from 'zod';
-import { Storage, coreEvents, type Config } from '@euxaristia/pollux-cli-core';
+import { Storage, coreEvents, type Config } from '@euxaristia/gemini-cli-core';
 import type { ICommandLoader } from './types.js';
 import type {
   CommandContext,

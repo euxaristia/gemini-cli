@@ -21,8 +21,8 @@ import {
   debugLogger,
   ExitCodes,
   coreEvents,
-} from '@euxaristia/pollux-cli-core';
-import type { Config } from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
+import type { Config } from '@euxaristia/gemini-cli-core';
 import * as auth from './config/auth.js';
 import { type LoadedSettings } from './config/settings.js';
 

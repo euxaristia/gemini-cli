@@ -31,7 +31,7 @@ export const StatusDisplay: React.FC<StatusDisplayProps> = ({
     return (
       <ContextSummaryDisplay
         ideContext={uiState.ideContextState}
-        polluxMdFileCount={uiState.polluxMdFileCount}
+        geminiMdFileCount={uiState.geminiMdFileCount}
         contextFileNames={uiState.contextFileNames}
         mcpServers={config.getMcpClientManager()?.getMcpServers() ?? {}}
         blockedMcpServers={

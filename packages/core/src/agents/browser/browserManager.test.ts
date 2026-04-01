@@ -375,7 +375,7 @@ describe('BrowserManager', () => {
       expect(args).not.toContain('--isolated');
       expect(args).not.toContain('--autoConnect');
       expect(args).not.toContain('-y');
-      // Persistent mode should set the default --userDataDir under ~/.pollux
+      // Persistent mode should set the default --userDataDir under ~/.gemini
       expect(args).toContain('--userDataDir');
       const userDataDirIndex = args.indexOf('--userDataDir');
       expect(args[userDataDirIndex + 1]).toMatch(/cli-browser-profile$/);
@@ -668,7 +668,7 @@ describe('BrowserManager', () => {
       // Verify we're using the raw Client from MCP SDK
       expect(Client).toHaveBeenCalledWith(
         expect.objectContaining({
-          name: 'pollux-cli-browser-agent',
+          name: 'gemini-cli-browser-agent',
         }),
         expect.any(Object),
       );

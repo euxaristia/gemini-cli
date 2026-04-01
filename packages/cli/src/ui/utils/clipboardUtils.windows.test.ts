@@ -10,9 +10,9 @@ import { saveClipboardImage } from './clipboardUtils.js';
 
 // Mock dependencies
 vi.mock('node:fs/promises');
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     spawnAsync: vi.fn(),
@@ -45,7 +45,7 @@ describe('saveClipboardImage Windows Path Escaping', () => {
   });
 
   it('should escape single quotes in path for PowerShell script', async () => {
-    const { spawnAsync } = await import('@euxaristia/pollux-cli-core');
+    const { spawnAsync } = await import('@euxaristia/gemini-cli-core');
     vi.mocked(spawnAsync).mockResolvedValue({
       stdout: 'success',
       stderr: '',
@@ -58,7 +58,7 @@ describe('saveClipboardImage Windows Path Escaping', () => {
     const args = vi.mocked(spawnAsync).mock.calls[0][1];
     const script = args[2];
 
-    // The path C:\User's Files\.pollux-clipboard\clipboard-....png
+    // The path C:\User's Files\.gemini-clipboard\clipboard-....png
     // should be escaped in the script as 'C:\User''s Files\...'
 
     // Check if the script contains the escaped path

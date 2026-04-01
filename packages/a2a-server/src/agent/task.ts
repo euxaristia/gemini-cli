@@ -7,7 +7,7 @@
 import {
   type AgentLoopContext,
   Scheduler,
-  type PolluxClient,
+  type GeminiClient,
   GeminiEventType,
   ToolConfirmationOutcome,
   ApprovalMode,
@@ -37,7 +37,7 @@ import {
   processRestorableToolCalls,
   MessageBusType,
   type ToolCallsUpdateMessage,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import {
   type ExecutionEventBus,
   type RequestContext,
@@ -74,7 +74,7 @@ export class Task {
   contextId: string;
   scheduler: Scheduler;
   config: Config;
-  polluxClient: PolluxClient;
+  geminiClient: GeminiClient;
   pendingToolConfirmationDetails: Map<string, ToolCallConfirmationDetails>;
   pendingCorrelationIds: Map<string, string> = new Map();
   taskState: TaskState;
@@ -116,7 +116,7 @@ export class Task {
     this.scheduler = this.setupEventDrivenScheduler();
 
     const loopContext: AgentLoopContext = this.config;
-    this.polluxClient = loopContext.polluxClient;
+    this.geminiClient = loopContext.geminiClient;
     this.pendingToolConfirmationDetails = new Map();
     this.taskState = 'submitted';
     this.eventBus = eventBus;
@@ -143,7 +143,7 @@ export class Task {
 
   // Note: `getAllMCPServerStatuses` retrieves the status of all MCP servers for the entire
   // process. This is not scoped to the individual task but reflects the global connection
-  // state managed within the @pollux-cli/core module.
+  // state managed within the @gemini-cli/core module.
   async getMetadata(): Promise<TaskMetadata> {
     const loopContext: AgentLoopContext = this.config;
     const toolRegistry = loopContext.toolRegistry;
@@ -677,7 +677,7 @@ export class Task {
           await processRestorableToolCalls(
             restorableToolCalls,
             gitService,
-            this.polluxClient,
+            this.geminiClient,
           );
 
         if (errors.length > 0) {
@@ -1048,7 +1048,7 @@ export class Task {
         parts = [response];
       }
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      this.polluxClient.addHistory({
+      this.geminiClient.addHistory({
         role: 'user',
         parts,
       });
@@ -1087,7 +1087,7 @@ export class Task {
     // Set task state to working as we are about to call LLM
     this.setTaskStateAndPublishUpdate('working', stateChange);
     this.currentAgentMessageId = uuidv4();
-    yield* this.polluxClient.sendMessageStream(
+    yield* this.geminiClient.sendMessageStream(
       llmParts,
       aborted,
       completedToolCalls[0]?.request.prompt_id ?? '',
@@ -1133,7 +1133,7 @@ export class Task {
       };
       // Set task state to working as we are about to call LLM
       this.setTaskStateAndPublishUpdate('working', stateChange);
-      yield* this.polluxClient.sendMessageStream(
+      yield* this.geminiClient.sendMessageStream(
         llmParts,
         aborted,
         this.currentPromptId,

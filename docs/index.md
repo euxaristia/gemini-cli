@@ -7,7 +7,7 @@ context.
 ## Install
 
 ```bash
-npm install -g @euxaristia/pollux-cli
+npm install -g @euxaristia/gemini-cli
 ```
 
 ## Get started
@@ -81,11 +81,11 @@ Settings and customization options for Gemini CLI.
 - **[Custom commands](./cli/custom-commands.md):** Personalized shortcuts.
 - **[Enterprise configuration](./cli/enterprise.md):** Professional environment
   controls.
-- **[Ignore files (.polluxignore)](./cli/gemini-ignore.md):** Exclusion pattern
+- **[Ignore files (.geminiignore)](./cli/gemini-ignore.md):** Exclusion pattern
   reference.
 - **[Model configuration](./cli/generation-settings.md):** Fine-tune generation
   parameters like temperature and thinking budget.
-- **[Project context (POLLUX.md)](./cli/gemini-md.md):** Technical hierarchy of
+- **[Project context (GEMINI.md)](./cli/gemini-md.md):** Technical hierarchy of
   context files.
 - **[System prompt override](./cli/system-prompt.md):** Instruction replacement
   logic.

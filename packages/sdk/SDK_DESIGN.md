@@ -15,7 +15,7 @@ Equivalent to `gemini -p "what does this project do?"`. Loads all workspace and
 user settings.
 
 ```ts
-import { GeminiCliAgent } from '@euxaristia/pollux-cli-sdk';
+import { GeminiCliAgent } from '@euxaristia/gemini-cli-sdk';
 
 const simpleAgent = new GeminiCliAgent({
   cwd: '/path/to/some/dir',
@@ -45,7 +45,7 @@ System instructions can be provided by a static string OR dynamically via a
 function:
 
 ```ts
-import { GeminiCliAgent } from "@euxaristia/pollux-cli-sdk";
+import { GeminiCliAgent } from "@euxaristia/gemini-cli-sdk";
 
 const agent = new GeminiCliAgent({
   instructions: "This is a static string instruction"; // this is valid
@@ -55,7 +55,7 @@ const agent = new GeminiCliAgent({
 
 Validation:
 
-- Static string instructions show up where POLLUX.md content normally would in
+- Static string instructions show up where GEMINI.md content normally would in
   model call
 - Dynamic instructions show up and contain dynamic content.
 
@@ -65,7 +65,7 @@ Validation:
 > tool definitions and execution.
 
 ```ts
-import { GeminiCliAgent, tool, z } from "@euxaristia/pollux-cli-sdk";
+import { GeminiCliAgent, tool, z } from "@euxaristia/gemini-cli-sdk";
 
 const addTool = tool({
   name: 'add',
@@ -96,7 +96,7 @@ Validation:
 SDK users can provide programmatic custom hooks
 
 ```ts
-import { GeminiCliAgent, hook, z } from '@euxaristia/pollux-cli-sdk';
+import { GeminiCliAgent, hook, z } from '@euxaristia/gemini-cli-sdk';
 import { reformat } from './reformat.js';
 
 const myHook = hook(
@@ -129,7 +129,7 @@ SDK Hooks can also run as standalone scripts to implement userland "command"
 style hooks:
 
 ```ts
-import { hook } from "@euxaristia/pollux-cli-sdk";
+import { hook } from "@euxaristia/gemini-cli-sdk";
 
 // define a hook as above
 const myHook = hook({...}, (hook) => {...});
@@ -182,7 +182,7 @@ const agent = new GeminiCliAgent({
 > **Status:** Not Implemented.
 
 ```ts
-import { GeminiCliAgent, subagent } from "@euxaristia/pollux-cli";
+import { GeminiCliAgent, subagent } from "@euxaristia/gemini-cli";
 
 const mySubagent = subagent({
   name: "my-subagent",
@@ -211,7 +211,7 @@ Potentially the most important feature of the Gemini CLI SDK is support for
 extensions, which modularly encapsulate all of the primitives listed above:
 
 ```ts
-import { GeminiCliAgent, extension } from "@euxaristia/pollux-cli-sdk";
+import { GeminiCliAgent, extension } from "@euxaristia/gemini-cli-sdk";
 
 const myExtension = extension({
   name: "my-extension",
@@ -233,8 +233,8 @@ The SDK will include a wrapper utility to interact with the agent via ACP
 instead of the SDK's natural API.
 
 ```ts
-import { GeminiCliAgent } from "@euxaristia/pollux-cli-sdk";
-import { GeminiCliAcpServer } from "@euxaristia/pollux-cli-sdk/acp";
+import { GeminiCliAgent } from "@euxaristia/gemini-cli-sdk";
+import { GeminiCliAcpServer } from "@euxaristia/gemini-cli-sdk/acp";
 
 const server = new GeminiCliAcpServer(new GeminiCliAgent({...}));
 server.start(); // calling start runs a stdio ACP server

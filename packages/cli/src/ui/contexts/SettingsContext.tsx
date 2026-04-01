@@ -12,7 +12,7 @@ import type {
   SettingsFile,
 } from '../../config/settings.js';
 import { SettingScope } from '../../config/settings.js';
-import { checkExhaustive } from '@euxaristia/pollux-cli-core';
+import { checkExhaustive } from '@euxaristia/gemini-cli-core';
 
 export const SettingsContext = React.createContext<LoadedSettings | undefined>(
   undefined,

@@ -7,7 +7,7 @@
 import {
   enableMouseEvents,
   disableMouseEvents,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import {
   SGR_MOUSE_REGEX,
   X11_MOUSE_REGEX,

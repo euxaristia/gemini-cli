@@ -1,9 +1,9 @@
-# Makefile for pollux-cli
+# Makefile for gemini-cli
 
 .PHONY: help install build build-sandbox build-all test lint format preflight clean start debug release run-npx create-alias
 
 help:
-	@echo "Makefile for pollux-cli"
+	@echo "Makefile for gemini-cli"
 	@echo ""
 	@echo "Usage:"
 	@echo "  make install          - Install npm dependencies"
@@ -53,7 +53,7 @@ debug:
 
 
 run-npx:
-	npx https://github.com/google-gemini/pollux-cli
+	npx https://github.com/google-gemini/gemini-cli
 
 create-alias:
 	scripts/create_alias.sh

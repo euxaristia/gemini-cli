@@ -16,7 +16,7 @@ import {
 } from 'vitest';
 import * as fs from 'node:fs';
 import { loadSettings, SettingScope } from '../../config/settings.js';
-import { debugLogger } from '@euxaristia/pollux-cli-core';
+import { debugLogger } from '@euxaristia/gemini-cli-core';
 import { handleMigrateFromClaude } from './migrate.js';
 
 vi.mock('node:fs');
@@ -61,7 +61,7 @@ describe('migrate command', () => {
         hooks: {},
       },
       setValue: mockSetValue,
-      workspace: { path: '/test/project/.pollux' },
+      workspace: { path: '/test/project/.gemini' },
     });
   });
 
@@ -133,7 +133,7 @@ describe('migrate command', () => {
       expect.stringContaining('Migrating 1 hook event'),
     );
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '✓ Hooks successfully migrated to .pollux/settings.json',
+      '✓ Hooks successfully migrated to .gemini/settings.json',
     );
   });
 
@@ -322,7 +322,7 @@ describe('migrate command', () => {
         },
       },
       setValue: mockSetValue,
-      workspace: { path: '/test/project/.pollux' },
+      workspace: { path: '/test/project/.gemini' },
     });
 
     mockedFs.existsSync.mockReturnValue(true);
@@ -506,10 +506,10 @@ describe('migrate command', () => {
     await handleMigrateFromClaude();
 
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '✓ Hooks successfully migrated to .pollux/settings.json',
+      '✓ Hooks successfully migrated to .gemini/settings.json',
     );
     expect(debugLoggerLogSpy).toHaveBeenCalledWith(
-      '\nMigration complete! Please review the migrated hooks in .pollux/settings.json',
+      '\nMigration complete! Please review the migrated hooks in .gemini/settings.json',
     );
   });
 });

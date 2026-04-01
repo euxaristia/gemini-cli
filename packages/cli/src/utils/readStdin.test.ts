@@ -6,9 +6,9 @@
 
 import { vi, describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { readStdin } from './readStdin.js';
-import { debugLogger } from '@euxaristia/pollux-cli-core';
+import { debugLogger } from '@euxaristia/gemini-cli-core';
 
-vi.mock('@euxaristia/pollux-cli-core', () => ({
+vi.mock('@euxaristia/gemini-cli-core', () => ({
   debugLogger: {
     warn: vi.fn(),
   },

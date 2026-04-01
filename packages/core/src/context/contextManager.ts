@@ -11,7 +11,7 @@ import {
   getUserProjectMemoryPaths,
   getExtensionMemoryPaths,
   getEnvironmentMemoryPaths,
-  readPolluxMdFiles,
+  readGeminiMdFiles,
   categorizeAndConcatenate,
   type GeminiFileContent,
   deduplicatePathsByFileIdentity,
@@ -83,7 +83,7 @@ export class ContextManager {
     const { paths: allPaths, identityMap: pathIdentityMap } =
       await deduplicatePathsByFileIdentity(allPathsStringDeduped);
 
-    const allContents = await readPolluxMdFiles(
+    const allContents = await readGeminiMdFiles(
       allPaths,
       this.config.getImportFormat(),
       this.config.getMemoryBoundaryMarkers(),

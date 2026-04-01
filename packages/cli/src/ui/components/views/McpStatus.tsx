@@ -7,7 +7,7 @@
 import {
   MCPServerStatus,
   type MCPServerConfig,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { Box, Text } from 'ink';
 import type React from 'react';
 import { MAX_MCP_RESOURCES_TO_SHOW } from '../../constants.js';
@@ -64,7 +64,7 @@ export const McpStatus: React.FC<McpStatusProps> = ({
         <Text>
           Please view MCP documentation in your browser:{' '}
           <Text color={theme.text.link}>
-            https://goo.gle/pollux-cli-docs-mcp
+            https://goo.gle/gemini-cli-docs-mcp
           </Text>{' '}
           or use the cli /docs command
         </Text>

@@ -1,5 +1,5 @@
 {
-  "name": "pollux-cli-vscode-ide-companion",
+  "name": "gemini-cli-vscode-ide-companion",
   "displayName": "Gemini CLI Companion",
   "description": "Enable Gemini CLI with direct access to your IDE workspace.",
   "version": "0.36.0-nightly.20260317.2f90b4653",
@@ -7,7 +7,7 @@
   "icon": "assets/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/google-gemini/pollux-cli.git",
+    "url": "https://github.com/google-gemini/gemini-cli.git",
     "directory": "packages/vscode-ide-companion"
   },
   "engines": {
@@ -19,7 +19,7 @@
     "AI"
   ],
   "keywords": [
-    "pollux-cli",
+    "gemini-cli",
     "gemini cli",
     "gemini",
     "gemini code",
@@ -34,7 +34,7 @@
     "configuration": {
       "title": "Gemini CLI",
       "properties": {
-        "pollux-cli.debug.logging.enabled": {
+        "gemini-cli.debug.logging.enabled": {
           "type": "boolean",
           "default": false,
           "description": "Enable detailed logging for debugging the Gemini CLI Companion."
@@ -58,11 +58,11 @@
         "icon": "$(close)"
       },
       {
-        "command": "pollux-cli.runGeminiCLI",
+        "command": "gemini-cli.runGeminiCLI",
         "title": "Gemini CLI: Run"
       },
       {
-        "command": "pollux-cli.showNotices",
+        "command": "gemini-cli.showNotices",
         "title": "Gemini CLI: View Third-Party Notices"
       }
     ],

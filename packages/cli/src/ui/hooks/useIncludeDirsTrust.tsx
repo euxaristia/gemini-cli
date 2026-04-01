@@ -5,13 +5,13 @@
  */
 
 import { useEffect } from 'react';
-import { type Config } from '@euxaristia/pollux-cli-core';
+import { type Config } from '@euxaristia/gemini-cli-core';
 import { loadTrustedFolders } from '../../config/trustedFolders.js';
 import { expandHomeDir, batchAddDirectories } from '../utils/directoryUtils.js';
 import {
   debugLogger,
   refreshServerHierarchicalMemory,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { MultiFolderTrustDialog } from '../components/MultiFolderTrustDialog.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import { MessageType, type HistoryItem } from '../types.js';
@@ -43,7 +43,7 @@ async function finishAddingDirectories(
   }
 
   if (added.length > 0) {
-    const gemini = config.getPolluxClient();
+    const gemini = config.getGeminiClient();
     if (gemini) {
       await gemini.addDirectoryContext();
     }

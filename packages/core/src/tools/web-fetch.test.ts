@@ -34,7 +34,7 @@ import {
 import { convert } from 'html-to-text';
 
 const mockGenerateContent = vi.fn();
-const mockGetPolluxClient = vi.fn(() => ({
+const mockGetGeminiClient = vi.fn(() => ({
   generateContent: mockGenerateContent,
 }));
 
@@ -276,12 +276,12 @@ describe('WebFetchTool', () => {
       getApprovalMode: vi.fn(),
       setApprovalMode: vi.fn(),
       getProxy: vi.fn(),
-      getPolluxClient: mockGetPolluxClient,
+      getGeminiClient: mockGetGeminiClient,
       get config() {
         return this;
       },
-      get polluxClient() {
-        return mockGetPolluxClient();
+      get geminiClient() {
+        return mockGetGeminiClient();
       },
       getRetryFetchErrors: vi.fn().mockReturnValue(false),
       getMaxAttempts: vi.fn().mockReturnValue(3),

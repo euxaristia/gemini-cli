@@ -6,7 +6,7 @@
 
 import * as glob from 'glob';
 import * as path from 'node:path';
-import { POLLUX_DIR, Storage, type Config } from '@euxaristia/pollux-cli-core';
+import { GEMINI_DIR, Storage, type Config } from '@euxaristia/gemini-cli-core';
 import mock from 'mock-fs';
 import { FileCommandLoader } from './FileCommandLoader.js';
 import { assert, vi } from 'vitest';
@@ -57,9 +57,9 @@ vi.mock('./prompt-processors/argumentProcessor.js', async (importOriginal) => {
       .mockImplementation(() => new original.DefaultArgumentProcessor()),
   };
 });
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...original,
     Storage: original.Storage,
@@ -536,7 +536,7 @@ describe('FileCommandLoader', () => {
       ).getProjectCommandsDir();
       const extensionDir = path.join(
         process.cwd(),
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extensions',
         'test-ext',
       );
@@ -591,7 +591,7 @@ describe('FileCommandLoader', () => {
       ).getProjectCommandsDir();
       const extensionDir = path.join(
         process.cwd(),
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extensions',
         'test-ext',
       );
@@ -689,13 +689,13 @@ describe('FileCommandLoader', () => {
     it('only loads commands from active extensions', async () => {
       const extensionDir1 = path.join(
         process.cwd(),
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extensions',
         'active-ext',
       );
       const extensionDir2 = path.join(
         process.cwd(),
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extensions',
         'inactive-ext',
       );
@@ -752,7 +752,7 @@ describe('FileCommandLoader', () => {
     it('handles missing extension commands directory gracefully', async () => {
       const extensionDir = path.join(
         process.cwd(),
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extensions',
         'no-commands',
       );
@@ -788,7 +788,7 @@ describe('FileCommandLoader', () => {
     it('handles nested command structure in extensions', async () => {
       const extensionDir = path.join(
         process.cwd(),
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extensions',
         'a',
       );
@@ -854,7 +854,7 @@ describe('FileCommandLoader', () => {
       const extensionId = 'my-test-ext-id-123';
       const extensionDir = path.join(
         process.cwd(),
-        POLLUX_DIR,
+        GEMINI_DIR,
         'extensions',
         'my-test-ext',
       );

@@ -19,7 +19,7 @@ import {
   mergeSettings,
   type LoadedSettings,
 } from '../../config/settings.js';
-import { createTransport, debugLogger } from '@euxaristia/pollux-cli-core';
+import { createTransport, debugLogger } from '@euxaristia/gemini-cli-core';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { ExtensionStorage } from '../../config/extensions/storage.js';
 import { ExtensionManager } from '../../config/extension-manager.js';
@@ -39,9 +39,9 @@ vi.mock('../../config/extensions/storage.js', () => ({
   },
 }));
 vi.mock('../../config/extension-manager.js');
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...original,
     createTransport: vi.fn(),
@@ -57,14 +57,14 @@ vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
       vi.fn().mockImplementation((_cwd: string) => ({
         getGlobalSettingsPath: () => '/tmp/gemini/settings.json',
         getWorkspaceSettingsPath: () => '/tmp/gemini/workspace-settings.json',
-        getProjectTempDir: () => '/test/home/.pollux/tmp/mocked_hash',
+        getProjectTempDir: () => '/test/home/.gemini/tmp/mocked_hash',
       })),
       {
         getGlobalSettingsPath: () => '/tmp/gemini/settings.json',
-        getGlobalPolluxDir: () => '/tmp/gemini',
+        getGlobalGeminiDir: () => '/tmp/gemini',
       },
     ),
-    POLLUX_DIR: '.pollux',
+    GEMINI_DIR: '.gemini',
     getErrorMessage: (e: unknown) =>
       e instanceof Error ? e.message : String(e),
   };

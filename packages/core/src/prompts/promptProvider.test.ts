@@ -8,7 +8,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { PromptProvider } from './promptProvider.js';
 import type { Config } from '../config/config.js';
 import {
-  getAllPolluxMdFilenames,
+  getAllGeminiMdFilenames,
   DEFAULT_CONTEXT_FILENAME,
 } from '../tools/memoryTool.js';
 import {
@@ -28,7 +28,7 @@ vi.mock('../tools/memoryTool.js', async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...(actual as object),
-    getAllPolluxMdFilenames: vi.fn(),
+    getAllGeminiMdFilenames: vi.fn(),
   };
 });
 
@@ -89,7 +89,7 @@ describe('PromptProvider', () => {
   });
 
   it('should handle multiple context filenames in the system prompt', () => {
-    vi.mocked(getAllPolluxMdFilenames).mockReturnValue([
+    vi.mocked(getAllGeminiMdFilenames).mockReturnValue([
       DEFAULT_CONTEXT_FILENAME,
       'CUSTOM.md',
       'ANOTHER.md',
@@ -105,7 +105,7 @@ describe('PromptProvider', () => {
   });
 
   it('should handle multiple context filenames in user memory section', () => {
-    vi.mocked(getAllPolluxMdFilenames).mockReturnValue([
+    vi.mocked(getAllGeminiMdFilenames).mockReturnValue([
       DEFAULT_CONTEXT_FILENAME,
       'CUSTOM.md',
     ]);
@@ -130,7 +130,7 @@ describe('PromptProvider', () => {
     } as unknown as MessageBus;
 
     beforeEach(() => {
-      vi.mocked(getAllPolluxMdFilenames).mockReturnValue([
+      vi.mocked(getAllGeminiMdFilenames).mockReturnValue([
         DEFAULT_CONTEXT_FILENAME,
       ]);
       (mockConfig.getApprovalMode as ReturnType<typeof vi.fn>).mockReturnValue(

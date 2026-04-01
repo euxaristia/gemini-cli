@@ -12,7 +12,7 @@ import {
   type AnyDeclarativeTool,
   type Config,
   type ToolRegistry,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   AddMemoryCommand,
@@ -24,9 +24,9 @@ import {
 import type { CommandContext } from './types.js';
 
 // Mock the core functions
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...actual,
     showMemory: vi.fn(),

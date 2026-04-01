@@ -16,7 +16,7 @@ import {
   type Config,
   coreEvents,
   debugLogger,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 /**
  * Detects terminal capabilities, loads themes, and sets the active theme.

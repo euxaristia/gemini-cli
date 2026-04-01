@@ -24,7 +24,7 @@ import {
   exitAlternateScreen,
   enableLineWrapping,
   disableLineWrapping,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import {
   cleanupTerminalOnExit,
   terminalCapabilityManager,
@@ -32,8 +32,8 @@ import {
 import { formatCommand } from '../key/keybindingUtils.js';
 import { Command } from '../key/keyBindings.js';
 
-vi.mock('@euxaristia/pollux-cli-core', async () => {
-  const actual = await vi.importActual('@euxaristia/pollux-cli-core');
+vi.mock('@euxaristia/gemini-cli-core', async () => {
+  const actual = await vi.importActual('@euxaristia/gemini-cli-core');
   return {
     ...actual,
     writeToStdout: vi.fn(),

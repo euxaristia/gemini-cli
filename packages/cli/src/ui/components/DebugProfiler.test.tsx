@@ -6,7 +6,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { appEvents, AppEvent } from '../../utils/events.js';
-import { coreEvents } from '@euxaristia/pollux-cli-core';
+import { coreEvents } from '@euxaristia/gemini-cli-core';
 import {
   profiler,
   DebugProfiler,

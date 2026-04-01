@@ -12,7 +12,7 @@ import { MarkdownDisplay } from '../../utils/MarkdownDisplay.js';
 import type {
   SubagentProgress,
   SubagentActivityItem,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 import { TOOL_STATUS } from '../../constants.js';
 import { STATUS_INDICATOR_WIDTH } from './ToolShared.js';
 import { safeJsonToMarkdown } from '@google/gemini-cli-core';

@@ -39,7 +39,7 @@ export default defineConfig({
     },
     server: {
       deps: {
-        inline: [/@google\/pollux-cli-core/],
+        inline: [/@google\/gemini-cli-core/],
       },
     },
   },

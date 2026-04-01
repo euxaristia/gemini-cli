@@ -13,7 +13,7 @@ import os from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
-import { POLLUX_DIR } from '@euxaristia/pollux-cli-core';
+import { GEMINI_DIR } from '@euxaristia/gemini-cli-core';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,33 +24,33 @@ const projectHash = crypto
   .update(projectRoot)
   .digest('hex');
 
-// Returns the home directory, respecting POLLUX_CLI_HOME
-const homedir = () => process.env['POLLUX_CLI_HOME'] || os.homedir();
+// Returns the home directory, respecting GEMINI_CLI_HOME
+const homedir = () => process.env['GEMINI_CLI_HOME'] || os.homedir();
 
-// User-level .pollux directory in home
-const USER_POLLUX_DIR = path.join(homedir(), POLLUX_DIR);
-// Project-level .pollux directory in the workspace
-const WORKSPACE_POLLUX_DIR = path.join(projectRoot, POLLUX_DIR);
+// User-level .gemini directory in home
+const USER_GEMINI_DIR = path.join(homedir(), GEMINI_DIR);
+// Project-level .gemini directory in the workspace
+const WORKSPACE_GEMINI_DIR = path.join(projectRoot, GEMINI_DIR);
 
-// Telemetry artifacts are stored in a hashed directory under the user's ~/.pollux/tmp
-export const OTEL_DIR = path.join(USER_POLLUX_DIR, 'tmp', projectHash, 'otel');
+// Telemetry artifacts are stored in a hashed directory under the user's ~/.gemini/tmp
+export const OTEL_DIR = path.join(USER_GEMINI_DIR, 'tmp', projectHash, 'otel');
 export const BIN_DIR = path.join(OTEL_DIR, 'bin');
 
-// Workspace settings remain in the project's .pollux directory
+// Workspace settings remain in the project's .gemini directory
 export const WORKSPACE_SETTINGS_FILE = path.join(
-  WORKSPACE_POLLUX_DIR,
+  WORKSPACE_GEMINI_DIR,
   'settings.json',
 );
 
 export function getJson(url) {
   const tmpFile = path.join(
     os.tmpdir(),
-    `pollux-cli-releases-${Date.now()}.json`,
+    `gemini-cli-releases-${Date.now()}.json`,
   );
   try {
     const result = spawnSync(
       'curl',
-      ['-sL', '-H', 'User-Agent: pollux-cli-dev-script', '-o', tmpFile, url],
+      ['-sL', '-H', 'User-Agent: gemini-cli-dev-script', '-o', tmpFile, url],
       { stdio: 'pipe', encoding: 'utf-8' },
     );
     if (result.status !== 0) {
@@ -255,7 +255,7 @@ export async function ensureBinary(
 
   const downloadUrl = asset.browser_download_url;
   const tmpDir = fs.mkdtempSync(
-    path.join(os.tmpdir(), 'pollux-cli-telemetry-'),
+    path.join(os.tmpdir(), 'gemini-cli-telemetry-'),
   );
   const archivePath = path.join(tmpDir, asset.name);
 

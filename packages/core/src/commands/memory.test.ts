@@ -26,8 +26,8 @@ describe('memory commands', () => {
   beforeEach(() => {
     mockConfig = {
       getUserMemory: vi.fn(),
-      getPolluxMdFileCount: vi.fn(),
-      getPolluxMdFilePaths: vi.fn(),
+      getGeminiMdFileCount: vi.fn(),
+      getGeminiMdFilePaths: vi.fn(),
       isJitContextEnabled: vi.fn(),
       updateSystemInstructionIfInitialized: vi
         .fn()
@@ -44,7 +44,7 @@ describe('memory commands', () => {
       vi.mocked(mockConfig.getUserMemory).mockReturnValue(
         'some memory content',
       );
-      vi.mocked(mockConfig.getPolluxMdFileCount).mockReturnValue(1);
+      vi.mocked(mockConfig.getGeminiMdFileCount).mockReturnValue(1);
 
       const result = showMemory(mockConfig);
 
@@ -60,7 +60,7 @@ describe('memory commands', () => {
 
     it('should show a message if memory is empty', () => {
       vi.mocked(mockConfig.getUserMemory).mockReturnValue('');
-      vi.mocked(mockConfig.getPolluxMdFileCount).mockReturnValue(0);
+      vi.mocked(mockConfig.getGeminiMdFileCount).mockReturnValue(0);
 
       const result = showMemory(mockConfig);
 
@@ -161,8 +161,8 @@ describe('memory commands', () => {
 
   describe('listMemoryFiles', () => {
     it('should list the memory files in use', () => {
-      const filePaths = ['/path/to/POLLUX.md', '/other/path/POLLUX.md'];
-      vi.mocked(mockConfig.getPolluxMdFilePaths).mockReturnValue(filePaths);
+      const filePaths = ['/path/to/GEMINI.md', '/other/path/GEMINI.md'];
+      vi.mocked(mockConfig.getGeminiMdFilePaths).mockReturnValue(filePaths);
 
       const result = listMemoryFiles(mockConfig);
 
@@ -170,26 +170,26 @@ describe('memory commands', () => {
       if (result.type === 'message') {
         expect(result.messageType).toBe('info');
         expect(result.content).toContain(
-          'There are 2 POLLUX.md file(s) in use:',
+          'There are 2 GEMINI.md file(s) in use:',
         );
         expect(result.content).toContain(filePaths.join('\n'));
       }
     });
 
     it('should show a message if no memory files are in use', () => {
-      vi.mocked(mockConfig.getPolluxMdFilePaths).mockReturnValue([]);
+      vi.mocked(mockConfig.getGeminiMdFilePaths).mockReturnValue([]);
 
       const result = listMemoryFiles(mockConfig);
 
       expect(result.type).toBe('message');
       if (result.type === 'message') {
         expect(result.messageType).toBe('info');
-        expect(result.content).toBe('No POLLUX.md files in use.');
+        expect(result.content).toBe('No GEMINI.md files in use.');
       }
     });
 
     it('should show a message if file paths are undefined', () => {
-      vi.mocked(mockConfig.getPolluxMdFilePaths).mockReturnValue(
+      vi.mocked(mockConfig.getGeminiMdFilePaths).mockReturnValue(
         undefined as unknown as string[],
       );
 
@@ -198,7 +198,7 @@ describe('memory commands', () => {
       expect(result.type).toBe('message');
       if (result.type === 'message') {
         expect(result.messageType).toBe('info');
-        expect(result.content).toBe('No POLLUX.md files in use.');
+        expect(result.content).toBe('No GEMINI.md files in use.');
       }
     });
   });

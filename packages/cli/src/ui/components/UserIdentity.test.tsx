@@ -12,12 +12,12 @@ import {
   AuthType,
   UserAccountManager,
   type ContentGeneratorConfig,
-} from '@euxaristia/pollux-cli-core';
+} from '@euxaristia/gemini-cli-core';
 
 // Mock UserAccountManager to control cached account
-vi.mock('@euxaristia/pollux-cli-core', async (importOriginal) => {
+vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
   const original =
-    await importOriginal<typeof import('@euxaristia/pollux-cli-core')>();
+    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
   return {
     ...original,
     UserAccountManager: vi.fn().mockImplementation(() => ({
@@ -44,7 +44,7 @@ describe('<UserIdentity />', () => {
     );
 
     const output = lastFrame();
-    expect(output).toContain('Signed in with Google');
+    expect(output).toContain('Signed in with Google: test@example.com');
     expect(output).toContain('/auth');
     expect(output).not.toContain('/upgrade');
     unmount();
@@ -64,7 +64,7 @@ describe('<UserIdentity />', () => {
 
     // Assert immediately on the first available frame before any async ticks happen
     const output = lastFrameRaw();
-    expect(output).toContain('Signed in with Google');
+    expect(output).toContain('test@example.com');
     unmount();
   });
 
@@ -109,7 +109,7 @@ describe('<UserIdentity />', () => {
     );
 
     const output = lastFrame();
-    expect(output).toContain('Signed in with Google');
+    expect(output).toContain('Signed in with Google: test@example.com');
     expect(output).toContain('/auth');
     expect(output).toContain('Plan: Premium Plan');
     expect(output).toContain('/upgrade');
