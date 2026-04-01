@@ -11,7 +11,7 @@ import {
   type ExtensionInstallMetadata,
   type ExtensionSetting,
   type CustomTheme,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   EXTENSIONS_CONFIG_FILENAME,
   INSTALL_METADATA_FILENAME,

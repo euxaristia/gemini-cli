@@ -20,7 +20,7 @@ import {
   homedir,
   type AdminControlsSettings,
   createCache,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import stripJsonComments from 'strip-json-comments';
 import { DefaultLight } from '../ui/themes/builtin/light/default-light.js';
 import { DefaultDark } from '../ui/themes/builtin/dark/default-dark.js';

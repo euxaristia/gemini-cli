@@ -8,7 +8,7 @@ import { useState, useCallback } from 'react';
 import type {
   ConversationRecord,
   MessageRecord,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   calculateTurnStats,
   calculateRewindImpact,

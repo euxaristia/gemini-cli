@@ -25,7 +25,7 @@ import {
   UserAccountManager,
   recordOverageOptionSelected,
   recordCreditPurchaseClick,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { MessageType } from '../types.js';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import type {

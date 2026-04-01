@@ -7,9 +7,9 @@
 import fs from 'node:fs/promises';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     Storage: {

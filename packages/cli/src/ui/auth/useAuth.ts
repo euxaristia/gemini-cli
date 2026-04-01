@@ -13,8 +13,8 @@ import {
   debugLogger,
   isAccountSuspendedError,
   ProjectIdRequiredError,
-} from '@euxaristia/gemini-cli-core';
-import { getErrorMessage } from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
+import { getErrorMessage } from '@google/gemini-cli-core';
 import { AuthState } from '../types.js';
 import { validateAuthMethod } from '../../config/auth.js';
 

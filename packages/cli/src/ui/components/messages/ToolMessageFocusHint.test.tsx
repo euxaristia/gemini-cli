@@ -18,7 +18,7 @@ import {
   type Config,
   type ToolResultDisplay,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 vi.mock('../GeminiRespondingSpinner.js', () => ({
   GeminiRespondingSpinner: () => null,

@@ -8,7 +8,7 @@ import {
   getErrorMessage,
   getMCPServerPrompts,
   type Config,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   CommandKind,
   type CommandContext,

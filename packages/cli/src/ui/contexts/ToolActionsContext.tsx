@@ -20,7 +20,7 @@ import {
   type ToolConfirmationPayload,
   type SerializableConfirmationDetails,
   debugLogger,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type { IndividualToolCallDisplay } from '../types.js';
 
 type LegacyConfirmationDetails = SerializableConfirmationDetails & {

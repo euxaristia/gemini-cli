@@ -10,7 +10,7 @@ import {
   writeToStderr,
   writeToStdout,
   type Config,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   formatRelativeTime,
   SessionSelector,

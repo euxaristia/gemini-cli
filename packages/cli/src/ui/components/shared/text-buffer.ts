@@ -15,7 +15,7 @@ import {
   debugLogger,
   unescapePath,
   type EditorType,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   toCodePoints,
   cpLen,

@@ -7,7 +7,7 @@
 import type {
   MCPServerStatus,
   ToolConfirmationOutcome,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type { TaskState } from '@a2a-js/sdk';
 
 // Interfaces and enums for the CoderAgent protocol.

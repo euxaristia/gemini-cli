@@ -9,7 +9,7 @@ import {
   ShellExecutionService,
   ShellTool,
   type Config as CoreConfig,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type {
   AgentShell,
   AgentShellResult,

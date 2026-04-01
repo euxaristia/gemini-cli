@@ -17,10 +17,7 @@ import {
 } from '../types.js';
 import { disableSkill, enableSkill } from '../../utils/skillSettings.js';
 
-import {
-  getAdminErrorMessage,
-  getErrorMessage,
-} from '@euxaristia/gemini-cli-core';
+import { getAdminErrorMessage, getErrorMessage } from '@google/gemini-cli-core';
 import {
   linkSkill,
   renderSkillActionFeedback,

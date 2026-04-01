@@ -10,7 +10,7 @@ import {
   debugLogger,
   getErrorMessage,
   type ExtensionInstallMetadata,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 import {
   INSTALL_WARNING_MESSAGE,

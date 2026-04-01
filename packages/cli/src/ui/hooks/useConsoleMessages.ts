@@ -10,7 +10,7 @@ import {
   coreEvents,
   CoreEvent,
   type ConsoleLogPayload,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 export interface UseErrorCountReturn {
   errorCount: number;

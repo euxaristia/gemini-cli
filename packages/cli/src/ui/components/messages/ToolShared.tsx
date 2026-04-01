@@ -21,7 +21,7 @@ import {
   isCompletedAskUserTool,
   type ToolResultDisplay,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { useInactivityTimer } from '../../hooks/useInactivityTimer.js';
 import { formatCommand } from '../../key/keybindingUtils.js';
 import { Command } from '../../key/keyBindings.js';

@@ -13,7 +13,7 @@ import {
   spawnAsync,
   escapePath,
   Storage,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 /**
  * Supported image file extensions based on Gemini API.

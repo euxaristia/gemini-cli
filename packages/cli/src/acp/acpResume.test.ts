@@ -20,13 +20,13 @@ import {
   AuthType,
   type Config,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { loadCliConfig, type CliArgs } from '../config/config.js';
 import {
   SessionSelector,
   convertSessionToHistoryFormats,
 } from '../utils/sessionUtils.js';
-import { convertSessionToClientHistory } from '@euxaristia/gemini-cli-core';
+import { convertSessionToClientHistory } from '@google/gemini-cli-core';
 import type { LoadedSettings } from '../config/settings.js';
 
 vi.mock('../config/config.js', () => ({
@@ -43,9 +43,9 @@ vi.mock('../utils/sessionUtils.js', async (importOriginal) => {
   };
 });
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     CoreToolCallStatus: {

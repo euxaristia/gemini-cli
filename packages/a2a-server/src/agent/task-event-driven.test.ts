@@ -12,7 +12,7 @@ import {
   ApprovalMode,
   Scheduler,
   type MessageBus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { createMockConfig } from '../utils/testing_utils.js';
 import type { ExecutionEventBus } from '@a2a-js/sdk/server';
 

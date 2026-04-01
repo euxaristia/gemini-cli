@@ -14,7 +14,7 @@ import { formatDuration } from '../utils/formatters.js';
 import {
   UserAccountManager,
   getG1CreditBalance,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   type CommandContext,
   type SlashCommand,

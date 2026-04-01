@@ -20,7 +20,7 @@ import {
   Storage,
   homedir,
   WarningPriority,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 import * as fs from 'node:fs/promises';
 import path from 'node:path';

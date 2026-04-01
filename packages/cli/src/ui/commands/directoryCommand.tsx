@@ -18,7 +18,7 @@ import { MessageType, type HistoryItem } from '../types.js';
 import {
   refreshServerHierarchicalMemory,
   type Config,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   expandHomeDir,
   getDirectorySuggestions,

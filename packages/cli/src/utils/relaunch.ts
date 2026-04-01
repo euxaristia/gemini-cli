@@ -9,7 +9,7 @@ import { RELAUNCH_EXIT_CODE } from './processUtils.js';
 import {
   writeToStderr,
   type AdminControlsSettings,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 export async function relaunchOnExitCode(runner: () => Promise<number>) {
   while (true) {

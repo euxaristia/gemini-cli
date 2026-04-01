@@ -11,8 +11,8 @@ import { createMockCommandContext } from '../../test-utils/mockCommandContext.js
 import { SettingScope } from '../../config/settings.js';
 import type { GeminiClient } from '@google/gemini-cli-core';
 
-vi.mock('@euxaristia/gemini-cli-core', async () => {
-  const actual = await vi.importActual('@euxaristia/gemini-cli-core');
+vi.mock('@google/gemini-cli-core', async () => {
+  const actual = await vi.importActual('@google/gemini-cli-core');
   return {
     ...actual,
     clearCachedCredentialFile: vi.fn().mockResolvedValue(undefined),
@@ -79,7 +79,7 @@ describe('authCommand', () => {
       expect(logoutCommand?.name).toBe('signout');
 
       const { clearCachedCredentialFile } = await import(
-        '@euxaristia/gemini-cli-core'
+        '@google/gemini-cli-core'
       );
 
       await logoutCommand!.action!(mockContext, '');

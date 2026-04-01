@@ -23,7 +23,7 @@ import {
   getDisplayString,
   isAutoModel,
   LlmRole,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type { QuotaStats } from '../types.js';
 import { QuotaStatsInfo } from './QuotaStatsInfo.js';
 

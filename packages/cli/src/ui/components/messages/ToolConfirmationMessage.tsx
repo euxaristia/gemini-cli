@@ -18,7 +18,7 @@ import {
   ApprovalMode,
   hasRedirection,
   debugLogger,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { useToolActions } from '../../contexts/ToolActionsContext.js';
 import {
   RadioButtonSelect,

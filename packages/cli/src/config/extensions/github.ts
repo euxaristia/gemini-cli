@@ -10,7 +10,7 @@ import {
   getErrorMessage,
   type ExtensionInstallMetadata,
   type GeminiCLIExtension,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { ExtensionUpdateState } from '../../ui/state/extensions.js';
 import * as os from 'node:os';
 import * as https from 'node:https';

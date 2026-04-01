@@ -19,12 +19,12 @@ import {
   type ConversationRecord,
   type MessageRecord,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   coreEvents,
   convertSessionToClientHistory,
   uiTelemetryService,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 // Mock modules
 vi.mock('fs/promises');
@@ -37,9 +37,9 @@ vi.mock('../../utils/sessionUtils.js', async (importOriginal) => {
     getSessionFiles: vi.fn(),
   };
 });
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     uiTelemetryService: {

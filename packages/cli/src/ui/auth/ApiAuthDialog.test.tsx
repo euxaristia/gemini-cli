@@ -13,12 +13,12 @@ import {
   useTextBuffer,
   type TextBuffer,
 } from '../components/shared/text-buffer.js';
-import { clearApiKey } from '@euxaristia/gemini-cli-core';
+import { clearApiKey } from '@google/gemini-cli-core';
 
 // Mocks
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     clearApiKey: vi.fn().mockResolvedValue(undefined),

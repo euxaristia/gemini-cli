@@ -22,7 +22,7 @@ import {
   SettingScope,
   type LoadedSettings,
 } from '../../config/settings.js';
-import { FatalConfigError } from '@euxaristia/gemini-cli-core';
+import { FatalConfigError } from '@google/gemini-cli-core';
 
 // Mock dependencies
 const emitConsoleLog = vi.hoisted(() => vi.fn());
@@ -35,9 +35,9 @@ const debugLogger = vi.hoisted(() => ({
   }),
 }));
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     coreEvents: {

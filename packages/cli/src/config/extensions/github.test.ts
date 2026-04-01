@@ -28,12 +28,12 @@ import { EventEmitter } from 'node:events';
 import type {
   GeminiCLIExtension,
   ExtensionInstallMetadata,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type { ExtensionConfig } from '../extension.js';
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     Storage: {

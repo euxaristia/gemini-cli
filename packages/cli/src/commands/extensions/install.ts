@@ -12,7 +12,7 @@ import {
   FolderTrustDiscoveryService,
   getRealPath,
   getErrorMessage,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   INSTALL_WARNING_MESSAGE,
   promptForConsentNonInteractive,

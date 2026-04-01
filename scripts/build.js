@@ -27,36 +27,35 @@ const root = join(__dirname, '..');
 
 // npm install if node_modules was removed (e.g. via npm run clean or scripts/clean.js)
 if (!existsSync(join(root, 'node_modules'))) {
-  execSync('npm install', { stdio: 'inherit', cwd: root });
+  execSync('bun install', { stdio: 'inherit', cwd: root });
 }
 
 // build all workspaces/packages
-execSync('npm run generate', { stdio: 'inherit', cwd: root });
+execSync('bun run generate', { stdio: 'inherit', cwd: root });
 
 if (process.env.CI) {
   console.log('CI environment detected. Building workspaces sequentially...');
-  execSync('npm run build --workspaces', { stdio: 'inherit', cwd: root });
-} else {
-  // Build core first because everyone depends on it
-  console.log('Building @google/gemini-cli-core...');
-  execSync('npm run build -w @google/gemini-cli-core', {
+  execSync('bun run build --workspaces --sequential', {
     stdio: 'inherit',
     cwd: root,
   });
+} else {
+  const workspaces = [
+    '@google/gemini-cli-core',
+    '@google/gemini-cli',
+    '@google/gemini-cli-a2a-server',
+    '@google/gemini-cli-devtools',
+    '@google/gemini-cli-sdk',
+    '@google/gemini-cli-test-utils',
+  ];
 
-  // Build the rest in parallel
-  console.log('Building other workspaces in parallel...');
-  const workspaceInfo = JSON.parse(
-    execSync('npm query .workspace --json', { cwd: root, encoding: 'utf-8' }),
-  );
-  const parallelWorkspaces = workspaceInfo
-    .map((w) => w.name)
-    .filter((name) => name !== '@google/gemini-cli-core');
-
-  execSync(
-    `npx npm-run-all --parallel ${parallelWorkspaces.map((w) => `"build -w ${w}"`).join(' ')}`,
-    { stdio: 'inherit', cwd: root },
-  );
+  for (const ws of workspaces) {
+    console.log(`Building ${ws}...`);
+    execSync(`bun run --filter ${ws} build`, {
+      stdio: 'inherit',
+      cwd: root,
+    });
+  }
 }
 
 // also build container image if sandboxing is enabled

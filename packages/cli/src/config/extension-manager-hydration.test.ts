@@ -13,7 +13,7 @@ import {
   debugLogger,
   coreEvents,
   type CommandHookConfig,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { createTestMergedSettings } from './settings.js';
 import { createExtension } from '../test-utils/createExtension.js';
 import { EXTENSIONS_DIRECTORY_NAME } from './extensions/variables.js';
@@ -28,10 +28,10 @@ vi.mock('node:os', async (importOriginal) => {
   };
 });
 
-// Mock @euxaristia/gemini-cli-core
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+// Mock @google/gemini-cli-core
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     homedir: mockHomedir,

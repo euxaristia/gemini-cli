@@ -13,7 +13,7 @@ import {
   type Config,
   PolicyDecision,
   ApprovalMode,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 describe('policiesCommand', () => {
   let mockContext: ReturnType<typeof createMockCommandContext>;

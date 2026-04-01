@@ -15,7 +15,7 @@ import {
   createTmpDir,
   cleanupTmpDir,
   type FileSystemStructure,
-} from '@euxaristia/gemini-cli-test-utils';
+} from '@google/gemini-cli-test-utils';
 
 describe('useShellCompletion utilities', () => {
   describe('getTokenAtCursor', () => {

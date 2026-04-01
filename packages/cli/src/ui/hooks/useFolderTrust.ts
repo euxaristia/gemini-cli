@@ -20,7 +20,7 @@ import {
   isHeadlessMode,
   FolderTrustDiscoveryService,
   type FolderDiscoveryResults,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { runExitCleanup } from '../../utils/cleanup.js';
 
 export const useFolderTrust = (

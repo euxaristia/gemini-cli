@@ -10,7 +10,7 @@ import {
   ShellExecutionService,
   flatMapTextParts,
   PolicyDecision,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 import type { CommandContext } from '../../ui/commands/types.js';
 import type { IPromptProcessor, PromptPipelineContent } from './types.js';

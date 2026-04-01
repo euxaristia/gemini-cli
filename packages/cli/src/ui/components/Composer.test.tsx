@@ -21,8 +21,8 @@ import {
   ApprovalMode,
   tokenLimit,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
-import type { Config } from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
+import type { Config } from '@google/gemini-cli-core';
 import { StreamingState } from '../types.js';
 import { TransientMessageType } from '../../utils/events.js';
 import type { LoadedSettings } from '../../config/settings.js';

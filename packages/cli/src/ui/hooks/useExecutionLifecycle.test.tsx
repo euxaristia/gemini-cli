@@ -16,7 +16,7 @@ import {
   afterEach,
   type Mock,
 } from 'vitest';
-import { NoopSandboxManager } from '@euxaristia/gemini-cli-core';
+import { NoopSandboxManager } from '@google/gemini-cli-core';
 
 const mockIsBinary = vi.hoisted(() => vi.fn());
 const mockShellExecutionService = vi.hoisted(() => vi.fn());
@@ -53,9 +53,9 @@ const mockLifecycleBackground = vi.hoisted(() => vi.fn());
 const mockLifecycleOnBackground = vi.hoisted(() => vi.fn());
 const mockLifecycleOffBackground = vi.hoisted(() => vi.fn());
 
-vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
+vi.mock('@google/gemini-cli-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@euxaristia/gemini-cli-core')>();
+    await importOriginal<typeof import('@google/gemini-cli-core')>();
   return {
     ...actual,
     ShellExecutionService: {
@@ -102,7 +102,7 @@ import {
   type ShellExecutionResult,
   type ShellOutputEvent,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';

@@ -14,7 +14,7 @@ import {
   type Config,
   SHELL_TOOL_NAME,
   CoreToolCallStatus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { renderWithProviders } from '../../../test-utils/render.js';
 import { createMockSettings } from '../../../test-utils/settings.js';
 import { makeFakeConfig } from '@google/gemini-cli-core';

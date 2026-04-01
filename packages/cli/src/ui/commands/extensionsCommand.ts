@@ -9,7 +9,7 @@ import {
   listExtensions,
   getErrorMessage,
   type ExtensionInstallMetadata,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type { ExtensionUpdateInfo } from '../../config/extension.js';
 import {
   emptyIcon,

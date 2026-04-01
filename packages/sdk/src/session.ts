@@ -22,7 +22,7 @@ import {
   ActivateSkillTool,
   type ResumedSessionData,
   PolicyDecision,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 
 import { type Tool, SdkTool } from './tool.js';
 import { SdkAgentFilesystem } from './fs.js';

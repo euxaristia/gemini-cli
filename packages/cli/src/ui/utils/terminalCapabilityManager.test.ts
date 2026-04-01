@@ -10,7 +10,7 @@ import { EventEmitter } from 'node:events';
 import {
   enableKittyKeyboardProtocol,
   enableModifyOtherKeys,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import * as fs from 'node:fs';
 
 // Mock fs
@@ -19,7 +19,7 @@ vi.mock('node:fs', () => ({
 }));
 
 // Mock core
-vi.mock('@euxaristia/gemini-cli-core', () => ({
+vi.mock('@google/gemini-cli-core', () => ({
   debugLogger: {
     log: vi.fn(),
     warn: vi.fn(),

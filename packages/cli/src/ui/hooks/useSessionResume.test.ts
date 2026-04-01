@@ -13,7 +13,7 @@ import type {
   ResumedSessionData,
   ConversationRecord,
   MessageRecord,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import type { HistoryItemWithoutId } from '../types.js';
 

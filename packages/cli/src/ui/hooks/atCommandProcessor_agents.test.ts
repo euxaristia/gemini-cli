@@ -10,7 +10,7 @@ import type {
   Config,
   AgentDefinition,
   MessageBus,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import {
   FileDiscoveryService,
   GlobTool,
@@ -18,7 +18,7 @@ import {
   StandardFileSystemService,
   ToolRegistry,
   COMMON_IGNORE_PATTERNS,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import * as os from 'node:os';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import * as fsPromises from 'node:fs/promises';

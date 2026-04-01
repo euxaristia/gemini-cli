@@ -21,16 +21,14 @@ import {
   Config,
   ApprovalMode,
   type Config as ActualConfigType,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { useKeypress, type Key } from './useKeypress.js';
 import { MessageType } from '../types.js';
 
 vi.mock('./useKeypress.js');
 
-vi.mock('@euxaristia/gemini-cli-core', async () => {
-  const actualServerModule = await vi.importActual(
-    '@euxaristia/gemini-cli-core',
-  );
+vi.mock('@google/gemini-cli-core', async () => {
+  const actualServerModule = await vi.importActual('@google/gemini-cli-core');
   return {
     ...actualServerModule,
     Config: vi.fn(),

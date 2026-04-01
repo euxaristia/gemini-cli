@@ -8,7 +8,7 @@ import {
   coreEvents,
   ExitCodes,
   getAdminErrorMessage,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import { runExitCleanup } from './utils/cleanup.js';
 import type { MergedSettings } from './config/settings.js';
 import process from 'node:process';

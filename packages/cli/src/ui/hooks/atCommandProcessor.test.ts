@@ -30,8 +30,8 @@ import {
   CoreToolCallStatus,
   type Config,
   type DiscoveredMCPResource,
-} from '@euxaristia/gemini-cli-core';
-import * as core from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
+import * as core from '@google/gemini-cli-core';
 import * as os from 'node:os';
 import type { UseHistoryManagerReturn } from './useHistoryManager.js';
 import * as fsPromises from 'node:fs/promises';
