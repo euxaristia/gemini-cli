@@ -5,6 +5,7 @@
  */
 
 import type React from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
 import {
@@ -12,7 +13,9 @@ import {
   tildeifyPath,
   getDisplayString,
   checkExhaustive,
-} from '@euxaristia/gemini-cli-core';
+  AuthType,
+  UserAccountManager,
+} from '@google/gemini-cli-core';
 import { ConsoleSummaryDisplay } from './ConsoleSummaryDisplay.js';
 import process from 'node:process';
 import { MemoryUsageDisplay } from './MemoryUsageDisplay.js';
@@ -151,9 +154,7 @@ export const FooterRow: React.FC<{
             </Text>
           </Box>
         )}
-        <Box height={1} overflow="hidden">
-          {item.element}
-        </Box>
+        <Box height={1}>{item.element}</Box>
       </Box>,
     );
   });
@@ -177,11 +178,29 @@ interface FooterColumn {
   isHighPriority: boolean;
 }
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<{ copyModeEnabled?: boolean }> = ({
+  copyModeEnabled = false,
+}) => {
   const uiState = useUIState();
   const config = useConfig();
   const settings = useSettings();
   const { vimEnabled, vimMode } = useVimMode();
+
+  const authType = config.getContentGeneratorConfig()?.authType;
+  const [email, setEmail] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (authType) {
+      const userAccountManager = new UserAccountManager();
+      setEmail(userAccountManager.getCachedGoogleAccount() ?? undefined);
+    } else {
+      setEmail(undefined);
+    }
+  }, [authType]);
+
+  if (copyModeEnabled) {
+    return <Box height={1} />;
+  }
 
   const {
     model,
@@ -217,6 +236,7 @@ export const Footer: React.FC = () => {
     errorCount > 0 &&
     (isFullErrorVerbosity || debugMode || isDevelopment);
   const displayVimMode = vimEnabled ? vimMode : undefined;
+
   const items =
     settings.merged.ui.footer.items ??
     deriveItemsFromLegacySettings(settings.merged);
@@ -314,11 +334,7 @@ export const Footer: React.FC = () => {
         addCol(
           id,
           header,
-          () => (
-            <Text color={itemColor} wrap="truncate">
-              {str}
-            </Text>
-          ),
+          () => <Text color={itemColor}>{str}</Text>,
           str.length,
         );
         break;
@@ -359,7 +375,17 @@ export const Footer: React.FC = () => {
         break;
       }
       case 'memory-usage': {
-        addCol(id, header, () => <MemoryUsageDisplay color={itemColor} />, 10);
+        addCol(
+          id,
+          header,
+          () => (
+            <MemoryUsageDisplay
+              color={itemColor}
+              isActive={!uiState.copyModeEnabled}
+            />
+          ),
+          10,
+        );
         break;
       }
       case 'session-id': {
@@ -372,6 +398,25 @@ export const Footer: React.FC = () => {
             </Text>
           ),
           8,
+        );
+        break;
+      }
+      case 'auth': {
+        if (!settings.merged.ui.showUserIdentity) break;
+        if (!authType) break;
+        const displayStr =
+          authType === AuthType.LOGIN_WITH_GOOGLE
+            ? (email ?? 'google')
+            : authType;
+        addCol(
+          id,
+          header,
+          () => (
+            <Text color={itemColor} wrap="truncate-end">
+              {displayStr}
+            </Text>
+          ),
+          displayStr.length,
         );
         break;
       }
@@ -476,7 +521,7 @@ export const Footer: React.FC = () => {
       header: col.header,
       element: col.element(estimatedWidth),
       flexGrow: 0,
-      flexShrink: 1,
+      flexShrink: isWorkspace ? 1 : 0,
       alignItems:
         isLast && !droppedAny && index > 0 ? 'flex-end' : 'flex-start',
     };

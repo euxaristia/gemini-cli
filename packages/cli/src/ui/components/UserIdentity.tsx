@@ -5,10 +5,14 @@
  */
 
 import type React from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Box, Text } from 'ink';
 import { theme } from '../semantic-colors.js';
-import { type Config, AuthType } from '@euxaristia/gemini-cli-core';
+import {
+  type Config,
+  UserAccountManager,
+  AuthType,
+} from '@google/gemini-cli-core';
 import { isUltraTier } from '../../utils/tierUtils.js';
 
 interface UserIdentityProps {
@@ -17,6 +21,16 @@ interface UserIdentityProps {
 
 export const UserIdentity: React.FC<UserIdentityProps> = ({ config }) => {
   const authType = config.getContentGeneratorConfig()?.authType;
+  const [email, setEmail] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (authType) {
+      const userAccountManager = new UserAccountManager();
+      setEmail(userAccountManager.getCachedGoogleAccount() ?? undefined);
+    } else {
+      setEmail(undefined);
+    }
+  }, [authType]);
 
   const tierName = useMemo(
     () => (authType ? config.getUserTierName() : undefined),
@@ -36,7 +50,8 @@ export const UserIdentity: React.FC<UserIdentityProps> = ({ config }) => {
         <Text color={theme.text.primary} wrap="truncate-end">
           {authType === AuthType.LOGIN_WITH_GOOGLE ? (
             <Text>
-              <Text bold>Signed in with Google</Text>
+              <Text bold>Signed in with Google{email ? ':' : ''}</Text>
+              {email ? ` ${email}` : ''}
             </Text>
           ) : (
             `Authenticated with ${authType}`

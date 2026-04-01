@@ -6,7 +6,6 @@
 
 import React from 'react';
 import { Box, Text } from 'ink';
-import stripAnsi from 'strip-ansi';
 import { DiffRenderer } from './DiffRenderer.js';
 import { MarkdownDisplay } from '../../utils/MarkdownDisplay.js';
 import { AnsiOutputText, AnsiLineText } from '../AnsiOutput.js';
@@ -16,7 +15,8 @@ import {
   type AnsiOutput,
   type AnsiLine,
   isSubagentProgress,
-} from '@euxaristia/gemini-cli-core';
+  isStructuredToolResult,
+} from '@google/gemini-cli-core';
 import { useUIState } from '../../contexts/UIStateContext.js';
 import { tryParseJSON } from '../../../utils/jsonoutput.js';
 import { useAlternateBuffer } from '../../hooks/useAlternateBuffer.js';
@@ -70,11 +70,11 @@ export const ToolResultDisplay: React.FC<ToolResultDisplayProps> = ({
 
   const renderVirtualizedAnsiLine = React.useCallback(
     ({ item }: { item: AnsiLine }) => (
-      <Box height={1} width={childWidth} overflow="hidden">
+      <Box height={1} overflow="hidden">
         <AnsiLineText line={item} />
       </Box>
     ),
-    [childWidth],
+    [],
   );
 
   if (!resultDisplay) return null;
@@ -103,27 +103,49 @@ export const ToolResultDisplay: React.FC<ToolResultDisplayProps> = ({
         </Text>
       );
     } else if (isSubagentProgress(contentData)) {
-      content = <SubagentProgressDisplay progress={contentData} />;
+      content = (
+        <SubagentProgressDisplay
+          progress={contentData}
+          terminalWidth={childWidth}
+        />
+      );
     } else if (typeof contentData === 'string' && renderOutputAsMarkdown) {
-      // Strip raw ANSI codes that may be present in child_process output;
-      // they cannot be rendered through the markdown path.
-      const cleanText = stripAnsi(contentData);
       content = (
         <MarkdownDisplay
-          text={cleanText}
+          text={contentData}
           terminalWidth={childWidth}
           renderMarkdown={renderMarkdown}
           isPending={false}
         />
       );
     } else if (typeof contentData === 'string' && !renderOutputAsMarkdown) {
-      const cleanText = stripAnsi(contentData);
       content = (
         <Text wrap="wrap" color={theme.text.primary}>
-          {cleanText}
+          {contentData}
         </Text>
       );
-    } else if (typeof contentData === 'object' && 'fileDiff' in contentData) {
+    } else if (isStructuredToolResult(contentData)) {
+      if (renderOutputAsMarkdown) {
+        content = (
+          <MarkdownDisplay
+            text={contentData.summary}
+            terminalWidth={childWidth}
+            renderMarkdown={renderMarkdown}
+            isPending={false}
+          />
+        );
+      } else {
+        content = (
+          <Text wrap="wrap" color={theme.text.primary}>
+            {contentData.summary}
+          </Text>
+        );
+      }
+    } else if (
+      typeof contentData === 'object' &&
+      contentData !== null &&
+      'fileDiff' in contentData
+    ) {
       content = (
         <DiffRenderer
           diffContent={
@@ -157,10 +179,13 @@ export const ToolResultDisplay: React.FC<ToolResultDisplayProps> = ({
 
     // Final render based on session mode
     if (isAlternateBuffer) {
+      // Use maxLines if provided, otherwise fall back to the calculated available height
+      const effectiveMaxHeight = maxLines ?? availableHeight;
+
       return (
         <Scrollable
           width={childWidth}
-          maxHeight={maxLines ?? availableHeight}
+          maxHeight={effectiveMaxHeight}
           hasFocus={hasFocus} // Allow scrolling via keyboard (Shift+Up/Down)
           scrollToBottom={true}
           reportOverflow={true}

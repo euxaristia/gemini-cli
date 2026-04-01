@@ -136,6 +136,7 @@ vi.mock('@euxaristia/gemini-cli-core', async (importOriginal) => {
         : err instanceof Error && err.name === 'TimeoutError',
     ),
     coreEvents: {
+      // eslint-disable-next-line @typescript-eslint/no-misused-spread
       ...actual.coreEvents,
       emitFeedback: vi.fn(),
       emitConsoleLog: vi.fn(),
@@ -209,6 +210,8 @@ vi.mock('./config/config.js', () => ({
     networkAccess: false,
   }),
   isDebugMode: vi.fn(() => false),
+  getRequestedWorktreeName: vi.fn(() => undefined),
+  getWorktreeArg: vi.fn(() => undefined),
 }));
 
 vi.mock('read-package-up', () => ({
@@ -569,6 +572,62 @@ describe('gemini.tsx main function kitty protocol', () => {
     expect(terminalCapabilityManager.detectCapabilities).toHaveBeenCalledTimes(
       1,
     );
+  });
+
+  it('should call process.stdin.resume when isInteractive is true to protect against implicit Node pause', async () => {
+    const resumeSpy = vi.spyOn(process.stdin, 'resume');
+    vi.mocked(loadCliConfig).mockResolvedValue(
+      createMockConfig({
+        isInteractive: () => true,
+        getQuestion: () => '',
+        getSandbox: () => undefined,
+      }),
+    );
+    vi.mocked(loadSettings).mockReturnValue(
+      createMockSettings({
+        merged: {
+          advanced: {},
+          security: { auth: {} },
+          ui: {},
+        },
+      }),
+    );
+    vi.mocked(parseArguments).mockResolvedValue({
+      model: undefined,
+      sandbox: undefined,
+      debug: undefined,
+      prompt: undefined,
+      promptInteractive: undefined,
+      query: undefined,
+      yolo: undefined,
+      approvalMode: undefined,
+      policy: undefined,
+      adminPolicy: undefined,
+      allowedMcpServerNames: undefined,
+      allowedTools: undefined,
+      experimentalAcp: undefined,
+      extensions: undefined,
+      listExtensions: undefined,
+      includeDirectories: undefined,
+      screenReader: undefined,
+      useWriteTodos: undefined,
+      resume: undefined,
+      listSessions: undefined,
+      deleteSession: undefined,
+      outputFormat: undefined,
+      fakeResponses: undefined,
+      recordResponses: undefined,
+      rawOutput: undefined,
+      acceptRawOutputRisk: undefined,
+      isCommand: undefined,
+    });
+
+    await act(async () => {
+      await main();
+    });
+
+    expect(resumeSpy).toHaveBeenCalledTimes(1);
+    resumeSpy.mockRestore();
   });
 
   it.each([
@@ -1552,6 +1611,7 @@ describe('startInteractiveUI', () => {
       .spyOn(process.stdout, 'write')
       .mockImplementation(() => true);
     const mockConfigWithScreenReader = {
+      // eslint-disable-next-line @typescript-eslint/no-misused-spread
       ...mockConfig,
       getScreenReader: () => screenReader,
     } as Config;

@@ -9,13 +9,13 @@ import {
   listMemoryFiles,
   refreshMemory,
   showMemory,
-} from '@euxaristia/gemini-cli-core';
+} from '@google/gemini-cli-core';
 import type {
   Command,
   CommandContext,
   CommandExecutionResponse,
 } from './types.js';
-import type { AgentLoopContext } from '@euxaristia/gemini-cli-core';
+import type { AgentLoopContext } from '@google/gemini-cli-core';
 
 const DEFAULT_SANITIZATION_CONFIG = {
   allowedEnvironmentVariables: [],
@@ -58,7 +58,7 @@ export class ShowMemoryCommand implements Command {
 
 export class RefreshMemoryCommand implements Command {
   readonly name = 'memory refresh';
-  readonly description = 'Refreshes the current memory contents.';
+  readonly description = 'Refreshes the memory from the source.';
 
   async execute(
     context: CommandContext,
@@ -71,7 +71,7 @@ export class RefreshMemoryCommand implements Command {
 
 export class ListMemoryCommand implements Command {
   readonly name = 'memory list';
-  readonly description = 'Lists the available memory files.';
+  readonly description = 'Lists the paths of the GEMINI.md files in use.';
 
   async execute(
     context: CommandContext,
@@ -84,7 +84,7 @@ export class ListMemoryCommand implements Command {
 
 export class AddMemoryCommand implements Command {
   readonly name = 'memory add';
-  readonly description = 'Adds a new memory to the system.';
+  readonly description = 'Add content to the memory.';
 
   async execute(
     context: CommandContext,
@@ -103,9 +103,10 @@ export class AddMemoryCommand implements Command {
       const abortController = new AbortController();
       const signal = abortController.signal;
       await tool.buildAndExecute(result.toolArgs, signal, undefined, {
-        sanitizationConfig: DEFAULT_SANITIZATION_CONFIG,
-
-        sandboxManager: loopContext.sandboxManager,
+        shellExecutionConfig: {
+          sanitizationConfig: DEFAULT_SANITIZATION_CONFIG,
+          sandboxManager: loopContext.sandboxManager,
+        },
       });
       await refreshMemory(context.config);
       return {

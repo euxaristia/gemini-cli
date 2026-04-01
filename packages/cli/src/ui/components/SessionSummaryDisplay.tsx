@@ -7,10 +7,8 @@
 import type React from 'react';
 import { StatsDisplay } from './StatsDisplay.js';
 import { useSessionStats } from '../contexts/SessionContext.js';
-import {
-  escapeShellArg,
-  getShellConfiguration,
-} from '@euxaristia/gemini-cli-core';
+import { useConfig } from '../contexts/ConfigContext.js';
+import { escapeShellArg, getShellConfiguration } from '@google/gemini-cli-core';
 
 interface SessionSummaryDisplayProps {
   duration: string;
@@ -20,8 +18,19 @@ export const SessionSummaryDisplay: React.FC<SessionSummaryDisplayProps> = ({
   duration,
 }) => {
   const { stats } = useSessionStats();
+  const config = useConfig();
   const { shell } = getShellConfiguration();
-  const footer = `To resume this session: gemini --resume ${escapeShellArg(stats.sessionId, shell)}`;
+
+  const worktreeSettings = config.getWorktreeSettings();
+
+  const escapedSessionId = escapeShellArg(stats.sessionId, shell);
+  let footer = `To resume this session: gemini --resume ${escapedSessionId}`;
+
+  if (worktreeSettings) {
+    footer =
+      `To resume work in this worktree: cd ${escapeShellArg(worktreeSettings.path, shell)} && gemini --resume ${escapedSessionId}\n` +
+      `To remove manually: git worktree remove ${escapeShellArg(worktreeSettings.path, shell)}`;
+  }
 
   return (
     <StatsDisplay

@@ -4,5 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from '@euxaristia/gemini-cli-test-utils';
-export { normalizePath } from '@euxaristia/gemini-cli-test-utils';
+export * from '@google/gemini-cli-test-utils';
+export { normalizePath } from '@google/gemini-cli-test-utils';
+
+export const skipFlaky = !process.env['RUN_FLAKY_INTEGRATION'];

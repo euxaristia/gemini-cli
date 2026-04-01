@@ -21,10 +21,11 @@ import {
   tmpdir,
   type Config,
   type Storage,
+  NoopSandboxManager,
   type ToolRegistry,
-} from '@euxaristia/gemini-cli-core';
-import { NoopSandboxManager } from '@euxaristia/gemini-cli-core/src/services/sandboxManager.js';
-import { createMockMessageBus } from '@euxaristia/gemini-cli-core/src/test-utils/mock-message-bus.js';
+  type SandboxManager,
+} from '@google/gemini-cli-core';
+import { createMockMessageBus } from '@google/gemini-cli-core/src/test-utils/mock-message-bus.js';
 import { expect, vi } from 'vitest';
 
 export function createMockConfig(
@@ -96,16 +97,20 @@ export function createMockConfig(
     getMcpClientManager: vi.fn().mockReturnValue({
       getMcpServers: vi.fn().mockReturnValue({}),
     }),
+    getTelemetryLogPromptsEnabled: vi.fn().mockReturnValue(false),
     getGitService: vi.fn(),
     validatePathAccess: vi.fn().mockReturnValue(undefined),
     getShellExecutionConfig: vi.fn().mockReturnValue({
-      sandboxManager: new NoopSandboxManager(),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+      sandboxManager: new NoopSandboxManager() as unknown as SandboxManager,
       sanitizationConfig: {
         allowedEnvironmentVariables: [],
         blockedEnvironmentVariables: [],
         enableEnvironmentVariableRedaction: false,
       },
     }),
+    isAutoDistillationEnabled: vi.fn().mockReturnValue(false),
+    getContextManagementConfig: vi.fn().mockReturnValue({ enabled: false }),
     ...overrides,
   } as unknown as Config;
 
