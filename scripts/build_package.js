@@ -20,13 +20,14 @@
 import { execSync } from 'node:child_process';
 import { writeFileSync, existsSync, cpSync } from 'node:fs';
 import { join, basename } from 'node:path';
-
 if (!process.cwd().includes('packages')) {
   console.error('must be invoked from a package directory');
   process.exit(1);
 }
 
 const packageName = basename(process.cwd());
+const isBun = 'bun' in process.versions;
+const pm = isBun ? 'bun' : 'npm';
 
 // build typescript files
 execSync('tsc --build', { stdio: 'inherit' });
@@ -35,7 +36,7 @@ execSync('tsc --build', { stdio: 'inherit' });
 const bundleScript = join(process.cwd(), 'scripts', 'bundle-browser-mcp.mjs');
 if (packageName === 'core' && existsSync(bundleScript)) {
   console.log('Running chrome devtools MCP bundling...');
-  execSync('npm run bundle:browser-mcp', {
+  execSync(`${pm} run bundle:browser-mcp`, {
     stdio: 'inherit',
   });
 }
@@ -48,7 +49,14 @@ if (packageName === 'core') {
   const docsSource = join(process.cwd(), '..', '..', 'docs');
   const docsTarget = join(process.cwd(), 'dist', 'docs');
   if (existsSync(docsSource)) {
-    cpSync(docsSource, docsTarget, { recursive: true, dereference: true });
+    if (existsSync(docsTarget)) {
+      execSync(`rm -rf "${docsTarget}"`);
+    }
+    cpSync(docsSource, docsTarget, {
+      recursive: true,
+      dereference: true,
+      force: true,
+    });
     console.log('Copied documentation to dist/docs');
   }
 }

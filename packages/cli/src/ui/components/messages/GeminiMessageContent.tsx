@@ -33,7 +33,12 @@ export const GeminiMessageContent: React.FC<GeminiMessageContentProps> = ({
   const prefixWidth = originalPrefix.length;
 
   return (
-    <Box flexDirection="column" paddingLeft={prefixWidth}>
+    <Box
+      flexDirection="column"
+      paddingLeft={prefixWidth}
+      width={terminalWidth}
+      overflow="hidden"
+    >
       <MarkdownDisplay
         text={text}
         isPending={isPending}

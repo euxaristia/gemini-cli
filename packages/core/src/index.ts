@@ -162,7 +162,14 @@ export * from './ide/types.js';
 
 // Export Shell Execution Service
 export * from './services/shellExecutionService.js';
-export * from './services/sandboxManager.js';
+export {
+  createSandboxManager,
+  type SandboxManager,
+  type SandboxRequest,
+  type SandboxedCommand,
+  NoopSandboxManager,
+  LocalSandboxManager,
+} from './services/sandboxManager.js';
 
 // Export Execution Lifecycle Service
 export * from './services/executionLifecycleService.js';

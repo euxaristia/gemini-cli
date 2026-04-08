@@ -29,8 +29,34 @@ export function isNodeError(error: unknown): error is NodeJS.ErrnoException {
 /**
  * Checks if an error is an AbortError.
  */
-export function isAbortError(error: unknown): boolean {
+export function isAbortError(error: unknown): error is Error {
   return error instanceof Error && error.name === 'AbortError';
+}
+
+/**
+ * Checks if an error is a TimeoutError.
+ */
+export function isTimeoutError(
+  error: unknown,
+): error is Error | Record<string, unknown> {
+  if (typeof error !== 'object' || error === null) {
+    return false;
+  }
+
+  const err = error as { name?: unknown; code?: unknown };
+
+  if (typeof err.name === 'string' && err.name === 'TimeoutError') {
+    return true;
+  }
+
+  if (typeof err.code === 'string') {
+    return (
+      err.code === 'UND_ERR_HEADERS_TIMEOUT' ||
+      err.code === 'UND_ERR_BODY_TIMEOUT'
+    );
+  }
+
+  return false;
 }
 
 export function getErrorMessage(error: unknown): string {

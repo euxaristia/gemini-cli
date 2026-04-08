@@ -97,6 +97,12 @@ export function handleAutoUpdate(
     return;
   }
 
+  // Git clones and unknown installs have no updateCommand — there is nothing
+  // actionable to show. The user manages updates themselves (e.g. git pull).
+  if (!installationInfo.updateCommand) {
+    return;
+  }
+
   let combinedMessage = info.message;
   if (installationInfo.updateMessage) {
     combinedMessage += `\n${installationInfo.updateMessage}`;
@@ -167,11 +173,20 @@ export function setUpdateHandler(
   setUpdateInfo: (info: UpdateObject | null) => void,
 ) {
   let successfullyInstalled = false;
+  let updateTimedOut = false;
+  let currentTimeout: NodeJS.Timeout | null = null;
+
   const handleUpdateReceived = (info: UpdateObject) => {
     setUpdateInfo(info);
     const savedMessage = info.message;
-    setTimeout(() => {
-      if (!successfullyInstalled) {
+
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+    }
+
+    currentTimeout = setTimeout(() => {
+      currentTimeout = null;
+      if (!successfullyInstalled && !updateTimedOut) {
         addItem(
           {
             type: MessageType.INFO,
@@ -185,6 +200,11 @@ export function setUpdateHandler(
   };
 
   const handleUpdateFailed = () => {
+    updateTimedOut = true;
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+      currentTimeout = null;
+    }
     setUpdateInfo(null);
     addItem(
       {
@@ -197,6 +217,10 @@ export function setUpdateHandler(
 
   const handleUpdateSuccess = () => {
     successfullyInstalled = true;
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+      currentTimeout = null;
+    }
     setUpdateInfo(null);
     addItem(
       {
@@ -223,6 +247,9 @@ export function setUpdateHandler(
   updateEventEmitter.on('update-info', handleUpdateInfo);
 
   return () => {
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+    }
     updateEventEmitter.off('update-received', handleUpdateReceived);
     updateEventEmitter.off('update-failed', handleUpdateFailed);
     updateEventEmitter.off('update-success', handleUpdateSuccess);

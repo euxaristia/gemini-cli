@@ -39,9 +39,9 @@ function getArgs() {
     })
     .option('cli-package-name', {
       description:
-        'fully qualified package name with scope (e.g @google/gemini-cli)',
+        'fully qualified package name with scope (e.g @euxaristia/gemini-cli)',
       string: true,
-      default: '@google/gemini-cli',
+      default: '@euxaristia/gemini-cli',
     })
     .option('preview_version_override', {
       description: 'Override the calculated preview version.',
@@ -49,6 +49,10 @@ function getArgs() {
     })
     .option('stable-base-version', {
       description: 'Base version to use for calculating next preview/nightly.',
+      string: true,
+    })
+    .option('suffix', {
+      description: 'Suffix to append to the version string.',
       string: true,
     })
     .help(false)
@@ -284,19 +288,21 @@ function promoteNightlyVersion({ args } = {}) {
   const nextMinor = minor + 2;
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const gitShortHash = execSync('git rev-parse --short HEAD').toString().trim();
+  const suffix = args['suffix'] ? `-${args['suffix']}` : '';
   return {
-    releaseVersion: `${major}.${nextMinor}.0-nightly.${date}.${gitShortHash}`,
+    releaseVersion: `${major}.${nextMinor}.0-nightly.${date}.${gitShortHash}${suffix}`,
     npmTag: TAG_NIGHTLY,
     previousReleaseTag: previousNightlyTag,
   };
 }
 
-function getNightlyVersion() {
+function getNightlyVersion(args = {}) {
   const packageJson = readJson('package.json');
   const baseVersion = packageJson.version.split('-')[0];
   const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const gitShortHash = execSync('git rev-parse --short HEAD').toString().trim();
-  const releaseVersion = `${baseVersion}-nightly.${date}.${gitShortHash}`;
+  const suffix = args['suffix'] ? `-${args['suffix']}` : '';
+  const releaseVersion = `${baseVersion}-nightly.${date}.${gitShortHash}${suffix}`;
   const previousReleaseTag = getLatestTag('v*-nightly*');
 
   return {
@@ -431,7 +437,7 @@ export function getVersion(options = {}) {
   let versionData;
   switch (type) {
     case TAG_NIGHTLY:
-      versionData = getNightlyVersion();
+      versionData = getNightlyVersion(args);
       // Nightly versions include a git hash, so conflicts are highly unlikely
       // and indicate a problem. We'll still validate but not auto-increment.
       if (doesVersionExist({ args, version: versionData.releaseVersion })) {

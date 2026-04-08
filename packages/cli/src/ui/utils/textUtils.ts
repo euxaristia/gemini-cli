@@ -118,17 +118,20 @@ export function cpSlice(str: string, start: number, end?: number): string {
  * - TAB (0x09) - preserve tabs
  */
 export function stripUnsafeCharacters(str: string): string {
-  const strippedAnsi = stripAnsi(str);
+  // Strip C1 control characters early because stripVTControlCharacters
+  // can misinterpret them as starting unterminated sequences and swallow text.
+  // C1: 0x80-0x9F
+  const stage1 = str.replace(/[\x80-\x9F]/g, '');
+  const strippedAnsi = stripAnsi(stage1);
   const strippedVT = stripVTControlCharacters(strippedAnsi);
 
   // Use a regex to strip remaining unsafe control characters
   // C0: 0x00-0x1F except 0x09 (TAB), 0x0A (LF), 0x0D (CR)
-  // C1: 0x80-0x9F
   // BiDi: U+200E (LRM), U+200F (RLM), U+202A-U+202E, U+2066-U+2069
   // Zero-width: U+200B (ZWSP), U+FEFF (BOM)
   return strippedVT.replace(
     // eslint-disable-next-line no-control-regex
-    /[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F\u200E\u200F\u202A-\u202E\u2066-\u2069\u200B\uFEFF]/g,
+    /[\x00-\x08\x0B\x0C\x0E-\x1F\u200E\u200F\u202A-\u202E\u2066-\u2069\u200B\uFEFF]/g,
     '',
   );
 }
@@ -212,6 +215,10 @@ const regex = ansiRegex();
  * @returns A new value with all nested string fields escaped, or the
  * original `obj` reference if no changes were necessary.
  */
+// Keys whose values are rendered through their own ANSI-aware pipeline
+// (AnsiOutput or MarkdownDisplay) and must not be escaped to literal text.
+const ESCAPE_SKIP_KEYS = new Set(['resultDisplay']);
+
 export function escapeAnsiCtrlCodes<T>(obj: T): T {
   if (typeof obj === 'string') {
     if (obj.search(regex) === -1) {
@@ -252,6 +259,10 @@ export function escapeAnsiCtrlCodes<T>(obj: T): T {
   const keys = Object.keys(obj);
 
   for (const key of keys) {
+    // Skip keys whose values are rendered through ANSI-aware pipelines
+    if (ESCAPE_SKIP_KEYS.has(key)) {
+      continue;
+    }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
     const value = (obj as Record<string, unknown>)[key];
     const escapedValue = escapeAnsiCtrlCodes(value);

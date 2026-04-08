@@ -26,6 +26,7 @@ vi.mock('fs', async (importOriginal) => {
     ...actualFs,
     realpathSync: vi.fn(),
     existsSync: vi.fn(),
+    accessSync: vi.fn(),
   };
 });
 
@@ -40,6 +41,7 @@ vi.mock('child_process', async (importOriginal) => {
 const mockedIsGitRepository = vi.mocked(isGitRepository);
 const mockedRealPathSync = vi.mocked(fs.realpathSync);
 const mockedExistsSync = vi.mocked(fs.existsSync);
+const mockedAccessSync = vi.mocked(fs.accessSync);
 const mockedExecSync = vi.mocked(childProcess.execSync);
 
 describe('getInstallationInfo', () => {
@@ -52,10 +54,15 @@ describe('getInstallationInfo', () => {
     // Mock process.cwd() for isGitRepository
     vi.spyOn(process, 'cwd').mockReturnValue(projectRoot);
     vi.spyOn(debugLogger, 'log').mockImplementation(() => {});
+    // Default to writable and non-root
+    mockedAccessSync.mockImplementation(() => {});
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vi.spyOn(process, 'getuid' as any).mockReturnValue(1000);
   });
 
   afterEach(() => {
     process.argv = originalArgv;
+    vi.restoreAllMocks();
   });
 
   it('should detect running as a standalone binary', () => {
@@ -204,7 +211,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global pnpm installation', () => {
-    const pnpmPath = `/Users/test/.pnpm/global/5/node_modules/.pnpm/some-hash/node_modules/@google/gemini-cli/dist/index.js`;
+    const pnpmPath = `/Users/test/.pnpm/global/5/node_modules/.pnpm/some-hash/node_modules/@euxaristia/gemini-cli/dist/index.js`;
     process.argv[1] = pnpmPath;
     mockedRealPathSync.mockReturnValue(pnpmPath);
     mockedExecSync.mockImplementation(() => {
@@ -215,7 +222,9 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
     expect(info.packageManager).toBe(PackageManager.PNPM);
     expect(info.isGlobal).toBe(true);
-    expect(info.updateCommand).toBe('pnpm add -g @google/gemini-cli@latest');
+    expect(info.updateCommand).toBe(
+      'pnpm add -g @euxaristia/gemini-cli@latest',
+    );
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
     // isAutoUpdateEnabled = false -> "Please run..."
@@ -224,7 +233,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global yarn installation', () => {
-    const yarnPath = `/Users/test/.yarn/global/node_modules/@google/gemini-cli/dist/index.js`;
+    const yarnPath = `/Users/test/.yarn/global/node_modules/@euxaristia/gemini-cli/dist/index.js`;
     process.argv[1] = yarnPath;
     mockedRealPathSync.mockReturnValue(yarnPath);
     mockedExecSync.mockImplementation(() => {
@@ -236,7 +245,7 @@ describe('getInstallationInfo', () => {
     expect(info.packageManager).toBe(PackageManager.YARN);
     expect(info.isGlobal).toBe(true);
     expect(info.updateCommand).toBe(
-      'yarn global add @google/gemini-cli@latest',
+      'yarn global add @euxaristia/gemini-cli@latest',
     );
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
@@ -246,7 +255,7 @@ describe('getInstallationInfo', () => {
   });
 
   it('should detect global bun installation', () => {
-    const bunPath = `/Users/test/.bun/install/global/node_modules/@google/gemini-cli/dist/index.js`;
+    const bunPath = `/Users/test/.bun/install/global/node_modules/@euxaristia/gemini-cli/dist/index.js`;
     process.argv[1] = bunPath;
     mockedRealPathSync.mockReturnValue(bunPath);
     mockedExecSync.mockImplementation(() => {
@@ -257,7 +266,7 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
     expect(info.packageManager).toBe(PackageManager.BUN);
     expect(info.isGlobal).toBe(true);
-    expect(info.updateCommand).toBe('bun add -g @google/gemini-cli@latest');
+    expect(info.updateCommand).toBe('bun add -g @euxaristia/gemini-cli@latest');
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
     // isAutoUpdateEnabled = false -> "Please run..."
@@ -344,12 +353,70 @@ describe('getInstallationInfo', () => {
     const info = getInstallationInfo(projectRoot, true);
     expect(info.packageManager).toBe(PackageManager.NPM);
     expect(info.isGlobal).toBe(true);
-    expect(info.updateCommand).toBe('npm install -g @google/gemini-cli@latest');
+    expect(info.updateCommand).toBe(
+      'npm install -g @euxaristia/gemini-cli@latest',
+    );
     expect(info.updateMessage).toContain('Attempting to automatically update');
 
     // isAutoUpdateEnabled = false -> "Please run..."
     const infoDisabled = getInstallationInfo(projectRoot, false);
     expect(infoDisabled.updateMessage).toContain('Please run npm install');
+  });
+
+  it('should detect when sudo is required on Linux/macOS and suggest it', () => {
+    const globalPath = `/usr/local/bin/gemini`;
+    process.argv[1] = globalPath;
+    mockedRealPathSync.mockReturnValue(globalPath);
+
+    // Mock non-writable directory and non-root user
+    mockedAccessSync.mockImplementation(() => {
+      throw new Error('Permission denied');
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vi.spyOn(process, 'getuid' as any).mockReturnValue(1000);
+
+    const info = getInstallationInfo(projectRoot, true);
+
+    expect(info.packageManager).toBe(PackageManager.NPM);
+    expect(info.isGlobal).toBe(true);
+    expect(info.updateCommand).toBeUndefined(); // Auto-update disabled
+    expect(info.updateMessage).toContain('sudo npm install -g');
+    expect(info.updateMessage).toContain('requires sudo');
+  });
+
+  it('should NOT suggest sudo if already running as root', () => {
+    const globalPath = `/usr/local/bin/gemini`;
+    process.argv[1] = globalPath;
+    mockedRealPathSync.mockReturnValue(globalPath);
+
+    // Mock non-writable but root user
+    mockedAccessSync.mockImplementation(() => {
+      throw new Error('Permission denied');
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vi.spyOn(process, 'getuid' as any).mockReturnValue(0);
+
+    const info = getInstallationInfo(projectRoot, true);
+
+    expect(info.packageManager).toBe(PackageManager.NPM);
+    expect(info.isGlobal).toBe(true);
+    expect(info.updateCommand).toBe(
+      'npm install -g @euxaristia/gemini-cli@latest',
+    );
+    expect(info.updateMessage).toContain('Attempting to automatically update');
+  });
+
+  it('should detect running from a local git clone even if not in project root', () => {
+    const forkPath = '/home/user/fork/gemini-cli/bundle/gemini.js';
+    process.argv[1] = forkPath;
+    mockedRealPathSync.mockReturnValue(forkPath);
+    mockedIsGitRepository.mockReturnValue(true);
+
+    const info = getInstallationInfo(projectRoot, true);
+
+    expect(info.packageManager).toBe(PackageManager.UNKNOWN);
+    expect(info.isGlobal).toBe(false);
+    expect(info.updateMessage).toContain('Running from a local git clone/fork');
   });
 
   it('should NOT detect Homebrew if gemini-cli is installed in brew but running from npm location', () => {
@@ -358,7 +425,7 @@ describe('getInstallationInfo', () => {
     });
     // Path looks like standard global NPM
     const cliPath =
-      '/usr/local/lib/node_modules/@google/gemini-cli/dist/index.js';
+      '/usr/local/lib/node_modules/@euxaristia/gemini-cli/dist/index.js';
     process.argv[1] = cliPath;
 
     // Setup mocks

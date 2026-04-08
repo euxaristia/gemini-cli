@@ -570,6 +570,7 @@ export async function loadCliConfig(
   const fileFiltering = {
     ...DEFAULT_FILE_FILTERING_OPTIONS,
     ...settings.context?.fileFiltering,
+    excludePatterns: settings.context?.fileFiltering?.excludePatterns || [],
   };
 
   //changes the includeDirectories to be absolute paths based on the cwd, and also include any additional directories specified via CLI args
