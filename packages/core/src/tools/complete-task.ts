@@ -49,7 +49,8 @@ export class CompleteTaskTool<
     outputConfig?: OutputConfig<z.ZodTypeAny>,
   ): unknown {
     if (outputConfig) {
-      const jsonSchema = zodToJsonSchema(outputConfig.schema);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion, @typescript-eslint/no-explicit-any
+      const jsonSchema = zodToJsonSchema(outputConfig.schema as any);
       const {
         $schema: _$schema,
         definitions: _definitions,

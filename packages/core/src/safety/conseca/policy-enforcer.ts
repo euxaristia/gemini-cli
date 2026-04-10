@@ -91,7 +91,8 @@ export async function enforcePolicy(
         model,
         config: {
           responseMimeType: 'application/json',
-          responseSchema: zodToJsonSchema(EnforcementResultSchema, {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion, @typescript-eslint/no-explicit-any
+          responseSchema: zodToJsonSchema(EnforcementResultSchema as any, {
             target: 'openApi3',
           }),
         },

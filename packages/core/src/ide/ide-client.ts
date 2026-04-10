@@ -500,9 +500,13 @@ export class IdeClient {
     }
 
     this.client.setNotificationHandler(
-      IdeContextNotificationSchema,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion, @typescript-eslint/no-explicit-any
+      IdeContextNotificationSchema as any,
+       
       (notification) => {
+         
         ideContextStore.set(notification.params);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const isTrusted = notification.params.workspaceState?.isTrusted;
         if (isTrusted !== undefined) {
           for (const listener of this.trustChangeListeners) {
@@ -527,11 +531,15 @@ export class IdeClient {
       );
     };
     this.client.setNotificationHandler(
-      IdeDiffAcceptedNotificationSchema,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion, @typescript-eslint/no-explicit-any
+      IdeDiffAcceptedNotificationSchema as any,
+       
       (notification) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { filePath, content } = notification.params;
         const resolver = this.diffResponses.get(filePath);
         if (resolver) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           resolver({ status: 'accepted', content });
           this.diffResponses.delete(filePath);
         } else {
@@ -541,8 +549,11 @@ export class IdeClient {
     );
 
     this.client.setNotificationHandler(
-      IdeDiffRejectedNotificationSchema,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion, @typescript-eslint/no-explicit-any
+      IdeDiffRejectedNotificationSchema as any,
+       
       (notification) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { filePath } = notification.params;
         const resolver = this.diffResponses.get(filePath);
         if (resolver) {
@@ -557,8 +568,11 @@ export class IdeClient {
     // For backwards compatibility. Newer extension versions will only send
     // IdeDiffRejectedNotificationSchema.
     this.client.setNotificationHandler(
-      IdeDiffClosedNotificationSchema,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion, @typescript-eslint/no-explicit-any
+      IdeDiffClosedNotificationSchema as any,
+       
       (notification) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const { filePath } = notification.params;
         const resolver = this.diffResponses.get(filePath);
         if (resolver) {

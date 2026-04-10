@@ -1,6 +1,6 @@
 {
   "name": "@google/gemini-cli-core",
-  "version": "0.39.0-nightly.20260408.e77b22e63",
+  "version": "0.0.0-20260410.5ecc06361.euxaristia",
   "description": "Gemini CLI Core",
   "license": "Apache-2.0",
   "repository": {
@@ -91,6 +91,7 @@
     "zod-to-json-schema": "^3.25.1"
   },
   "optionalDependencies": {
+    "@qwen-code/qwen-file-search-rs": "file:../../../../../file-search-rs",
     "@lydell/node-pty": "1.1.0",
     "@lydell/node-pty-darwin-arm64": "1.1.0",
     "@lydell/node-pty-darwin-x64": "1.1.0",

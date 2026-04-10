@@ -13,6 +13,47 @@ import { AsyncFzf, type FzfResultItem } from 'fzf';
 import { unescapePath } from '../paths.js';
 import type { FileDiscoveryService } from '../../services/fileDiscoveryService.js';
 
+const RustFileSearch: {
+  FileSearch: new (config: {
+    projectRoot: string;
+    useGitignore: boolean;
+    useQwenignore: boolean;
+    ignoreDirs: string[];
+    enableFuzzySearch: boolean;
+    maxDepth?: number;
+  }) => {
+    initialize(): Promise<void>;
+    getAllFiles(): string[];
+    search(
+      pattern: string,
+      maxResults?: number,
+    ): Promise<Array<{ path: string }>>;
+  };
+} | null = (() => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, no-restricted-syntax, @typescript-eslint/no-unsafe-type-assertion
+    return require('/home/euxaristia/Projects/qwen-code/file-search-rs/index.js') as {
+      FileSearch: new (config: {
+        projectRoot: string;
+        useGitignore: boolean;
+        useQwenignore: boolean;
+        ignoreDirs: string[];
+        enableFuzzySearch: boolean;
+        maxDepth?: number;
+      }) => {
+        initialize(): Promise<void>;
+        getAllFiles(): string[];
+        search(
+          pattern: string,
+          maxResults?: number,
+        ): Promise<Array<{ path: string }>>;
+      };
+    };
+  } catch {
+    return null;
+  }
+})();
+
 // Tiebreaker: Prefers shorter paths.
 const byLengthAsc = (a: { item: string }, b: { item: string }) =>
   a.item.length - b.item.length;
@@ -128,15 +169,48 @@ export interface FileSearch {
   search(pattern: string, options?: SearchOptions): Promise<string[]>;
 }
 
-class RecursiveFileSearch implements FileSearch {
+type RustFileSearchNonNull = NonNullable<typeof RustFileSearch>;
+type NativeSearchInstance = InstanceType<RustFileSearchNonNull['FileSearch']>;
+
+class RustRecursiveFileSearch implements FileSearch {
+  private nativeSearch: NativeSearchInstance | null = null;
   private ignore: Ignore | undefined;
   private resultCache: ResultCache | undefined;
   private allFiles: string[] = [];
+  private nativeSearchFailed = false;
   private fzf: AsyncFzf<string[]> | undefined;
 
   constructor(private readonly options: FileSearchOptions) {}
 
   async initialize(): Promise<void> {
+    if (RustFileSearch && !this.nativeSearchFailed) {
+      try {
+        this.nativeSearch = new RustFileSearch.FileSearch({
+          projectRoot: this.options.projectRoot,
+          useGitignore: true,
+          useQwenignore: true,
+          ignoreDirs: this.options.ignoreDirs,
+          enableFuzzySearch: this.options.enableFuzzySearch,
+          maxDepth: this.options.maxDepth,
+        });
+
+        await this.nativeSearch.initialize();
+        this.allFiles = this.nativeSearch.getAllFiles();
+        this.resultCache = new ResultCache(this.allFiles);
+        this.buildFzf();
+        return;
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          'Rust file search initialization failed, falling back to JavaScript:',
+          err,
+        );
+        this.nativeSearchFailed = true;
+        this.nativeSearch = null;
+      }
+    }
+
+    // JS fallback: load ignore rules
     this.ignore = loadIgnoreRules(
       this.options.fileDiscoveryService,
       this.options.ignoreDirs,
@@ -152,7 +226,18 @@ class RecursiveFileSearch implements FileSearch {
       maxFiles: this.options.maxFiles ?? 20000,
     });
 
-    this.buildResultCache();
+    this.resultCache = new ResultCache(this.allFiles);
+    this.buildFzf();
+  }
+
+  private buildFzf(): void {
+    if (this.options.enableFuzzySearch) {
+      this.fzf = new AsyncFzf(this.allFiles, {
+        fuzzy: this.allFiles.length > 20000 ? 'v1' : 'v2',
+        forward: false,
+        tiebreakers: [byBasenamePrefix, byMatchPosFromEnd, byLengthAsc],
+      });
+    }
   }
 
   async search(
@@ -162,7 +247,7 @@ class RecursiveFileSearch implements FileSearch {
     if (
       !this.resultCache ||
       (!this.fzf && this.options.enableFuzzySearch) ||
-      !this.ignore
+      (!this.nativeSearch && !this.ignore)
     ) {
       throw new Error('Engine not initialized. Call initialize() first.');
     }
@@ -178,7 +263,37 @@ class RecursiveFileSearch implements FileSearch {
       filteredCandidates = candidates;
     } else {
       let shouldCache = true;
-      if (pattern.includes('*') || !this.fzf) {
+      // Use Rust search if available
+      if (this.nativeSearch && !options.signal) {
+        try {
+          filteredCandidates = await this.nativeSearch.search(
+            pattern,
+            options.maxResults,
+          );
+          filteredCandidates = filteredCandidates.map((r) => r.path);
+        } catch {
+          // Fall back to JS
+          if (pattern.includes('*') || !this.fzf) {
+            filteredCandidates = await filter(
+              candidates,
+              pattern,
+              options.signal,
+            );
+          } else {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            filteredCandidates = await this.fzf
+              .find(pattern)
+              .then((results: Array<FzfResultItem<string>>) =>
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+                results.map((entry: FzfResultItem<string>) => entry.item),
+              )
+              .catch(() => {
+                shouldCache = false;
+                return [];
+              });
+          }
+        }
+      } else if (pattern.includes('*') || !this.fzf) {
         filteredCandidates = await filter(candidates, pattern, options.signal);
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -199,7 +314,13 @@ class RecursiveFileSearch implements FileSearch {
       }
     }
 
-    const fileFilter = this.ignore.getFileFilter();
+    // Skip file filtering for Rust results (already filtered during crawl)
+    if (this.nativeSearch) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return filteredCandidates;
+    }
+
+    const fileFilter = this.ignore?.getFileFilter();
     const results: string[] = [];
     for (const [i, candidate] of filteredCandidates.entries()) {
       if (i % 1000 === 0) {
@@ -215,25 +336,11 @@ class RecursiveFileSearch implements FileSearch {
       if (candidate === '.') {
         continue;
       }
-      if (!fileFilter(candidate)) {
+      if (!fileFilter || !fileFilter(candidate)) {
         results.push(candidate);
       }
     }
     return results;
-  }
-
-  private buildResultCache(): void {
-    this.resultCache = new ResultCache(this.allFiles);
-    if (this.options.enableFuzzySearch) {
-      // The v1 algorithm is much faster since it only looks at the first
-      // occurrence of the pattern. We use it for search spaces that have >20k
-      // files, because the v2 algorithm is just too slow in those cases.
-      this.fzf = new AsyncFzf(this.allFiles, {
-        fuzzy: this.allFiles.length > 20000 ? 'v1' : 'v2',
-        forward: false,
-        tiebreakers: [byBasenamePrefix, byMatchPosFromEnd, byLengthAsc],
-      });
-    }
   }
 }
 
@@ -290,7 +397,7 @@ class DirectoryFileSearch implements FileSearch {
 export class FileSearchFactory {
   static create(options: FileSearchOptions): FileSearch {
     if (options.enableRecursiveFileSearch) {
-      return new RecursiveFileSearch(options);
+      return new RustRecursiveFileSearch(options);
     }
     return new DirectoryFileSearch(options);
   }
