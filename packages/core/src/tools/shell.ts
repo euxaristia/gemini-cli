@@ -113,7 +113,7 @@ export class ShellToolInvocation extends BaseToolInvocation<
     if (trimmed.endsWith('\\')) {
       trimmed += ' ';
     }
-    return `(\n${trimmed}\n); __code=$?; pgrep -g 0 >${tempFilePath} 2>&1; exit $__code;`;
+    return `(\n:\n${trimmed}\n); __code=$?; pgrep -g 0 >${tempFilePath} 2>&1; exit $__code;`;
   }
 
   private getContextualDetails(): string {
