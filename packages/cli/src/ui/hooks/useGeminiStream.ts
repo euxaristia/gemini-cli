@@ -1256,8 +1256,9 @@ export const useGeminiStream = (
           userMessageTimestamp,
         );
       }
+      setThought(null);
     },
-    [addItem],
+    [addItem, setThought],
   );
 
   const handleChatCompressionEvent = useCallback(
@@ -1720,6 +1721,7 @@ export const useGeminiStream = (
             } finally {
               if (activeQueryIdRef.current === queryId) {
                 setIsResponding(false);
+                setThought(null);
               }
             }
           });
