@@ -21,6 +21,16 @@ export const getPty = async (): Promise<PtyImplementation> => {
   if (process.env['GEMINI_PTY_INFO'] === 'child_process') {
     return null;
   }
+  // node-pty's master-fd tty.ReadStream wrapper doesn't deliver data to onData
+  // under Bun, and resize hits EBADF when the fd is closed early. Fall back to
+  // the child_process path (which already has Bun-specific handling for
+  // detached/SIGHUP). Set GEMINI_PTY_INFO=node-pty to override and test.
+  if (
+    'bun' in process.versions &&
+    process.env['GEMINI_PTY_INFO'] !== 'node-pty'
+  ) {
+    return null;
+  }
   try {
     const lydell = '@lydell/node-pty';
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

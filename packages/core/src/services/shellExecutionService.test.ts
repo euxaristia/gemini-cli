@@ -580,6 +580,25 @@ describe('ShellExecutionService', () => {
       expect(mockHeadlessTerminal.scrollLines).toHaveBeenCalledWith(10);
     });
 
+    it('should ignore EBADF when the master fd was already closed', async () => {
+      // node-pty's native resize throws "ioctl(2) failed, EBADF" when the
+      // master fd has been closed by destroyPtyProcess() ahead of the
+      // activePtys map cleanup. The race is wider under Bun.
+      const resizeError = new Error('ioctl(2) failed, EBADF');
+      mockPtyProcess.resize.mockImplementation(() => {
+        throw resizeError;
+      });
+
+      await expect(
+        simulateExecution('ls -l', (pty) => {
+          ShellExecutionService.resizePty(pty.pid, 100, 40);
+          pty.onExit.mock.calls[0][0]({ exitCode: 0, signal: null });
+        }),
+      ).resolves.not.toThrow();
+
+      expect(mockPtyProcess.resize).toHaveBeenCalledWith(100, 40);
+    });
+
     it('should not throw when resizing a pty that has already exited (Windows)', () => {
       const resizeError = new Error(
         'Cannot resize a pty that has already exited',

@@ -1473,11 +1473,16 @@ export class ShellExecutionService {
         const isWindowsPtyError = err.message?.includes(
           'Cannot resize a pty that has already exited',
         );
+        // node-pty's native resize throws "ioctl(2) failed, EBADF" (or ENOTTY)
+        // when the master fd has already been closed. This is the same race as
+        // ESRCH: destroyPtyProcess() in onExit closes the fd before we remove
+        // the entry from activePtys, so a concurrent resizePty() can land in
+        // between. The race is wider under Bun, which is where this surfaces.
+        const isClosedFdError =
+          err.message?.includes('EBADF') || err.message?.includes('ENOTTY');
 
-        if (isEsrch || isWindowsPtyError) {
-          // On Unix, we get an ESRCH error.
-          // On Windows, we get a message-based error.
-          // In both cases, it's safe to ignore.
+        if (isEsrch || isWindowsPtyError || isClosedFdError) {
+          // pty is gone; nothing to resize.
         } else {
           throw e;
         }
